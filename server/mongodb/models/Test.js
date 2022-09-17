@@ -1,12 +1,12 @@
-import { Schema, models, model } from "mongoose";
+import mongoose from "mongoose";
 
-const testSchema = new Schema({
+const testSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   }
 });
 
-const Test = models.Test || model("Test", testSchema);
+const Test = mongoose.models.Test || mongoose.model("Test", testSchema);
 
 export default Test;
