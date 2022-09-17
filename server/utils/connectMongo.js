@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 
 const connectMongo = async () => {
   const len = mongoose.connections.length - 1
@@ -12,4 +12,4 @@ const connectMongo = async () => {
     });
 }
 
-module.exports = connectMongo;
+export default connectMongo;
