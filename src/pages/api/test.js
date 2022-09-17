@@ -1,10 +1,16 @@
 import { getTests } from "../../../server/mongodb/actions/Test.js";
 
-const handler = async (request, response) => {
+export default async function handler(request, response) {
   if (request.method === "GET") {
     const tests = await getTests();
-    response.json(tests);
+    return response.json({
+      success: true,
+      payload: { tests },
+    });
+  } else {
+    response.status(404).json({
+      success: false,
+      message: "unknown endpoint",
+    })
   }
 }
-
-export default handler;

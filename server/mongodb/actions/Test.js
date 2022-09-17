@@ -1,7 +1,7 @@
 import connectMongo from "../../utils/connectMongo.js"
 import Test from "../models/Test.js"
 
-const getTests = async () => {
+async function getTests() {
   await connectMongo();
   const tests = await Test.find({});
   return tests;

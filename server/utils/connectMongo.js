@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const connectMongo = async () => {
+async function connectMongo() {
   const len = mongoose.connections.length - 1
   if (mongoose.connections[len].readyState === 1 || mongoose.connections[len].readyState === 2) return;
   await mongoose
