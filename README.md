@@ -8,7 +8,7 @@ Run the development server:
 yarn dev
 ```
 
-### MongoDB
+## MongoDB
 
 A running instance of MongoDB is required this project.
 
