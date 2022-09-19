@@ -7,8 +7,8 @@ export function LoginPage() {
     return (
       <div>
         <div style={{
-            borderStyle: "none none solid",
-            marginBottom: "1rem"
+          borderStyle: "none none solid",
+          marginBottom: "1rem"
         }}>
           <h1>Log In</h1>
         </div>
