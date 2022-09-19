@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const LoginPage = ():JSX.Element => {
+export function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
