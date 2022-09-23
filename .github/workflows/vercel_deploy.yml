@@ -6,7 +6,7 @@ name: CD
 on:
   # Triggers the workflow on all pushes
   push:
-    branches: [main, samarthc/vercel-deploy]
+    branches: [main]
   pull_request:
     branches: [main]
 
