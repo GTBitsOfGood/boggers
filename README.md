@@ -20,5 +20,4 @@ A running instance of MongoDB is required this project.
   1. [Download MongoDB Community Server](https://www.mongodb.com/download-center/community)
   2. Go through the installation instructions.
      - Leave the port at default 27017
-- Copy the contents of `example.env.local` into a new file `.env.local` to establish environment variable for the MongoDB connection.
 - Remember to never commit shared environment variables to your version control.
