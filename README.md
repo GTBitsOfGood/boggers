@@ -20,4 +20,6 @@ A running instance of MongoDB is required this project.
   1. [Download MongoDB Community Server](https://www.mongodb.com/download-center/community)
   2. Go through the installation instructions.
      - Leave the port at default 27017
-- Remember to never commit shared environment variables to your version control.
+
+## Deployment
+For more information about Deployment and Vercel, <a href="https://www.notion.so/gtbitsofgood/General-Deployment-Pointers-Vercel-763e769ef0074ff8b12c85c3d4809ba9">check out this guide.</a>
