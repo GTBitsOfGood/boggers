@@ -26,13 +26,7 @@ async function connectMongo () {
   }
 
   cached.db = cached.conn.db(urls.dbName)
-  return cached.conn
-  // await mongoose
-  //   .connect(process.env.DB_URL)
-  //   .catch((error) => {
-  //     console.log(`Error connecting to MongoDB: ${error}`);
-  //     throw error;
-  //   });
+  return cached.db
 }
 
 export default connectMongo
