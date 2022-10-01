@@ -1,10 +1,6 @@
 import connectMongo from "../connectMongo"
 import Test from "../models/Test.js"
-//Just in case that db connection is not initialized.
-let cached = global.mongoose;
-if (!cached) {
-  await connectMongo();
-}
+
 async function getTests() {
   const tests = await Test.find({});
   return tests;

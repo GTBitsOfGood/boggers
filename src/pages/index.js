@@ -2,6 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Member from "./member";
+import connectMongo from "../server/mongodb/connectMongo";
+import Test from "../server/mongodb/models/Test";
 
 export default function Home() {
   return (
@@ -67,4 +69,16 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+//Initializing mongo connection
+export async function getServerSideProps() {
+  await connectMongo();
+  const result = await Test.find({})
+  const test = result.map((doc) => {
+    const pet = doc.toObject()
+    pet._id = pet._id.toString()
+    return pet
+  })
+  return { props: { test: test } }
 }
