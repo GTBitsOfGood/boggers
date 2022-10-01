@@ -4,17 +4,15 @@ import urls from "../../../utils/urls";
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { db: null, conn: null, promise: null };
+  cached = global.mongoose = { db: null, promise: null };
 }
-//cached mongodb connection but not database, please access database with following line:
-//const db = cached.conn.db(urls.dbName)
-async function connectMongo() {
+export default async function connectMongo() {
   if (cached.db) {
     return cached.db;
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(urls.dbUrl).then((mongoose) => {
+    cached.promise = mongoose.connect(urls.dbUrl, { dbName: urls.dbName }).then((mongoose) => {
       return mongoose;
     });
   }
@@ -28,5 +26,3 @@ async function connectMongo() {
   cached.db = cached.conn.db(urls.dbName);
   return cached.db;
 }
-
-export default connectMongo;
