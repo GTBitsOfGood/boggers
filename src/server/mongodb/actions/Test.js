@@ -1,37 +1,37 @@
-import connectMongo from "../connectMongo"
+import dbConnect from "../connectMongo"
 import Test from "../models/Test.js"
 
 async function getTests() {
-  await connectMongo();
+  await dbConnect();
   const tests = await Test.find({});
   return tests;
 }
 
 async function createTest(name) {
-  await connectMongo();
+  await dbConnect();
   const newTest = await Test.create({ name });
   return newTest;
 }
 
 async function updateTest(id, name) {
-  await connectMongo();
+  await dbConnect();
   const updatedTest = await Test.findByIdAndUpdate(id, { name }, { new: true });
   return updatedTest;
 }
 
 async function removeTest(id) {
-  await connectMongo();
+  await dbConnect();
   const deletedTest = await Test.findByIdAndRemove(id);
   return deletedTest;
 }
 
 async function removeTestByName(name) {
-  await connectMongo();
+  await dbConnect();
   const deletedTest = await Test.findOneAndDelete({ name });
   return deletedTest;
 }
 
-export {
+export default{
   getTests,
   createTest,
   updateTest,
