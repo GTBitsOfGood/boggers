@@ -31,7 +31,7 @@ async function removeTestByName(name) {
   return deletedTest;
 }
 
-export default{
+export {
   getTests,
   createTest,
   updateTest,
