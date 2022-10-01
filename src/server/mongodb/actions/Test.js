@@ -1,4 +1,3 @@
-import connectMongo from "../connectMongo"
 import Test from "../models/Test.js"
 
 async function getTests() {
