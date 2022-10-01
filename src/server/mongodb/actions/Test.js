@@ -1,32 +1,31 @@
 import connectMongo from "../connectMongo"
 import Test from "../models/Test.js"
-
-async function getTests() {
+//Just in case that db connection is not initialized.
+let cached = global.mongoose;
+if (!cached) {
   await connectMongo();
+}
+async function getTests() {
   const tests = await Test.find({});
   return tests;
 }
 
 async function createTest(name) {
-  await connectMongo();
   const newTest = await Test.create({ name });
   return newTest;
 }
 
 async function updateTest(id, name) {
-  await connectMongo();
   const updatedTest = await Test.findByIdAndUpdate(id, { name }, { new: true });
   return updatedTest;
 }
 
 async function removeTest(id) {
-  await connectMongo();
   const deletedTest = await Test.findByIdAndRemove(id);
   return deletedTest;
 }
 
 async function removeTestByName(name) {
-  await connectMongo();
   const deletedTest = await Test.findOneAndDelete({ name });
   return deletedTest;
 }
