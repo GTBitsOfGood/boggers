@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import connectMongo from '../connectMongo';
 
+//Please copy and past following three line of code if you want to make a new server-side action or models
+//If statement used to further increase the performance.
 if (!global.mongoose || !global.mongoose.db) {
-  console.log(global.mongoose)
   await connectMongo();
-  console.log(global.mongoose);
 }
 
 const testSchema = new mongoose.Schema({
