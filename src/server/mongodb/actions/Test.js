@@ -1,5 +1,12 @@
-import Test from "../models/Test.js"
+import Test from "../models/Test.js";
+import connectMongo from '../connectMongo';
 
+let cached = global.mongoose;
+if (!cached) {
+  console.log(global.mongoose);
+  await connectMongo();
+  console.log(global.mongoose);
+}
 async function getTests() {
   const tests = await Test.find({});
   return tests;
