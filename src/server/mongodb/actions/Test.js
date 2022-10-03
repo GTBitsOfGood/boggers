@@ -25,10 +25,4 @@ async function removeTestByName(name) {
   return deletedTest;
 }
 
-export {
-  getTests,
-  createTest,
-  updateTest,
-  removeTest,
-  removeTestByName,
-};
+export { getTests, createTest, updateTest, removeTest, removeTestByName };

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import connectMongo from '../connectMongo';
 
 const testSchema = new mongoose.Schema({
   name: {
