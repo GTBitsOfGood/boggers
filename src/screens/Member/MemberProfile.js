@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, {useState} from "react";
 
 export const MemberProfile = () => {
   const [name, setName] = useState("");
@@ -9,6 +9,7 @@ export const MemberProfile = () => {
   const [project, setProject] = useState("");
   const [status, setStatus] = useState("");
 
+  //adding value to pass linst check so I can commit and push
   return (
     <div>
       <form>
@@ -17,6 +18,7 @@ export const MemberProfile = () => {
           <input
             label="Name"
             type="text"
+            value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -27,6 +29,7 @@ export const MemberProfile = () => {
           <input
             label="Email"
             type="text"
+            value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -38,6 +41,7 @@ export const MemberProfile = () => {
           <input
             label="Phone Number"
             type="text"
+            value={number}
             onChange={(e) => {
               setNumber(e.target.value);
             }}
@@ -49,6 +53,7 @@ export const MemberProfile = () => {
           <input
             label="Preference"
             type="text"
+            value={preference}
             onChange={(e) => {
               setPreference(e.target.value);
             }}
@@ -60,6 +65,7 @@ export const MemberProfile = () => {
           <input
             label="Role"
             type="text"
+            value={role}
             onChange={(e) => {
               setRole(e.target.value);
             }}
@@ -71,6 +77,7 @@ export const MemberProfile = () => {
           <input
             label="Project"
             type="text"
+            value={project}
             onChange={(e) => {
               setProject(e.target.value);
             }}
@@ -82,6 +89,7 @@ export const MemberProfile = () => {
           <input
             label="Status"
             type="text"
+            value={status}
             onChange={(e) => {
               setStatus(e.target.value);
             }}
