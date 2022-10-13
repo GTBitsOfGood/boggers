@@ -13,6 +13,7 @@ yarn dev
 In order to run scripts, "next dev" must be running.
 
 Scripts:
+
 - seed: creates root user
 
 ## MongoDB
