@@ -7,20 +7,32 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
+    "prepare": "husky install",
+    "precommit": "lint-staged",
     "seed": "curl http://localhost:3000/api/scripts?task=seed"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "dotenv": "^16.0.3",
+    "@emotion/cache": "^11.10.3",
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.8",
     "mongoose": "^6.6.1",
     "next": "12.3.0",
     "next-auth": "^4.12.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
     "prettier": "2.7.1"
   }
 }
