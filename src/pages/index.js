@@ -71,9 +71,6 @@ const Index = ({ isConnected }) => {
       </a>
     </footer>
   </div>
-  );
-};
-
 //Initializing mongo connection
 export async function getServerSideProps() {
   if (!global.mongoose || !global.mongoose.db) {
