@@ -1,11 +1,19 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   phoneNumber: {
     type: String,
     required: true,
   },
-  preferences: {
+  preference: {
     type: String,
     required: true,
   },
@@ -14,20 +22,13 @@ const userSchema = new mongoose.Schema({
     default: false,
     required: true,
   },
-});
-
-const projectSchema = new mongoose.Schema({
-  name: {
+  role: {
     type: String,
-    required: true,
+    enum: ["Developer", "Alumni", "Senior Dev", "Dev Bootcamper"],
   },
-  semesterCreated: {
+  status: {
     type: String,
-    enum: ["spring", "summer", "fall"],
-    required: true,
-  },
-  yearCreated: {
-    type: Number,
+    enum: ["Active", "Inactive"],
     required: true,
   },
 });
@@ -55,9 +56,8 @@ const tenureSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  projectId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Project",
+  project: {
+    type: String,
     required: true,
   },
   notes: {
@@ -67,7 +67,6 @@ const tenureSchema = new mongoose.Schema({
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
-const Project = mongoose.models.Project || mongoose.model("Project", projectSchema);
 const Tenure = mongoose.models.Tenure || mongoose.model("Tenure", tenureSchema);
 
-export {User, Project, Tenure};
+export {User, Tenure};
