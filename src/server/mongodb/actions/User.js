@@ -1,4 +1,4 @@
-import connectMongo from "../../utils/connectMongo.js";
+import connectMongo from "../connectMongo.js";
 import {User} from "../models/InitSchema.js";
 import bcrypt from "bcrypt";
 

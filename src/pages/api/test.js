@@ -1,4 +1,4 @@
-import {getTests} from "../../../server/mongodb/actions/Test.js";
+import {getTests} from "../../server/mongodb/actions/Test";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
