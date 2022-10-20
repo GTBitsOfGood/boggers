@@ -1,4 +1,4 @@
-import {createUser} from "../../../server/mongodb/actions/User";
+import {createUser} from "../../server/mongodb/actions/User";
 
 export default async function handler(req, res) {
   if (process.env.NODE_ENV === "production") return res.status(404).end();

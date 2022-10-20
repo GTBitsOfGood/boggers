@@ -1,4 +1,4 @@
-import connectMongo from "../../server/utils/connectMongo";
+import connectMongo from "../server/mongodb/connectMongo";
 import {signIn, signOut} from "next-auth/react";
 
 const Index = () => {

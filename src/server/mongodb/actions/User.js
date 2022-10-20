@@ -1,5 +1,5 @@
-import connectMongo from "../../utils/connectMongo";
-import User from "../models/User";
+import connectMongo from "../connectMongo.js";
+import {User} from "../models/InitSchema.js";
 import bcrypt from "bcrypt";
 
 async function getUser(email) {
@@ -7,16 +7,20 @@ async function getUser(email) {
   return User.findOne({email});
 }
 
-async function createUser(email, name, password, admin = false, phoneNumber = undefined, preferences = undefined) {
+async function createUser(email, name, password, admin = false) {
   await connectMongo();
-  return User.create({
+  return await User.create({
     email,
     password: await bcrypt.hash(password, 10),
     name,
     admin,
-    phoneNumber,
-    preferences,
   });
 }
 
-export {getUser, createUser};
+async function upsertUser(name, email, phoneNumber, preference, role, status) {
+  await connectMongo();
+  const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
+  return newUser;
+}
+
+export {getUser, createUser, upsertUser};
