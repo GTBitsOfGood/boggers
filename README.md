@@ -8,6 +8,14 @@ Run the development server:
 yarn dev
 ```
 
+## Scripts
+
+In order to run scripts, "next dev" must be running.
+
+Scripts:
+
+- seed: creates root user
+
 ## MongoDB
 
 A running instance of MongoDB is required this project.
