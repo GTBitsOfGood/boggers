@@ -1,10 +1,10 @@
-import {Typography} from "@mui/material";
-import {Box} from "@mui/system";
+import {signIn, signOut} from "next-auth/react";
 
 export default function Home() {
   return (
-    <Box>
-      <Typography>Hello, world!</Typography>
-    </Box>
+    <div>
+      <button onClick={signIn}>sign in</button>
+      <button onClick={signOut}>sign out</button>
+    </div>
   );
 }
