@@ -18,12 +18,6 @@ const userSchema = new mongoose.Schema({
     enum: [0, 1, 2],
     required: true,
   },
-  status: {
-    type: String,
-    enum: ["Active", "Inactive"],
-    default: "Active",
-    required: true,
-  },
   tenures: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -47,6 +41,10 @@ const tenureSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  department: {
+    type: String,
+    required: true,
+  },
   role: {
     type: String,
     required: true,
@@ -55,10 +53,19 @@ const tenureSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  notes: {
+  preferences: [
+    {
+      type: String,
+      enum: ["Front-end", "Full-stack", "Back-end"],
+    },
+  ],
+  status: {
     type: String,
+    enum: ["Active", "Inactive"],
+    default: "Active",
     required: true,
   },
+  notes: String,
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
