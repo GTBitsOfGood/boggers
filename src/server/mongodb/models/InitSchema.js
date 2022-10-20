@@ -43,7 +43,6 @@ const tenureSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
@@ -51,7 +50,6 @@ const tenureSchema = new mongoose.Schema({
   },
   project: {
     type: String,
-    required: true,
   },
   preferences: [
     {

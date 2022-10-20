@@ -14,8 +14,8 @@ async function createUser(email, name, password, admin = false) {
   });
 }
 
-async function upsertUser(name, email, phoneNumber, preference, role, status) {
-  const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
+async function upsertUser(userId, name, email, phoneNumber) {
+  const newUser = await User.findOneAndUpdate({_id: userId}, {name, email, phoneNumber}, {upsert: true, new: true});
   return newUser;
 }
 
