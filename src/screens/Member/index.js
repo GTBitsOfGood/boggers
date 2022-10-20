@@ -1,3 +1,3 @@
-import { MemberProfile } from "./MemberProfile";
+import {MemberProfile} from "./MemberProfile";
 
 export default MemberProfile;

@@ -1,5 +1,21 @@
 import connectMongo from "../../utils/connectMongo.js";
 import {User} from "../models/InitSchema.js";
+import bcrypt from "bcrypt";
+
+async function getUser(email) {
+  await connectMongo();
+  return User.findOne({email});
+}
+
+async function createUser(email, name, password, admin = false) {
+  await connectMongo();
+  return await User.create({
+    email,
+    password: await bcrypt.hash(password, 10),
+    name,
+    admin,
+  });
+}
 
 async function upsertUser(name, email, phoneNumber, preference, role, status) {
   await connectMongo();
@@ -7,4 +23,4 @@ async function upsertUser(name, email, phoneNumber, preference, role, status) {
   return newUser;
 }
 
-export {upsertUser};
+export {getUser, createUser, upsertUser};
