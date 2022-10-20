@@ -6,12 +6,12 @@ async function getTests() {
 }
 
 async function createTest(name) {
-  const newTest = await Test.create({ name });
+  const newTest = await Test.create({name});
   return newTest;
 }
 
 async function updateTest(id, name) {
-  const updatedTest = await Test.findByIdAndUpdate(id, { name }, { new: true });
+  const updatedTest = await Test.findByIdAndUpdate(id, {name}, {new: true});
   return updatedTest;
 }
 
@@ -21,8 +21,8 @@ async function removeTest(id) {
 }
 
 async function removeTestByName(name) {
-  const deletedTest = await Test.findOneAndDelete({ name });
+  const deletedTest = await Test.findOneAndDelete({name});
   return deletedTest;
 }
 
-export { getTests, createTest, updateTest, removeTest, removeTestByName };
+export {getTests, createTest, updateTest, removeTest, removeTestByName};

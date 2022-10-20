@@ -30,4 +30,5 @@ A running instance of MongoDB is required this project.
      - Leave the port at default 27017
 
 ## Deployment
+
 For more information about Deployment and Vercel, <a href="https://www.notion.so/gtbitsofgood/General-Deployment-Pointers-Vercel-763e769ef0074ff8b12c85c3d4809ba9">check out this guide.</a>
