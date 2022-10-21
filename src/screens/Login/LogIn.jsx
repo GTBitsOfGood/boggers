@@ -1,11 +1,19 @@
 import React, {useState} from "react";
 import classes from "./Login.module.css";
+import {signIn} from "next-auth/react";
 
 export function LoginPage() {
-  // eslint-disable-next-line no-unused-vars
   const [email, setEmail] = useState("");
-  // eslint-disable-next-line no-unused-vars
   const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await signIn("credentials", {
+      email: email,
+      password: password,
+      redirect: true,
+    });
+  };
   return (
     <div className={classes.body}>
       <div className={classes.baseContainer}>
@@ -13,7 +21,7 @@ export function LoginPage() {
           <p className={classes.header}>Welcome to boggers</p>
         </div>
         <p className={classes.introduction}>Your Bits of Good Membership Platform</p>
-        <form className={classes.form} action="http://localhost:3000/api/auth/callback/credentials" method="POST">
+        <form className={classes.form} onSubmit={handleSubmit}>
           <div className={classes.inputCountainer}>
             <label className={classes.textStyle}>EMAIL:</label>
             <input className={classes.inputBar} type="text" name="email" required onChange={(event) => setEmail(event.target.value)} />
@@ -25,7 +33,6 @@ export function LoginPage() {
               type="password"
               id="pass"
               name="password"
-              minLength={8}
               required
               onChange={(event) => setPassword(event.target.value)}
             />
