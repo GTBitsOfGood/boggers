@@ -38,5 +38,13 @@ const tenureSchema = new mongoose.Schema({
   notes: String,
 });
 
+tenureSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
 const Tenure = mongoose.models.Tenure || mongoose.model("Tenure", tenureSchema);
 export default Tenure;
