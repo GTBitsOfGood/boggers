@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   switch (req.query.task) {
     case "seed":
       // eslint-disable-next-line no-case-declarations
-      const user = await createUser("root@boggers.com", "boggers", "root", true);
+      const user = await createUser("root@boggers.com", "boggers", "root", 2);
       return res.status(200).json(user);
   }
 }

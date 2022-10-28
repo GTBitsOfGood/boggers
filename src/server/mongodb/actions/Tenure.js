@@ -1,26 +1,26 @@
 import Tenure from "../models/Tenure";
-import User from "../models/User";
 
 async function getTenure(userId, semester, year) {
   return Tenure.findOne({userId, semester, year});
 }
 
-async function createTenure(userId, semester, year, department, role, project, preferences, status, notes) {
-  const tenure = await Tenure.create({userId, semester, year, department, role, project, preferences, status, notes});
-  const user = await User.findById(userId);
-  user.tenures = user.tenures.concat(tenure);
-  await user.save();
+async function upsertTenure(userId, semester, year, department, role, project, preference, status, notes) {
+  const toUpdate = {department, role, project, preference, status};
+  if (notes != undefined && notes != null) {
+    toUpdate.notes = notes;
+  }
 
-  return tenure;
+  const newUser = await Tenure.findOneAndUpdate({_id: userId, semester, year}, toUpdate, {upsert: true, new: true});
+  return newUser;
 }
 
-async function upsertTenure(userId, semester, year, department, role, project, preferences, status, notes) {
+async function upsertTenureCsv(firstName, lastName, semester, year, preference, role, status) {
   const newUser = await Tenure.findOneAndUpdate(
-    {_id: userId, semester, year},
-    {department, role, project, preferences, status, notes},
+    {firstName, lastName, semester, year},
+    {preference, role, status},
     {upsert: true, new: true},
   );
   return newUser;
 }
 
-export {getTenure, createTenure, upsertTenure};
+export {getTenure, upsertTenure, upsertTenureCsv};
