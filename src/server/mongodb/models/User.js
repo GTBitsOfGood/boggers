@@ -6,23 +6,29 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  name: {
+  firstName: {
     type: String,
     required: true,
   },
-  password: {
+  lastName: {
     type: String,
     required: true,
   },
+  password: String,
   phoneNumber: String,
-  preferences: String,
-  admin: {
-    type: Boolean,
+  access: {
+    type: Number,
+    default: 0,
+    enum: [0, 1, 2],
     required: true,
-    default: false,
   },
+  tenures: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenure",
+    },
+  ],
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
-
 export default User;

@@ -1,4 +1,5 @@
-import {Tenure, User} from "../models/InitSchema.js";
+import Tenure from "../models/Tenure";
+import User from "../models/User";
 
 async function getTenure(userId, semester, year) {
   return Tenure.findOne({userId, semester, year});

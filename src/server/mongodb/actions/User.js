@@ -1,4 +1,4 @@
-import {User} from "../models/InitSchema.js";
+import User from "../models/User";
 import bcrypt from "bcrypt";
 
 async function getUser(email) {

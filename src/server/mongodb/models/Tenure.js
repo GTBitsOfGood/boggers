@@ -1,31 +1,5 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  password: String,
-  phoneNumber: String,
-  access: {
-    type: Number,
-    default: 0,
-    enum: [0, 1, 2],
-    required: true,
-  },
-  tenures: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Tenure",
-    },
-  ],
-});
-
 const tenureSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -51,12 +25,10 @@ const tenureSchema = new mongoose.Schema({
   project: {
     type: String,
   },
-  preferences: [
-    {
-      type: String,
-      enum: ["Front-end", "Full-stack", "Back-end"],
-    },
-  ],
+  preference: {
+    type: String,
+    enum: ["Front-end", "Full-stack", "Back-end"],
+  },
   status: {
     type: String,
     enum: ["Active", "Inactive"],
@@ -66,7 +38,5 @@ const tenureSchema = new mongoose.Schema({
   notes: String,
 });
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
 const Tenure = mongoose.models.Tenure || mongoose.model("Tenure", tenureSchema);
-
-export {User, Tenure};
+export default Tenure;
