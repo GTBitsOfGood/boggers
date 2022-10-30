@@ -20,14 +20,10 @@ async function handler(req, res) {
     const record = parsed[i].split(",");
 
     const [fullName, email, phoneNumber, preference, role, status] = record;
-    console.log(fullName);
     const [firstName, lastName] = fullName.split(" ");
     const member = await upsertUserCsv(firstName, lastName, email, phoneNumber);
-    console.log("member created");
     const tenure = await upsertTenureCsv(member._id, semester, year, preference, role, status);
-    console.log("tenure created");
     await addTenure(member, tenure);
-    console.log("tenure added to member");
   }
   res.status(200).json({
     success: true,

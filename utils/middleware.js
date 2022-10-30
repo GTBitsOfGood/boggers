@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import {dbUrl} from "./urls";
 
 let cache = null;
-console.log(dbUrl);
 
 export default function requestWrapper(handler, method) {
   return async (req, res) => {

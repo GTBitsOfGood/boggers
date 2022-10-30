@@ -1,4 +1,3 @@
-import connectMongo from "../../server/mongodb/connectMongo";
 import User from "../../server/mongodb/models/User";
 import Tenure from "../../server/mongodb/models/Tenure";
 import {createUser} from "../../server/mongodb/actions/User";
@@ -9,7 +8,6 @@ async function handler(req, res) {
 
   switch (req.query.task) {
     case "seed": {
-      await connectMongo();
       try {
         await User.collection.drop();
       } catch (error) {
