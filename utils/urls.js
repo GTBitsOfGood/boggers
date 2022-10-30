@@ -12,17 +12,17 @@ function getBaseURL() {
   return "http://localhost:3000";
 }
 
-export default {
-  base: getBaseURL(),
-  dbUrl: process.env.DB_URL ?? "mongodb://localhost:27017",
-  dbName: "local",
-  pages: {
-    index: "/",
-    login: "/login",
-  },
-  api: {
-    test: "api/test",
-    login: "api/login",
-    hello: "api/hello",
-  },
+const base = getBaseURL();
+const dbUrl = process.env.DB_URL ?? "mongodb://localhost:27017";
+const dbName = process.env.DB_NAME ?? "local";
+const pages = {
+  index: "/",
+  login: "/login",
 };
+const api = {
+  test: "api/test",
+  login: "api/login",
+  hello: "api/hello",
+};
+
+export {base, dbUrl, dbName, pages, api};

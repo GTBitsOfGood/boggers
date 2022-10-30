@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     enum: [0, 1, 2],
-    required: true,
   },
   tenures: [
     {
@@ -32,11 +31,17 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    returnedObject.fullName = `${returnedObject.firstName} ${returnedObject.lastName}`;
-    delete returnedObject._id;
+    if (returnedObject._id) {
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+    }
+    if (returnedObject.password) {
+      delete returnedObject.password;
+    }
+    if (returnedObject.fullName && returnedObject.lastName) {
+      returnedObject.fullName = `${returnedObject.firstName} ${returnedObject.lastName}`;
+    }
     delete returnedObject.__v;
-    delete returnedObject.password;
   },
 });
 

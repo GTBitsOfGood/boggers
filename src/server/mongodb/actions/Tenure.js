@@ -10,17 +10,19 @@ async function upsertTenure(userId, semester, year, department, role, project, p
     toUpdate.notes = notes;
   }
 
-  const newUser = await Tenure.findOneAndUpdate({_id: userId, semester, year}, toUpdate, {upsert: true, new: true});
-  return newUser;
+  await Tenure.validate({userId, semester, year, ...toUpdate});
+  const newTenure = await Tenure.findOneAndUpdate({userId, semester, year}, toUpdate, {upsert: true, new: true, runValidators: true});
+  return newTenure;
 }
 
-async function upsertTenureCsv(firstName, lastName, semester, year, preference, role, status) {
-  const newUser = await Tenure.findOneAndUpdate(
-    {firstName, lastName, semester, year},
+async function upsertTenureCsv(userId, semester, year, preference, role, status) {
+  await Tenure.validate({userId, semester, year, preference, role, status});
+  const newTenure = await Tenure.findOneAndUpdate(
+    {userId, semester, year},
     {preference, role, status},
-    {upsert: true, new: true},
+    {upsert: true, new: true, runValidators: true},
   );
-  return newUser;
+  return newTenure;
 }
 
 export {getTenure, upsertTenure, upsertTenureCsv};

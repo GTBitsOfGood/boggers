@@ -27,7 +27,7 @@ const tenureSchema = new mongoose.Schema({
   },
   preference: {
     type: String,
-    enum: ["Front-end", "Full-stack", "Back-end"],
+    enum: ["Front-end", "Full-stack", "Back-end", "-"],
   },
   status: {
     type: String,
@@ -40,8 +40,10 @@ const tenureSchema = new mongoose.Schema({
 
 tenureSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
+    if (returnedObject._id) {
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+    }
     delete returnedObject.__v;
   },
 });
