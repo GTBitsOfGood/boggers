@@ -7,9 +7,15 @@ async function handler(req, res) {
   const user = await getToken({req});
   // console.log(user);
   if (!user) {
-    return res.status(401).send("user not authenticated");
+    return res.status(401).json({
+      success: false,
+      message: "User not authenticated",
+    });
   } else if (user.access == 0) {
-    return res.status(403).send("user is not an admin");
+    return res.status(401).json({
+      success: false,
+      message: "User is not an admin",
+    });
   }
 
   const {semester = "Fall", year = 2022} = req;
@@ -23,7 +29,7 @@ async function handler(req, res) {
     const [firstName, lastName] = fullName.split(" ");
     const member = await upsertUserCsv(firstName, lastName, email, phoneNumber);
     const tenure = await upsertTenureCsv(member._id, semester, year, preference, role, status);
-    await addTenure(member, tenure);
+    await addTenure(member._id, tenure);
   }
   res.status(200).json({
     success: true,

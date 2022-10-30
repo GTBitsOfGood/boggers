@@ -1,6 +1,6 @@
 import User from "../../server/mongodb/models/User";
 import Tenure from "../../server/mongodb/models/Tenure";
-import {createUser} from "../../server/mongodb/actions/User";
+import {createRootUser} from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
@@ -18,10 +18,10 @@ async function handler(req, res) {
       } catch (error) {
         // empty
       }
-      const user = await createUser("root@boggers.com", "boggers", "boggers", "root", 2);
+      const user = await createRootUser();
       return res.status(200).json(user);
     }
   }
 }
 
-export default requestWrapper(handler, "POST");
+export default requestWrapper(handler, "GET");
