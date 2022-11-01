@@ -17,10 +17,15 @@ async function createUser(email, name, password, admin = false) {
   });
 }
 
+async function updatePassword(email, password) {
+  await connectMongo();
+  await User.updateOne({email}, {password: await bcrypt.hash(password, 10)});
+}
+
 async function upsertUser(name, email, phoneNumber, preference, role, status) {
   await connectMongo();
   const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
   return newUser;
 }
 
-export {getUser, createUser, upsertUser};
+export {getUser, createUser, upsertUser, updatePassword};
