@@ -5,15 +5,15 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  row-gap: 7%;
+  row-gap: 9%;
 }
 
 .MemberProfileBody {
   display: flex;
   flex-direction: column;
   align-content: center;
-  padding-top: 5%;
-  row-gap: 45px;
+  padding-top: 4%;
+  row-gap: 4vh;
 }
 
 .MemberProfileHeader {
@@ -36,16 +36,17 @@
   margin-left: 12.5%;
   display: flex;
   flex-wrap: wrap;
-  row-gap: 7vh;
+  row-gap: 6vh;
 }
 
 .MemberProfileRadioSave {
+  padding-top: 1.5%;
   margin-left: 12.5%;
   display: flex;
 }
 
 .MemberProfileSave {
-  width: 38%;
+  width: 37.5%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -68,4 +69,10 @@
 .MemberProfileFooter {
   flex-grow: 1;
   background: linear-gradient(74.59deg, #FD8033 0%, #FB3552 100%);
+}
+
+.MemberProfileFooterBottom {
+  display: flex;
+  justify-content: center;
+  column-gap: 17%;
 }

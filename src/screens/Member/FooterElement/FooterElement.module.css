@@ -1,0 +1,12 @@
+.FooterElement {
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.FooterElementTitle {
+  font-size: 24px;
+}
+
+.FooterElementValue {
+  font-size: 20px;
+}

@@ -7,10 +7,12 @@
 
 .InputFieldHeader {
   display: flex;
+  column-gap: 0.5%;
 }
 
 .InputFieldName {
   font-size: 24px;
+  font-weight: 500;
 }
 
 .InputFieldOptional {

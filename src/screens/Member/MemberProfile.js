@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
 import InputField from "./InputField/InputField";
 import Avatar from "../../public/Avatar.png";
 import Save from "../../public/Save.png";
 import RadioField from "./RadioField/RadioField";
+import FooterElement from "./FooterElement/FooterElement";
 
 export const MemberProfile = () => {
   const [firstName, setFirstName] = useState("John");
@@ -11,6 +13,11 @@ export const MemberProfile = () => {
   const [email, setEmail] = useState("johndoe@gatech.edu");
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
+
+  const [department, setDepartment] = useState("Engineering");
+  const [role, setRole] = useState("Developer");
+  const [project, setProject] = useState("Umi Feeds");
+  const [status, setStatus] = useState("Active");
 
   return (
     <div className={styles.MemberProfile}>
@@ -36,7 +43,15 @@ export const MemberProfile = () => {
         </div>
       </div>
       <div className={styles.MemberProfileFooter}>
-        <>Hi</>
+        <div className={styles.MemberProfileFooterTop}>
+          <>Spring 2022</>
+        </div>
+        <div className={styles.MemberProfileFooterBottom}>
+          <FooterElement title="DEPARTMENT" state={department} />
+          <FooterElement title="ROLE" state={role} />
+          <FooterElement title="PROJECT" state={project} />
+          <FooterElement title="STATUS" state={status} />
+        </div>
       </div>
     </div>
   );
