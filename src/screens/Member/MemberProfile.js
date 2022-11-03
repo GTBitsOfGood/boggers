@@ -1,6 +1,5 @@
 import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
-import Image from "next/image";
 import InputField from "./InputField/InputField";
 import Avatar from "../../public/Avatar.png";
 import RadioField from "./RadioField/RadioField";
@@ -16,7 +15,7 @@ export const MemberProfile = () => {
     <div className={styles.MemberProfile}>
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
-          <Image className={styles.MemberProfilePhoto} src={Avatar.src} alt="User Picture" />
+          <img className={styles.MemberProfileImage} src={Avatar.src} alt="User Picture" />
           <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
         </div>
         <div className={styles.MemberProfileFields}>
