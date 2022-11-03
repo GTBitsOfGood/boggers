@@ -1,0 +1,15 @@
+.RadioField {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.RadioFieldHeader {
+  font-size: 24px;
+}
+
+.RadioFieldGroup {
+  display: flex;
+  column-gap: 6%;
+  font-size: 20px;
+}

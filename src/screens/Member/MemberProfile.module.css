@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.MemberProfileBody {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin-top: 5%;
+}
+
+.MemberProfileHeader {
+  margin-left: 10%;
+  display: flex;
+  flex-direction: row;
+}
+
+.MemberProfileName {
+  font-size: 40px;
+  font-weight: 600;
+  font-family: "Poppins";
+  color: #333333;
+  align-self: center;
+  padding-left: 1.75%;
+}
+
+.MemberProfileFields {
+  margin-left: 12.5%;
+  margin-top: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 7vh;
+}
+
+.MemberProfileRadioSave {
+  margin-left: 12.5%;
+  margin-top: 7vh
+}

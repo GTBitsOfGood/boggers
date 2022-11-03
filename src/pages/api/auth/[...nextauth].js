@@ -32,7 +32,7 @@ const authOptions = {
       return session;
     },
     async redirect() {
-      return "/members";
+      return "/member";
     },
   },
 };
