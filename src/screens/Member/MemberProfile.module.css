@@ -32,5 +32,27 @@
 
 .MemberProfileRadioSave {
   margin-left: 12.5%;
-  margin-top: 7vh
+  margin-top: 7vh;
+  display: flex;
+}
+
+.MemberProfileSave {
+  width: 38%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.MemberProfileSaveButton {
+  width: 135px;
+  height: 50px;
+  background: #2D285C;
+  border: 1px solid #2D285C;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+  font-size: 24px;
+  color: #FFFFFF;
 }

@@ -2,6 +2,7 @@ import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
 import InputField from "./InputField/InputField";
 import Avatar from "../../public/Avatar.png";
+import Save from "../../public/Save.png";
 import RadioField from "./RadioField/RadioField";
 
 export const MemberProfile = () => {
@@ -26,7 +27,12 @@ export const MemberProfile = () => {
         </div>
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
-          <div className={styles.MemberProfileSave}>Save</div>
+          <div className={styles.MemberProfileSave}>
+            <div className={styles.MemberProfileSaveButton}>
+              <img src={Save.src} alt="Save Icon" />
+              Save
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.MemberProfileFooter}></div>
