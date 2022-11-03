@@ -1,16 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+.MemberProfile {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  row-gap: 7%;
+}
+
 .MemberProfileBody {
   display: flex;
   flex-direction: column;
   align-content: center;
-  margin-top: 5%;
+  padding-top: 5%;
+  row-gap: 45px;
 }
 
 .MemberProfileHeader {
   margin-left: 10%;
   display: flex;
   flex-direction: row;
+  padding-bottom: 1%;
 }
 
 .MemberProfileName {
@@ -24,7 +34,6 @@
 
 .MemberProfileFields {
   margin-left: 12.5%;
-  margin-top: 3%;
   display: flex;
   flex-wrap: wrap;
   row-gap: 7vh;
@@ -32,7 +41,6 @@
 
 .MemberProfileRadioSave {
   margin-left: 12.5%;
-  margin-top: 7vh;
   display: flex;
 }
 
@@ -55,4 +63,9 @@
   column-gap: 8px;
   font-size: 24px;
   color: #FFFFFF;
+}
+
+.MemberProfileFooter {
+  flex-grow: 1;
+  background: linear-gradient(74.59deg, #FD8033 0%, #FB3552 100%);
 }

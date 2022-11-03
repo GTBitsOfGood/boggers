@@ -35,7 +35,9 @@ export const MemberProfile = () => {
           </div>
         </div>
       </div>
-      <div className={styles.MemberProfileFooter}></div>
+      <div className={styles.MemberProfileFooter}>
+        <>Hi</>
+      </div>
     </div>
   );
 };
