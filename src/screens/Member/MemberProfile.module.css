@@ -5,14 +5,15 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  row-gap: 9%;
+  row-gap: 8%;
+  overflow-y: overlay;
 }
 
 .MemberProfileBody {
   display: flex;
   flex-direction: column;
   align-content: center;
-  padding-top: 4%;
+  padding-top: 3%;
   row-gap: 4vh;
 }
 
@@ -29,7 +30,7 @@
   font-family: "Poppins";
   color: #333333;
   align-self: center;
-  padding-left: 1.75%;
+  margin-left: 1.75%;
 }
 
 .MemberProfileFields {
@@ -69,10 +70,26 @@
 .MemberProfileFooter {
   flex-grow: 1;
   background: linear-gradient(74.59deg, #FD8033 0%, #FB3552 100%);
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.MemberProfileFooterPage {
+  display: flex;
+  column-gap: 9px;
+  justify-content: flex-end;
+  padding-top: 1%;
+  padding-right: 5%;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
 }
 
 .MemberProfileFooterBottom {
   display: flex;
   justify-content: center;
-  column-gap: 17%;
+  column-gap: 14%;
+  padding-top: 0.5%;
+  padding-bottom: 3%;
 }

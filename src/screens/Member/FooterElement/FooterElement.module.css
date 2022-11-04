@@ -1,6 +1,9 @@
 .FooterElement {
   font-weight: 500;
   color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
 }
 
 .FooterElementTitle {

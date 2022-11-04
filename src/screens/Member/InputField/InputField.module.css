@@ -7,7 +7,7 @@
 
 .InputFieldHeader {
   display: flex;
-  column-gap: 0.5%;
+  column-gap: 1%;
 }
 
 .InputFieldName {

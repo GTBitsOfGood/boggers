@@ -1,4 +1,11 @@
 .RadioButton {
   display: flex;
   gap: 4px;
+  align-items: baseline;
+}
+
+.RadioButtonInput {
+  width: 1.2em;
+  height: 1.2em;
+  accent-color: #2D285C;
 }

@@ -43,8 +43,10 @@ export const MemberProfile = () => {
         </div>
       </div>
       <div className={styles.MemberProfileFooter}>
-        <div className={styles.MemberProfileFooterTop}>
-          <>Spring 2022</>
+        <div className={styles.MemberProfileFooterPage}>
+          <div className={styles.MemberProfileFooterPageArrow}>&lt;</div>
+          <div className={styles.MemberProfileFooterPageName}>SPRING 2022</div>
+          <div className={styles.MemberProfileFooterPageArrow}>&gt;</div>
         </div>
         <div className={styles.MemberProfileFooterBottom}>
           <FooterElement title="DEPARTMENT" state={department} />
