@@ -19,7 +19,7 @@ export default {
   pages: {
     index: "/",
     login: "/login",
-    members: "/member",
+    members: "/members",
   },
   api: {
     test: "api/test",
