@@ -1,2 +1,2 @@
-import Member from "../screens/Members";
-export default Member;
+import Members from "../screens/Members";
+export default Members;

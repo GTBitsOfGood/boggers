@@ -19,6 +19,7 @@ const urls = {
   pages: {
     index: "/",
     login: "/login",
+    members: "/members",
   },
   api: {
     test: "/api/test",
