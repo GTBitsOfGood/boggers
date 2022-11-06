@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import {getUser} from "../../../server/mongodb/actions/User";
+import connectMongo from "../../../server/mongodb/connectMongo";
 
 export const authOptions = {
   providers: [
@@ -12,6 +13,7 @@ export const authOptions = {
         password: {label: "Password", type: "password"},
       },
       async authorize(credentials) {
+        await connectMongo();
         const user = await getUser(credentials.email);
         if (user && (await bcrypt.compare(credentials.password, user.password))) {
           return user;
