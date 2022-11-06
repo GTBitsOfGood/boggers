@@ -31,9 +31,9 @@ const authOptions = {
       session.user = token.user;
       return session;
     },
-    async redirect() {
-      return "/members";
-    },
+  },
+  pages: {
+    signIn: "/login",
   },
 };
 
