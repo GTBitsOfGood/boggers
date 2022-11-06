@@ -19,13 +19,12 @@
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
+    "bcrypt": "^5.0.1",
     "mongoose": "^6.6.1",
     "next": "12.3.0",
     "next-auth": "^4.12.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "bcrypt": "^5.0.1",
-    "dotenv": "^16.0.3"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "eslint": "8.23.1",

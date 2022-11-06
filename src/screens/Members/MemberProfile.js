@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import urls from "../../../utils/urls";
 
 export const MemberProfile = () => {
   /* eslint-disable no-unused-vars */
@@ -9,10 +10,26 @@ export const MemberProfile = () => {
   const [role, setRole] = useState("");
   const [project, setProject] = useState("");
   const [status, setStatus] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   /* eslint-enable no-unused-vars */
+  const fileChangeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const submitCSVFileHandler = async () => {
+    await fetch(urls.base + urls.api.bulkUpload, {
+      method: "POST",
+      body: selectedFile,
+      headers: {
+        "Content-Type": "text/csv",
+      },
+    });
+  };
 
   return (
     <div>
+      <input type="file" name="file" onChange={fileChangeHandler} />
+      <button onClick={submitCSVFileHandler}> Bulk Upload </button>
       <form>
         <label>
           <h1>MemberName: </h1>
