@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {dbUrl} from "./urls";
+import urls from "./urls";
 
 let cache = null;
 
@@ -13,7 +13,7 @@ export default function requestWrapper(handler, method) {
     }
 
     if (!cache) {
-      cache = await mongoose.connect(dbUrl);
+      cache = await mongoose.connect(urls.dbUrl);
     }
 
     return handler(req, res);

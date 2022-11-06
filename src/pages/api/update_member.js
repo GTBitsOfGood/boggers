@@ -5,7 +5,6 @@ import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({req});
-  // console.log(user);
   if (!user) {
     return res.status(401).json({
       success: false,

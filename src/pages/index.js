@@ -1,4 +1,5 @@
 import {signIn, signOut} from "next-auth/react";
+import connectMongo from "../server/mongodb/connectMongo";
 
 const Index = () => {
   return (
@@ -8,5 +9,11 @@ const Index = () => {
     </div>
   );
 };
-
+export async function getServerSideProps() {
+  if (!global.mongoose || !global.mongoose.db) {
+    await connectMongo();
+  }
+  let isConnected = global.mongoose.db.connection.readyState == 1;
+  return {props: {isConnected}};
+}
 export default Index;

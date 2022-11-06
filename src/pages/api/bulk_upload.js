@@ -5,7 +5,6 @@ import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({req});
-  // console.log(user);
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -20,7 +19,7 @@ async function handler(req, res) {
 
   const {semester = "Fall", year = 2022} = req;
 
-  const parsed = req.body.split("\r\n");
+  const parsed = req.body.split(/\r?\n/);
   for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
     const record = parsed[i].split(",");

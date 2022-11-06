@@ -13,7 +13,6 @@ export const authOptions = {
       },
       async authorize(credentials) {
         const user = await getUser(credentials.email);
-
         if (user && (await bcrypt.compare(credentials.password, user.password))) {
           return user;
         } else {
