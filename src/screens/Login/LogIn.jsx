@@ -97,7 +97,9 @@ export function LoginPage() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot}>Forgot password?</p>
+              <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}>
+                Forgot password?
+              </p>
               <input className={classes.button} type="submit" value="Sign in" />
             </div>
           </form>
