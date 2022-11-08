@@ -1,10 +1,11 @@
 import {signIn} from "next-auth/react";
 import React, {useState} from "react";
-import classes from "./Login.module.css";
+import classes from "./login.module.css";
 import BOG from "../../public/BOG.svg";
 import warnning from "../../public/warning.png";
 import Image from "next/image";
 import Router from "next/router";
+import Link from "next/link";
 import urls from "../../../utils/urls";
 
 export function LoginPage() {
@@ -26,20 +27,6 @@ export function LoginPage() {
       }
     });
   };
-
-  async function forgotPassword() {
-    const res = await fetch("/api/forgot_password", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-      }),
-    });
-    if (res.status === 404) {
-      alert(`User with email ${email} not found`);
-    } else {
-      alert("Email sent");
-    }
-  }
 
   return (
     <div className={classes.body}>
@@ -110,9 +97,13 @@ export function LoginPage() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot} onClick={forgotPassword}>
-                Forgot password?
+              {/* <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}> */}
+              <p className={classes.forgot}>
+                <Link href={`${urls.base + urls.pages.forgotPassword}`}>
+                  <a className={classes.forgotPasswordText}>Forgot password?</a>
+                </Link>
               </p>
+
               <input className={classes.button} type="submit" value="Sign in" />
             </div>
           </form>
