@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 .MemberProfile {
   width: 100vw;
@@ -56,20 +56,20 @@
 .MemberProfileSaveButton {
   width: 135px;
   height: 50px;
-  background: #2D285C;
-  border: 1px solid #2D285C;
+  background: #2d285c;
+  border: 1px solid #2d285c;
   border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 8px;
   font-size: 24px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .MemberProfileFooter {
   flex-grow: 1;
-  background: linear-gradient(74.59deg, #FD8033 0%, #FB3552 100%);
+  background: linear-gradient(74.59deg, #fd8033 0%, #fb3552 100%);
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -83,7 +83,7 @@
   padding-right: 5%;
   font-weight: 500;
   font-size: 16px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .MemberProfileFooterBottom {
