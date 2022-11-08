@@ -1,23 +1,38 @@
 import React, {useState} from "react";
-import classes from "./ForgotPassword.module.css";
+import classes from "./forgotPassword.module.css";
 import warnning from "../../public/warning.png";
 import check from "../../public/check.png";
 import Image from "next/image";
 import Link from "next/link";
 
+// eslint-disable-next-line no-useless-escape
+const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [send, setSend] = useState(false);
   const [error, setError] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Please add api calls for forgot password here:
-
-    //Upon sucess send:
-    // setSend(true)
-    //Upon failure:
-    // setError(true)
+    if (!EMAIL_REGEX.test(email)) {
+      setError(true);
+      return;
+    }
+    const res = await fetch("/api/forgot_password", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    if (res.status === 404) {
+      setError(true);
+    } else {
+      setSend(true);
+      setError(false);
+    }
   };
+
   return (
     <div className={classes.body}>
       {error ? (

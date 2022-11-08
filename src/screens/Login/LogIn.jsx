@@ -1,10 +1,11 @@
-import React, {useState} from "react";
-import classes from "./Login.module.css";
 import {signIn} from "next-auth/react";
+import React, {useState} from "react";
+import classes from "./login.module.css";
 import BOG from "../../public/BOG.svg";
 import warnning from "../../public/warning.png";
 import Image from "next/image";
 import Router from "next/router";
+import Link from "next/link";
 import urls from "../../../utils/urls";
 
 export function LoginPage() {
@@ -18,11 +19,10 @@ export function LoginPage() {
       email: email,
       password: password,
       redirect: false,
-    }).then(({ok, error}) => {
+    }).then(({ok}) => {
       if (ok) {
         Router.push(urls.base + urls.pages.members);
       } else {
-        console.log(error);
         setFailed(true);
       }
     });
@@ -97,9 +97,13 @@ export function LoginPage() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}>
-                Forgot password?
+              {/* <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}> */}
+              <p className={classes.forgot}>
+                <Link href={`${urls.base + urls.pages.forgotPassword}`}>
+                  <a className={classes.forgotPasswordText}>Forgot password?</a>
+                </Link>
               </p>
+
               <input className={classes.button} type="submit" value="Sign in" />
             </div>
           </form>

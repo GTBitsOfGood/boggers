@@ -111,10 +111,14 @@
 }
 
 .forgot {
-  color: white;
   height: 1.5rem;
   margin-right: 11.5rem;
   cursor: pointer;
+}
+
+.forgotPasswordText {
+  color: white;
+  text-decoration: none;
 }
 
 .button {
