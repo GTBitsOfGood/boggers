@@ -2,8 +2,8 @@ import connectMongo from "../connectMongo.js";
 import AccountRecovery from "../models/AccountRecovery.js";
 
 async function createAccountRecovery(email) {
-  await connectMongo();
-  const accountRecovery = await AccountRecovery.findOneAndUpdate({email}, {upsert: true, new: true});
+  // await connectMongo();
+  const accountRecovery = await AccountRecovery.findOneAndUpdate({email}, {email}, {upsert: true, new: true});
   return accountRecovery;
 }
 
