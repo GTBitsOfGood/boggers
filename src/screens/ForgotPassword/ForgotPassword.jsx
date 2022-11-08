@@ -3,7 +3,7 @@ import classes from "./ForgotPassword.module.css";
 import warnning from "../../public/warning.png";
 import check from "../../public/check.png";
 import Image from "next/image";
-import {signIn} from "next-auth/react";
+import Link from "next/link";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -99,8 +99,10 @@ export function ForgotPassword() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot} onClick={signIn}>
-                Back to login
+              <p className={classes.forgot}>
+                <Link href="/login">
+                  <a className={classes.backToLoginText}>Back to login</a>
+                </Link>
               </p>
               <input className={classes.button} type="submit" value="Send" />
             </div>
