@@ -1,6 +1,6 @@
 import {signIn} from "next-auth/react";
 import React, {useState} from "react";
-import classes from "./login.module.css";
+import classes from "./Login.module.css";
 import BOG from "../../public/BOG.svg";
 import warnning from "../../public/warning.png";
 import Image from "next/image";
@@ -21,7 +21,7 @@ export function LoginPage() {
       redirect: false,
     }).then(({ok}) => {
       if (ok) {
-        Router.push(urls.base + urls.pages.members);
+        Router.push(urls.base + urls.pages.member);
       } else {
         setFailed(true);
       }
