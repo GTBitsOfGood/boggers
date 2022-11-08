@@ -19,7 +19,7 @@ async function createUser(email, name, password, admin = false) {
 
 async function updatePassword(email, password) {
   await connectMongo();
-  await User.updateOne({email}, {password: await bcrypt.hash(password, 10)});
+  await User.updateOne({email}, {$set: {password: await bcrypt.hash(password, 10)}});
 }
 
 async function upsertUser(name, email, phoneNumber, preference, role, status) {
