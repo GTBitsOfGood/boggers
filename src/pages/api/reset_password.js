@@ -2,11 +2,10 @@ import {getAccountRecovery} from "../../server/mongodb/actions/AccountRecovery";
 import {updatePassword} from "../../server/mongodb/actions/User";
 
 export default async function handler(req, res) {
-  res.status(200).send();
-  const {token, password} = req.body;
+  const body = JSON.parse(req.body);
   if (req.method == "POST") {
-    const accountRecovery = await getAccountRecovery(token);
-    await updatePassword(accountRecovery.email, password);
+    const accountRecovery = await getAccountRecovery(body.token);
+    await updatePassword(accountRecovery.email, body.password);
     res.status(200).send();
   }
 }

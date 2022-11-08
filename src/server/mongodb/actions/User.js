@@ -28,7 +28,7 @@ async function updateUser(userId, firstName, lastName, email, phoneNumber) {
 }
 
 async function updatePassword(email, password) {
-  await User.updateOne({email}, {password: await bcrypt.hash(password, 10)});
+  await User.updateOne({email}, {$set: {password: await bcrypt.hash(password, 10)}});
 }
 
 async function upsertUserCsv(firstName, lastName, email, phoneNumber) {
