@@ -20,12 +20,14 @@ const urls = {
     index: "/",
     login: "/login",
     members: "/members",
+    resetPassword: "/reset_password",
   },
   api: {
     test: "/api/test",
     login: "/api/login",
     hello: "/api/hello",
     bulkUpload: "/api/bulk_upload",
+    resetPassword: "/api/reset_password",
   },
 };
 

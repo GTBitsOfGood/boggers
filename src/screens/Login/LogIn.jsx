@@ -1,6 +1,6 @@
+import {signIn} from "next-auth/react";
 import React, {useState} from "react";
 import classes from "./Login.module.css";
-import {signIn} from "next-auth/react";
 import BOG from "../../public/BOG.svg";
 import warnning from "../../public/warning.png";
 import Image from "next/image";
@@ -18,15 +18,28 @@ export function LoginPage() {
       email: email,
       password: password,
       redirect: false,
-    }).then(({ok, error}) => {
+    }).then(({ok}) => {
       if (ok) {
         Router.push(urls.base + urls.pages.members);
       } else {
-        console.log(error);
         setFailed(true);
       }
     });
   };
+
+  async function forgotPassword() {
+    const res = await fetch("/api/forgot_password", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    if (res.status === 404) {
+      alert(`User with email ${email} not found`);
+    } else {
+      alert("Email sent");
+    }
+  }
 
   return (
     <div className={classes.body}>
@@ -97,7 +110,9 @@ export function LoginPage() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot}>Forgot password?</p>
+              <p className={classes.forgot} onClick={forgotPassword}>
+                Forgot password?
+              </p>
               <input className={classes.button} type="submit" value="Sign in" />
             </div>
           </form>

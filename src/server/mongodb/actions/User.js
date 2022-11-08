@@ -27,6 +27,10 @@ async function updateUser(userId, firstName, lastName, email, phoneNumber) {
   );
 }
 
+async function updatePassword(email, password) {
+  await User.updateOne({email}, {$set: {password: await bcrypt.hash(password, 10)}});
+}
+
 async function upsertUserCsv(firstName, lastName, email, phoneNumber) {
   await User.validate({firstName, lastName, email, phoneNumber});
   const newUser = await User.findOneAndUpdate({firstName, lastName}, {email, phoneNumber}, {upsert: true, new: true});
@@ -37,4 +41,4 @@ async function addTenure(userId, tenure) {
   return await User.findOneAndUpdate({_id: userId, tenures: {$ne: tenure._id}}, {$addToSet: {tenures: tenure._id}}, {new: true});
 }
 
-export {getUser, createUser, createRootUser, updateUser, upsertUserCsv, addTenure};
+export {getUser, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword};
