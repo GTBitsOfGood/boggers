@@ -65,11 +65,11 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           echo "\
-            ::set-output name=DEPLOY_LINK::$( \
+            {DEPLOY_LINK}={$( \
               (npx vercel --confirm --token $VERCEL_TOKEN >> out.log); \
               cat out.log | egrep -o 'https:\/\/boggers-.+-samarth52.vercel.app' \
-            )\
-          "
+            )}\
+          " >> $GITHUB_OUTPUT
 
       # Comment deployment link on PRs
       - name: Comment Deployment on PR
