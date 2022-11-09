@@ -1,114 +1,60 @@
+/* eslint-disable no-unused-vars */
+import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
-import urls from "../../../utils/urls";
+import InputField from "./InputField/InputField";
+import Avatar from "../../public/Avatar.png";
+import Save from "../../public/Save.png";
+import RadioField from "./RadioField/RadioField";
+import FooterElement from "./FooterElement/FooterElement";
 
 export const MemberProfile = () => {
-  /* eslint-disable no-unused-vars */
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
-  const [preference, setPreference] = useState("");
-  const [role, setRole] = useState("");
-  const [project, setProject] = useState("");
-  const [status, setStatus] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-  /* eslint-enable no-unused-vars */
-  const fileChangeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Doe");
+  const [email, setEmail] = useState("johndoe@gatech.edu");
+  const [phoneNumber, setPhoneNumber] = useState("1234567890");
+  const [preference, setPreference] = useState("Full-stack");
 
-  const submitCSVFileHandler = async () => {
-    await fetch(urls.base + urls.api.bulkUpload, {
-      method: "POST",
-      body: selectedFile,
-      headers: {
-        "Content-Type": "text/csv",
-      },
-    });
-  };
+  const [department, setDepartment] = useState("Engineering");
+  const [role, setRole] = useState("Developer");
+  const [project, setProject] = useState("Umi Feeds");
+  const [status, setStatus] = useState("Active");
 
   return (
-    <div>
-      <input type="file" name="file" onChange={fileChangeHandler} />
-      <button onClick={submitCSVFileHandler}> Bulk Upload </button>
-      <form>
-        <label>
-          <h1>MemberName: </h1>
-          <input
-            label="Name"
-            type="text"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-        </label>
-        <label>
-          <text>Email: </text>
-          <input
-            label="Email"
-            type="text"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </label>
-
-        <label>
-          <text>Number: </text>
-          <input
-            label="Phone Number"
-            type="text"
-            onChange={(e) => {
-              setNumber(e.target.value);
-            }}
-          />
-        </label>
-
-        <label>
-          <text>Preference: </text>
-          <input
-            label="Preference"
-            type="text"
-            onChange={(e) => {
-              setPreference(e.target.value);
-            }}
-          />
-        </label>
-
-        <label>
-          <text>Role: </text>
-          <input
-            label="Role"
-            type="text"
-            onChange={(e) => {
-              setRole(e.target.value);
-            }}
-          />
-        </label>
-
-        <label>
-          <text>Project: </text>
-          <input
-            label="Project"
-            type="text"
-            onChange={(e) => {
-              setProject(e.target.value);
-            }}
-          />
-        </label>
-
-        <label>
-          <text>Status: </text>
-          <input
-            label="Status"
-            type="text"
-            onChange={(e) => {
-              setStatus(e.target.value);
-            }}
-          />
-        </label>
-
-        <button> Update </button>
-      </form>
+    <div className={styles.MemberProfile}>
+      <div className={styles.MemberProfileBody}>
+        <div className={styles.MemberProfileHeader}>
+          <img className={styles.MemberProfileImage} src={Avatar.src} alt="User Picture" />
+          <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
+        </div>
+        <div className={styles.MemberProfileFields}>
+          <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />
+          <InputField fieldName="LAST NAME" fieldState={lastName} setFieldState={setLastName} />
+          <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
+          <InputField fieldName="PHONE NUMBER" fieldState={phoneNumber} setFieldState={setPhoneNumber} isOptional={true} />
+        </div>
+        <div className={styles.MemberProfileRadioSave}>
+          <RadioField preference={preference} setPreference={setPreference} />
+          <div className={styles.MemberProfileSave}>
+            <div className={styles.MemberProfileSaveButton}>
+              <img src={Save.src} alt="Save Icon" />
+              Save
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.MemberProfileFooter}>
+        <div className={styles.MemberProfileFooterPage}>
+          <div className={styles.MemberProfileFooterPageArrow}>&lt;</div>
+          <div className={styles.MemberProfileFooterPageName}>SPRING 2022</div>
+          <div className={styles.MemberProfileFooterPageArrow}>&gt;</div>
+        </div>
+        <div className={styles.MemberProfileFooterBottom}>
+          <FooterElement title="DEPARTMENT" state={department} />
+          <FooterElement title="ROLE" state={role} />
+          <FooterElement title="PROJECT" state={project} />
+          <FooterElement title="STATUS" state={status} />
+        </div>
+      </div>
     </div>
   );
 };

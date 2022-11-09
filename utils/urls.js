@@ -19,8 +19,8 @@ const urls = {
   pages: {
     index: "/",
     login: "/login",
-    member: "/member",
-    forgotPassword: "/ForgotPassword",
+    members: "/members",
+    forgotPassword: "/forgotPassword",
     resetPassword: "/reset_password",
   },
   api: {
