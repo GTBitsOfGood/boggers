@@ -66,7 +66,6 @@ jobs:
         run: |
           npx vercel --confirm --token $VERCEL_TOKEN >> out.log
           echo "DEPLOY_LINK=$(cat out.log | egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app')" >> $GITHUB_OUTPUT
-          echo "link is ${{ steps.vercel_deployment.outputs.DEPLOY_LINK }}"
 
       # Comment deployment link on PRs
       - name: Comment Deployment on PR
