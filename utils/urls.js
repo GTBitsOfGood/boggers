@@ -20,7 +20,7 @@ const urls = {
     index: "/",
     login: "/login",
     members: "/members",
-    forgotPassword: "/forgotPassword",
+    forgotPassword: "/ForgotPassword",
     resetPassword: "/reset_password",
   },
   api: {
