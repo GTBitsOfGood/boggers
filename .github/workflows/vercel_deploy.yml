@@ -67,7 +67,7 @@ jobs:
           echo "\
             DEPLOY_LINK=$( \
               (npx vercel --confirm --token $VERCEL_TOKEN >> out.log); \
-              echo "LOG=$( cat out.log )" >> $GITHUB_OUTPUT; \
+              echo "LOG=$(( cat out.log ))" >> $GITHUB_OUTPUT; \
               cat out.log | egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' \
             )\
           " >> $GITHUB_OUTPUT; \
