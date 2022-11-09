@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import classes from "./forgotPassword.module.css";
+import classes from "./ForgotPassword.module.css";
 import warnning from "../../public/warning.png";
 import check from "../../public/check.png";
 import Image from "next/image";
