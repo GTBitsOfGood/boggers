@@ -16,6 +16,7 @@ const urls = {
   base: getBaseURL(),
   dbUrl: process.env.DB_URL ?? "mongodb://localhost:27017",
   dbName: process.env.DB_NAME ?? "local",
+  nextAuthSecret: process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_SECRET,
   pages: {
     index: "/",
     login: "/login",

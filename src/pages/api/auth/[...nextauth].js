@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import {getUser} from "../../../server/mongodb/actions/User";
 import connectMongo from "../../../server/mongodb/connectMongo";
+import {nextAuthSecret} from "../../../../utils/urls";
 
 export const authOptions = {
   providers: [
@@ -23,6 +24,7 @@ export const authOptions = {
       },
     }),
   ],
+  secret: nextAuthSecret,
   callbacks: {
     async jwt({token, user}) {
       if (user) token.user = user;
