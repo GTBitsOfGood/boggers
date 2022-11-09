@@ -77,16 +77,16 @@ export function LoginPage() {
           </div>
 
           <div>
-            <p className={classes.header}>Welcome to boggers</p>
+            <p className={classes.header}>Welcome to Boggers</p>
           </div>
           <p className={classes.introduction}>Your Bits of Good Membership Platform</p>
           <form className={classes.form} onSubmit={handleSubmit}>
             <div className={classes.inputCountainer}>
-              <label className={classes.textStyle}>EMAIL:</label>
+              <label className={classes.textStyle}>EMAIL</label>
               <input className={classes.inputBar} type="text" name="email" required onChange={(event) => setEmail(event.target.value)} />
             </div>
             <div className={classes.inputCountainer}>
-              <label className={classes.textStyle}>PASSWORD:</label>
+              <label className={classes.textStyle}>PASSWORD</label>
               <input
                 className={classes.inputBar}
                 type="password"
