@@ -17,7 +17,7 @@ async function handler(req, res) {
     });
   }
 
-  const {semester = "Fall", year = 2022} = req;
+  const {semester = "Fall", year = 2022} = req.body;
 
   const parsed = req.body.split(/\r?\n/);
   for (let i = 1; i < parsed.length; i++) {

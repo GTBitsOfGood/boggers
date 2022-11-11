@@ -12,7 +12,8 @@ async function handler(req, res) {
     });
   }
 
-  const {memberId, firstName, lastName, email, phoneNumber, semester, year, department, role, project, preference, status, notes} = req;
+  const {memberId, firstName, lastName, email, phoneNumber, semester, year, department, role, project, preference, status, notes} =
+    req.body;
 
   if (user.access === 0 && user._id !== memberId) {
     return res.status(401).json({

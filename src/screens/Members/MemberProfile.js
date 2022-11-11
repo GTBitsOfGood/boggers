@@ -11,12 +11,14 @@ import Save from "../../public/Save.png";
 import Photo from "./Photo.jpg";
 
 export const MemberProfile = () => {
+  const [displayModal, setDisplayModal] = useState(false);
+  const [image, setImage] = useState(Avatar.src);
+
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
   const [email, setEmail] = useState("johndoe@gatech.edu");
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
-  const [displayModal, setDisplayModal] = useState(false);
 
   const [department, setDepartment] = useState("Engineering");
   const [role, setRole] = useState("Developer");
@@ -30,13 +32,13 @@ export const MemberProfile = () => {
       {displayModal ? (
         <>
           <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} />
-          <UploadPhotoModal closeModal={closeModal} />
+          <UploadPhotoModal closeModal={closeModal} setImage={setImage} />
         </>
       ) : null}
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
           <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
-            <img className={styles.MemberProfileImage} src={Photo.src} alt="User Picture" />
+            <img className={styles.MemberProfileImage} src={image} alt="User Picture" />
             <div className={styles.MemberProfileImageOverlay} />
             <div className={styles.MemberProfilePencilBackground}>
               <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />

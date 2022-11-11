@@ -12,6 +12,10 @@ export default function requestWrapper(handler, method) {
       });
     }
 
+    if (req.body !== "" && req.url !== "/api/image_upload") {
+      req.body = JSON.parse(req.body);
+    }
+
     if (!cache) {
       cache = await mongoose.connect(urls.dbUrl);
     }

@@ -34,11 +34,11 @@
 }
 
 .ModalHeader {
-  margin-top: 9%;
+  margin-top: 6vh;
   font-size: 30px;
   font-weight: 500;
   letter-spacing: 3px;
-  margin-bottom: 10%;
+  margin-bottom: 5vh;
 }
 
 .ModalUploadButton {
