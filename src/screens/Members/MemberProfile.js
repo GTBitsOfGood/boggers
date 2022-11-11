@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import styles from "./MemberProfile.module.css";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {getSession} from "next-auth/react";
+import {Transition} from "react-transition-group";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -17,6 +18,7 @@ import Photo from "./Photo.jpg";
 export const MemberProfile = () => {
   const [displayModal, setDisplayModal] = useState(false);
   const [image, setImage] = useState(Avatar.src);
+  const [saved, setSaved] = useState(false);
 
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
@@ -52,6 +54,7 @@ export const MemberProfile = () => {
 
   const closeModal = () => setDisplayModal(false);
   const handleClick = async () => {
+    setSaved(true);
     const id = (await getSession()).user.id;
     await sendRequest("update_member", "PUT", {
       memberId: id,
@@ -64,6 +67,16 @@ export const MemberProfile = () => {
       year,
       isAdminView: false,
     });
+
+    setTimeout(() => setSaved(false), 1000);
+  };
+
+  const buttonRef = useRef(null);
+  const transitionStyles = {
+    entering: {width: "135px"},
+    entered: {width: "150px", backgroundColor: "#0f904d", borderColor: "#0f904d"},
+    exiting: {width: "150px"},
+    exited: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"},
   };
 
   return (
@@ -94,10 +107,14 @@ export const MemberProfile = () => {
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
-            <div className={styles.MemberProfileSaveButton} onClick={handleClick}>
-              <img src={Save.src} alt="Save Icon" />
-              Save
-            </div>
+            <Transition nodeRef={buttonRef} in={saved} timeout={0}>
+              {(state) => (
+                <div ref={buttonRef} className={styles.MemberProfileSaveButton} style={transitionStyles[state]} onClick={handleClick}>
+                  <img src={Save.src} alt="Save Icon" />
+                  {saved ? "Saved!" : "Save"}
+                </div>
+              )}
+            </Transition>
           </div>
         </div>
       </div>
