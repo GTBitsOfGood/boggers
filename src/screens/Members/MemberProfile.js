@@ -3,9 +3,11 @@ import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
 import InputField from "./InputField/InputField";
 import Avatar from "../../public/Avatar.png";
+import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
 import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
+import Photo from "./Photo.jpg";
 
 export const MemberProfile = () => {
   const [firstName, setFirstName] = useState("John");
@@ -23,7 +25,12 @@ export const MemberProfile = () => {
     <div className={styles.MemberProfile}>
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
-          <img className={styles.MemberProfileImage} src={Avatar.src} alt="User Picture" />
+          <div className={styles.MemberProfileImageContainer}>
+            <img className={styles.MemberProfileImage} src={Photo.src} alt="User Picture" />
+            <div className={styles.MemberProfilePencilBackground}>
+              <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
+            </div>
+          </div>
           <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
         </div>
         <div className={styles.MemberProfileFields}>
