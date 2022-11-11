@@ -6,7 +6,7 @@ async function getUser(email) {
 }
 
 async function getUserById(id) {
-  return User.findById(id);
+  return User.findById(id).populate("tenures", "-_id");
 }
 
 async function createUser(firstName, lastName, email, phoneNumber, preference) {

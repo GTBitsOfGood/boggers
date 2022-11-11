@@ -38,15 +38,8 @@ export const MemberProfile = () => {
   const [preference, setPreference] = useState("Full-stack");
   const [imageBlob, setImageBlob] = useState(null);
 
-  const [department, setDepartment] = useState("Engineering");
-  const [role, setRole] = useState("Developer");
-  const [project, setProject] = useState("Umi Feeds");
-  const [status, setStatus] = useState("Active");
-
-  const semester = "Spring";
-  const year = 2022;
-
-  const closeModal = () => setDisplayModal(false);
+  const [tenures, setTenures] = useState([]);
+  const [currIndex, setCurrIndex] = useState(-1);
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -59,13 +52,15 @@ export const MemberProfile = () => {
       setEmail(userData.email ?? "");
       setPhoneNumber(userData.phoneNumber ?? "");
       setPreference(userData.preference ?? "");
-      console.log(result.payload.imageUrl);
+      setTenures(userData.tenures);
+      setCurrIndex(userData.tenures.length > 0 ? userData.tenures.length - 1 : -1);
       setImage(result.payload.imageUrl ?? Avatar.src);
     };
 
     getInitialData();
   }, []);
 
+  console.log(tenures);
   const handleSave = async () => {
     setSaved(true);
     const id = (await getSession()).user.id;
@@ -94,6 +89,22 @@ export const MemberProfile = () => {
     setTimeout(() => setSaved(false), 1000);
   };
 
+  let semester, year, department, role, project, status;
+  if (tenures.length === 0) {
+    semester = "Spring";
+    year = 2022;
+    department = role = project = status = "-";
+  } else {
+    semester = tenures[currIndex].semester;
+    year = tenures[currIndex].year;
+    department = tenures[currIndex].department;
+    role = tenures[currIndex].role;
+    project = tenures[currIndex].project;
+    status = tenures[currIndex].status;
+    console.log(currIndex);
+    console.log(semester, year, department, role, project, status);
+  }
+
   const buttonRef = useRef(null);
   const transitionStyles = {
     entering: {width: "135px"},
@@ -107,7 +118,7 @@ export const MemberProfile = () => {
       {displayModal ? (
         <>
           <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} />
-          <UploadPhotoModal closeModal={closeModal} setImage={setImage} setImageBlob={setImageBlob} />
+          <UploadPhotoModal closeModal={() => setDisplayModal(false)} setImage={setImage} setImageBlob={setImageBlob} />
         </>
       ) : null}
       <div className={styles.MemberProfileBody}>
@@ -143,9 +154,19 @@ export const MemberProfile = () => {
       </div>
       <div className={styles.MemberProfileFooter}>
         <div className={styles.MemberProfileFooterPage}>
-          <div className={styles.MemberProfileFooterPageArrow}>&lt;</div>
-          <div className={styles.MemberProfileFooterPageName}>SPRING 2022</div>
-          <div className={styles.MemberProfileFooterPageArrow}>&gt;</div>
+          <div
+            className={styles.MemberProfileFooterPageArrow}
+            onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.max(currIndex - 1, 0))}
+            style={{cursor: "pointer"}}>
+            &lt;
+          </div>
+          <div className={styles.MemberProfileFooterPageName}>{`${semester.toUpperCase()} ${year}`}</div>
+          <div
+            className={styles.MemberProfileFooterPageArrow}
+            onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.min(currIndex + 1, tenures.length - 1))}
+            style={{cursor: "pointer"}}>
+            &gt;
+          </div>
         </div>
         <div className={styles.MemberProfileFooterBottom}>
           <FooterElement title="DEPARTMENT" state={department} />
