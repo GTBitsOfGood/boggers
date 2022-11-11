@@ -3,13 +3,13 @@
   height: 100vh;
   position: absolute;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
 .ModalBox {
+  margin-top: 18%;
   position: relative;
-  min-width: 375px;
+  min-width: 450px;
   min-height: 200px;
   width: 32%;
   height: 27%;
@@ -20,6 +20,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select:none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
 }
 
 .ModalCross {
