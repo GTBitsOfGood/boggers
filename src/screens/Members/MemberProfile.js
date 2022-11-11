@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
 import styles from "./MemberProfile.module.css";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {getSession} from "next-auth/react";
+
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
 import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
+import sendRequest from "../../../utils/sendToBackend";
+
 import Avatar from "../../public/Avatar.png";
 import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
@@ -24,6 +28,24 @@ export const MemberProfile = () => {
   const [role, setRole] = useState("Developer");
   const [project, setProject] = useState("Umi Feeds");
   const [status, setStatus] = useState("Active");
+
+  useEffect(() => {
+    const getData = async () => {
+      const user = await getSession();
+      const result = await sendRequest("get_user", "GET");
+      const userData = result.payload.user;
+      console.log(userData);
+      setFirstName(userData.firstName ?? "");
+      setLastName(userData.lastName ?? "");
+      setEmail(userData.email ?? "");
+      setPhoneNumber(userData.phoneNumber ?? "");
+      setPreference(userData.preference ?? "");
+      console.log(result.payload.imageUrl);
+      setImage(result.payload.imageUrl ?? Avatar.src);
+    };
+
+    getData();
+  }, []);
 
   const closeModal = () => setDisplayModal(false);
 

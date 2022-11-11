@@ -9,4 +9,4 @@ const config = {
 
 export const s3 = new S3(config);
 export const Bucket = process.env.BUCKET_NAME;
-export const baseAwsUrl = `${Bucket}.s3.${config.region}.amazonaws.com/`;
+export const baseAwsUrl = `https://${Bucket}.s3.${config.region}.amazonaws.com/`;

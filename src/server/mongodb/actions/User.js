@@ -5,6 +5,10 @@ async function getUser(email) {
   return User.findOne({email});
 }
 
+async function getUserById(id) {
+  return User.findById(id);
+}
+
 async function createUser(firstName, lastName, email, phoneNumber) {
   return await User.create({firstName, lastName, email, phoneNumber});
 }
@@ -48,4 +52,4 @@ async function addImage(id) {
   }
 }
 
-export {getUser, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};
+export {getUser, getUserById, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};

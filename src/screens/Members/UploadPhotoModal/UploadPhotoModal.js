@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default function UploadPhotoModal({closeModal, setImage}) {
   const [uploading, setUploading] = useState(false);
+
   const convertToBase64 = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -33,13 +34,16 @@ export default function UploadPhotoModal({closeModal, setImage}) {
                 onChange={async (e) => {
                   setUploading(true);
                   const uploadedImage = e.target.files[0];
+                  const imageUrl = URL.createObjectURL(uploadedImage);
+
                   const convertedFile = await convertToBase64(uploadedImage);
-                  const {data} = await axios.put("/api/image_upload", {
+                  await axios.put("/api/image_upload", {
                     image: convertedFile,
                     name: uploadedImage.name,
                     type: uploadedImage.type,
                   });
-                  setImage(data.payload.url);
+
+                  setImage(imageUrl);
                   setUploading(false);
                   closeModal();
                 }}

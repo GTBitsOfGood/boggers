@@ -12,13 +12,13 @@ async function handler(req, res) {
     });
   }
 
-  const {name, image, type} = req.body;
+  const {image, type} = req.body;
 
   try {
     const result = await s3
       .upload({
         Bucket,
-        Key: name,
+        Key: user.user.id,
         Body: new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), "base64"),
         ContentType: type,
       })
