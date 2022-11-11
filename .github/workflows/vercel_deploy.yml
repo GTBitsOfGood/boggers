@@ -46,7 +46,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # Setup node
-      - uses: actions/setup-node@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
         with:
           node-version: "14"
       - run: npm install
@@ -64,12 +65,11 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          echo "\
-            DEPLOY_LINK=$( \
-              (npx vercel --confirm --token $VERCEL_TOKEN >> out.log); \
-              cat out.log | egrep -o 'https:\/\/boggers-.+-samarth52.vercel.app' \
-            )\
-          " >> $GITHUB_OUTPUT
+          npx vercel --confirm --token $VERCEL_TOKEN >> out.log
+          deploy_link=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out.log)
+          echo "link: $deploy_link"
+          echo "DEPLOY_LINK=$deploy_link" >> $GITHUB_OUTPUT
+          echo "Deployment successful"
 
       # Comment deployment link on PRs
       - name: Comment Deployment on PR
@@ -77,7 +77,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: ${{ format('### ⚡ [Deployment Live]({0}) :zap:', output.DEPLOY_LINK) }}
+          message: ${{ format('### ⚡ [Deployment Live]({0}) :zap:', steps.vercel_deployment.outputs.DEPLOY_LINK) }}
 
       # Links the Vercel Deployment to the GitHub Deployment
       - name: Link Deployment
@@ -89,7 +89,7 @@ jobs:
           repo: ${{ github.repository }}
           deployment_id: ${{ fromJson(steps.create_deployment.outputs.data).id }}
           state: "success"
-          target_url: ${{ output.DEPLOY_LINK }}
+          target_url: ${{ steps.vercel_deployment.outputs.DEPLOY_LINK }}
           environment: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
 
       # Fails deployment if job fails or is cancelled
