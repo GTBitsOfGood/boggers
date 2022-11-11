@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import styles from "./MemberProfile.module.css";
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {getSession} from "next-auth/react";
 import axios from "axios";
 
@@ -41,7 +40,6 @@ export const MemberProfile = () => {
 
   useEffect(() => {
     const getInitialData = async () => {
-      const user = await getSession();
       const result = await sendRequest("get_user", "GET");
       const userData = result.payload.user;
       setFirstName(userData.firstName ?? "");
@@ -124,12 +122,13 @@ export const MemberProfile = () => {
 
   return (
     <div className={styles.MemberProfile}>
-      {displayModal ? (
-        <>
-          <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} />
-          <UploadPhotoModal closeModal={() => setDisplayModal(false)} setImage={setImage} setImageBlob={setImageBlob} />
-        </>
-      ) : null}
+      {displayModal ? <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} /> : null}
+      <UploadPhotoModal
+        closeModal={() => setDisplayModal(false)}
+        displayModal={displayModal}
+        setImage={setImage}
+        setImageBlob={setImageBlob}
+      />
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
           <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>

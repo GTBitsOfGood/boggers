@@ -23,6 +23,7 @@
   user-select:none;
   -webkit-user-select:none;
   -moz-user-select:none;
+  transition: opacity 0.3s linear;
 }
 
 .ModalCross {
