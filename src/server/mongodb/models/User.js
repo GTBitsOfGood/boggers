@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
       ref: "Tenure",
     },
   ],
+  image: Boolean,
 });
 
 userSchema.set("toJSON", {

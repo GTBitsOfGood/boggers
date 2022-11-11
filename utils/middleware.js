@@ -17,7 +17,7 @@ export default function requestWrapper(handler, method) {
     }
 
     if (!cache) {
-      cache = await mongoose.connect(urls.dbUrl);
+      cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
     }
 
     return handler(req, res);

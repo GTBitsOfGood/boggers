@@ -41,4 +41,11 @@ async function addTenure(userId, tenure) {
   return await User.findOneAndUpdate({_id: userId, tenures: {$ne: tenure._id}}, {$addToSet: {tenures: tenure._id}}, {new: true});
 }
 
-export {getUser, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword};
+async function addImage(id) {
+  const user = await User.findById(id).select("image");
+  if (!user.image) {
+    await User.findByIdAndUpdate(id, {image: true});
+  }
+}
+
+export {getUser, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};

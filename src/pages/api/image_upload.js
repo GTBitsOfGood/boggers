@@ -1,6 +1,7 @@
 import {getToken} from "next-auth/jwt";
 import {s3, Bucket} from "../../../utils/awsConfig";
 import requestWrapper from "../../../utils/middleware";
+import {addImage} from "../../server/mongodb/actions/User";
 
 async function handler(req, res) {
   const user = await getToken({req});
@@ -23,11 +24,13 @@ async function handler(req, res) {
       })
       .promise();
 
+    await addImage(user.user.id);
     res.status(200).json({
       success: true,
       payload: {url: result.Location},
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error Uploading Image: " + err,
