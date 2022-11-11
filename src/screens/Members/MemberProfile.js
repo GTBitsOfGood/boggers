@@ -51,20 +51,21 @@ export const MemberProfile = () => {
       setPhoneNumber(userData.phoneNumber ?? "");
       setPreference(userData.preference ?? "");
 
-      const tenures = userData.tenures;
-      tenures.sort((a, b) => {
+      const tenures = userData.tenures.sort((a, b) => {
         if (a.year < b.year) {
           return -1;
         } else if (a.year > b.year) {
           return 1;
-        } else if ((a.semester === "Spring" && (b.semester === "Spring" || b.semester === "Fall")) || (a.semester === "Summer" && b.semester === "Fall")) {
+        } else if (
+          (a.semester === "Spring" && (b.semester === "Spring" || b.semester === "Fall")) ||
+          (a.semester === "Summer" && b.semester === "Fall")
+        ) {
           return -1;
         } else {
           return 1;
         }
-        return 0;
       });
-      console.log('tenures: ', tenures);
+      console.log("tenures: ", tenures);
       setTenures(tenures);
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
       setImage(result.payload.imageUrl ?? Avatar.src);
