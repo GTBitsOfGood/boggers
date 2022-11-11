@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import styles from "./MemberProfile.module.css";
 import React, {useState} from "react";
+import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
+import RadioField from "./RadioField/RadioField";
+import FooterElement from "./FooterElement/FooterElement";
 import Avatar from "../../public/Avatar.png";
 import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
-import RadioField from "./RadioField/RadioField";
-import FooterElement from "./FooterElement/FooterElement";
 import Photo from "./Photo.jpg";
 
 export const MemberProfile = () => {
@@ -15,18 +16,23 @@ export const MemberProfile = () => {
   const [email, setEmail] = useState("johndoe@gatech.edu");
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
+  const [displayModal, setDisplayModal] = useState(false);
 
   const [department, setDepartment] = useState("Engineering");
   const [role, setRole] = useState("Developer");
   const [project, setProject] = useState("Umi Feeds");
   const [status, setStatus] = useState("Active");
 
+  const disableModal = () => setDisplayModal(false);
+
   return (
     <div className={styles.MemberProfile}>
+      {displayModal ? <UploadPhotoModal disableModal={disableModal} /> : null}
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
-          <div className={styles.MemberProfileImageContainer}>
+          <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
             <img className={styles.MemberProfileImage} src={Photo.src} alt="User Picture" />
+            <div className={styles.MemberProfileImageOverlay} style={disableModal ? {opacity: "30%"} : {}} />
             <div className={styles.MemberProfilePencilBackground}>
               <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
             </div>
