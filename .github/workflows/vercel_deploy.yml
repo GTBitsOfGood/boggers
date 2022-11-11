@@ -69,7 +69,7 @@ jobs:
           echo "deployment complete"
           deploy_link=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out.log)
           echo "link: $deploy_link"
-          echo "DEPLOY_LINK=$deploy_link" >> $GITHUB_OUTPUT
+          echo "DEPLOY_LINK=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> $GITHUB_OUTPUT
           echo "linked"
 
       # Comment deployment link on PRs
