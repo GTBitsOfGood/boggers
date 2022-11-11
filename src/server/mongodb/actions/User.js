@@ -9,8 +9,8 @@ async function getUserById(id) {
   return User.findById(id);
 }
 
-async function createUser(firstName, lastName, email, phoneNumber) {
-  return await User.create({firstName, lastName, email, phoneNumber});
+async function createUser(firstName, lastName, email, phoneNumber, preference) {
+  return await User.create({firstName, lastName, email, phoneNumber, preference});
 }
 
 async function createRootUser() {
@@ -23,10 +23,10 @@ async function createRootUser() {
   });
 }
 
-async function updateUser(userId, firstName, lastName, email, phoneNumber) {
+async function updateUser(userId, firstName, lastName, email, phoneNumber, preference) {
   return await User.findByIdAndUpdate(
     userId,
-    {firstName, lastName, email, phoneNumber},
+    {firstName, lastName, email, phoneNumber, preference},
     {new: true, runValidators: true, context: "query"},
   );
 }
@@ -35,9 +35,9 @@ async function updatePassword(email, password) {
   await User.updateOne({email}, {$set: {password: await bcrypt.hash(password, 10)}});
 }
 
-async function upsertUserCsv(firstName, lastName, email, phoneNumber) {
-  await User.validate({firstName, lastName, email, phoneNumber});
-  const newUser = await User.findOneAndUpdate({firstName, lastName}, {email, phoneNumber}, {upsert: true, new: true});
+async function upsertUserCsv(firstName, lastName, email, phoneNumber, preference) {
+  await User.validate({firstName, lastName, email, phoneNumber, preference});
+  const newUser = await User.findOneAndUpdate({firstName, lastName}, {email, phoneNumber, preference}, {upsert: true, new: true});
   return newUser;
 }
 

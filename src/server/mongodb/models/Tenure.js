@@ -24,10 +24,6 @@ const tenureSchema = new mongoose.Schema({
   project: {
     type: String,
   },
-  preference: {
-    type: String,
-    enum: ["Front-end", "Full-stack", "Back-end", "-"],
-  },
   status: {
     type: String,
     enum: ["Active", "Inactive"],

@@ -1,5 +1,5 @@
 import {getToken} from "next-auth/jwt";
-import {upsertPreference, upsertTenure} from "../../server/mongodb/actions/Tenure";
+import {upsertTenure} from "../../server/mongodb/actions/Tenure";
 import {createUser, updateUser, addTenure} from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 
@@ -18,12 +18,12 @@ async function handler(req, res) {
     lastName,
     email,
     phoneNumber,
+    preference,
     semester,
     year,
     department,
     role,
     project,
-    preference,
     status,
     notes,
     isAdminView,
@@ -38,17 +38,13 @@ async function handler(req, res) {
 
   let member;
   if (memberId) {
-    member = await updateUser(memberId, firstName, lastName, email, phoneNumber);
+    member = await updateUser(memberId, firstName, lastName, email, phoneNumber, preference);
   } else {
-    member = await createUser(firstName, lastName, email, phoneNumber);
+    member = await createUser(firstName, lastName, email, phoneNumber, preference);
   }
 
   if (isAdminView) {
-    const tenure = await upsertTenure(member._id, semester, year, department, role, project, preference, status, notes);
-    await addTenure(member._id, tenure);
-  } else {
-    console.log(preference);
-    const tenure = await upsertPreference(member._id, semester, year, preference);
+    const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
     await addTenure(member._id, tenure);
   }
 
