@@ -1,5 +1,5 @@
 import {getToken} from "next-auth/jwt";
-import {upsertTenure} from "../../server/mongodb/actions/Tenure";
+import {upsertPreference, upsertTenure} from "../../server/mongodb/actions/Tenure";
 import {createUser, updateUser, addTenure} from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 
@@ -12,8 +12,22 @@ async function handler(req, res) {
     });
   }
 
-  const {memberId, firstName, lastName, email, phoneNumber, semester, year, department, role, project, preference, status, notes} =
-    req.body;
+  const {
+    memberId,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    semester,
+    year,
+    department,
+    role,
+    project,
+    preference,
+    status,
+    notes,
+    isAdminView,
+  } = req.body;
 
   if (user.access === 0 && user._id !== memberId) {
     return res.status(401).json({
@@ -28,13 +42,20 @@ async function handler(req, res) {
   } else {
     member = await createUser(firstName, lastName, email, phoneNumber);
   }
-  const tenure = await upsertTenure(member._id, semester, year, department, role, project, preference, status, notes);
-  await addTenure(member._id, tenure);
+
+  if (isAdminView) {
+    const tenure = await upsertTenure(member._id, semester, year, department, role, project, preference, status, notes);
+    await addTenure(member._id, tenure);
+  } else {
+    console.log(preference);
+    const tenure = await upsertPreference(member._id, semester, year, preference);
+    await addTenure(member._id, tenure);
+  }
 
   res.status(200).json({
     success: true,
-    payload: {member, tenure},
+    message: "Updated record successfully",
   });
 }
 
-export default requestWrapper(handler, "POST");
+export default requestWrapper(handler, "PUT");

@@ -4,6 +4,12 @@ async function getTenure(userId, semester, year) {
   return Tenure.findOne({userId, semester, year});
 }
 
+async function upsertPreference(userId, semester, year, preference) {
+  await Tenure.validate({userId, semester, year, preference});
+  const newTenure = await Tenure.findOneAndUpdate({userId, semester, year}, {preference}, {upsert: true, new: true});
+  return newTenure;
+}
+
 async function upsertTenure(userId, semester, year, department, role, project, preference, status, notes) {
   const toUpdate = {department, role, project, preference, status};
   if (notes != undefined && notes != null) {
@@ -11,7 +17,7 @@ async function upsertTenure(userId, semester, year, department, role, project, p
   }
 
   await Tenure.validate({userId, semester, year, ...toUpdate});
-  const newTenure = await Tenure.findOneAndUpdate({userId, semester, year}, toUpdate, {upsert: true, new: true, runValidators: true});
+  const newTenure = await Tenure.findOneAndUpdate({userId, semester, year}, toUpdate, {upsert: true, new: true});
   return newTenure;
 }
 
@@ -25,4 +31,4 @@ async function upsertTenureCsv(userId, semester, year, preference, role, status)
   return newTenure;
 }
 
-export {getTenure, upsertTenure, upsertTenureCsv};
+export {getTenure, upsertPreference, upsertTenure, upsertTenureCsv};

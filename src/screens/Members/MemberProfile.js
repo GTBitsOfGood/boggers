@@ -29,6 +29,9 @@ export const MemberProfile = () => {
   const [project, setProject] = useState("Umi Feeds");
   const [status, setStatus] = useState("Active");
 
+  const semester = "Spring";
+  const year = 2022;
+
   useEffect(() => {
     const getData = async () => {
       const user = await getSession();
@@ -48,6 +51,20 @@ export const MemberProfile = () => {
   }, []);
 
   const closeModal = () => setDisplayModal(false);
+  const handleClick = async () => {
+    const id = (await getSession()).user.id;
+    await sendRequest("update_member", "PUT", {
+      memberId: id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      preference,
+      semester,
+      year,
+      isAdminView: false,
+    });
+  };
 
   return (
     <div className={styles.MemberProfile}>
@@ -77,7 +94,7 @@ export const MemberProfile = () => {
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
-            <div className={styles.MemberProfileSaveButton}>
+            <div className={styles.MemberProfileSaveButton} onClick={handleClick}>
               <img src={Save.src} alt="Save Icon" />
               Save
             </div>
