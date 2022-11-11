@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
 import mongoose from "mongoose";
 import urls from "./urls";
+import User from "../src/server/mongodb/models/User";
+import Tenure from "../src/server/mongodb/models/Tenure";
 
 let cache = null;
 

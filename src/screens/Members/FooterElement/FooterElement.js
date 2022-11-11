@@ -1,7 +1,6 @@
 import styles from "./FooterElement.module.css";
 
 export default function FooterElement({title, state}) {
-  console.log(title, state);
   return (
     <div className={styles.FooterElement}>
       <div className={styles.FooterElementTitle}>{title}</div>

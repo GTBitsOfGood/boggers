@@ -14,7 +14,6 @@ import sendRequest from "../../../utils/sendToBackend";
 import Avatar from "../../public/Avatar.png";
 import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
-import Photo from "./Photo.jpg";
 
 const convertToBase64 = (file) => {
   return new Promise((resolve) => {
@@ -46,21 +45,34 @@ export const MemberProfile = () => {
       const user = await getSession();
       const result = await sendRequest("get_user", "GET");
       const userData = result.payload.user;
-      console.log(userData);
       setFirstName(userData.firstName ?? "");
       setLastName(userData.lastName ?? "");
       setEmail(userData.email ?? "");
       setPhoneNumber(userData.phoneNumber ?? "");
       setPreference(userData.preference ?? "");
-      setTenures(userData.tenures);
-      setCurrIndex(userData.tenures.length > 0 ? userData.tenures.length - 1 : -1);
+
+      const tenures = userData.tenures;
+      tenures.sort((a, b) => {
+        if (a.year < b.year) {
+          return -1;
+        } else if (a.year > b.year) {
+          return 1;
+        } else if ((a.semester === "Spring" && (b.semester === "Spring" || b.semester === "Fall")) || (a.semester === "Summer" && b.semester === "Fall")) {
+          return -1;
+        } else {
+          return 1;
+        }
+        return 0;
+      });
+      console.log('tenures: ', tenures);
+      setTenures(tenures);
+      setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
       setImage(result.payload.imageUrl ?? Avatar.src);
     };
 
     getInitialData();
   }, []);
 
-  console.log(tenures);
   const handleSave = async () => {
     setSaved(true);
     const id = (await getSession()).user.id;
@@ -153,19 +165,21 @@ export const MemberProfile = () => {
         </div>
       </div>
       <div className={styles.MemberProfileFooter}>
-        <div className={styles.MemberProfileFooterPage}>
-          <div
-            className={styles.MemberProfileFooterPageArrow}
-            onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.max(currIndex - 1, 0))}
-            style={{cursor: "pointer"}}>
-            &lt;
-          </div>
-          <div className={styles.MemberProfileFooterPageName}>{`${semester.toUpperCase()} ${year}`}</div>
-          <div
-            className={styles.MemberProfileFooterPageArrow}
-            onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.min(currIndex + 1, tenures.length - 1))}
-            style={{cursor: "pointer"}}>
-            &gt;
+        <div className={styles.MemberProfileFooterPageContainer}>
+          <div className={styles.MemberProfileFooterPage}>
+            <div
+              className={styles.MemberProfileFooterPageArrow}
+              onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.max(currIndex - 1, 0))}
+              style={{cursor: "pointer"}}>
+              &lt;
+            </div>
+            <div className={styles.MemberProfileFooterPageName}>{`${semester.toUpperCase()} ${year}`}</div>
+            <div
+              className={styles.MemberProfileFooterPageArrow}
+              onClick={() => setCurrIndex(currIndex == -1 ? -1 : Math.min(currIndex + 1, tenures.length - 1))}
+              style={{cursor: "pointer"}}>
+              &gt;
+            </div>
           </div>
         </div>
         <div className={styles.MemberProfileFooterBottom}>
