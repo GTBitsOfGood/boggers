@@ -12,7 +12,8 @@
 .MemberProfileBody {
   display: flex;
   flex-direction: column;
-  flex-grow: 3;
+  justify-content: center;
+  flex-grow: 2;
   align-content: center;
   padding-top: 3%;
   row-gap: 4vh;
