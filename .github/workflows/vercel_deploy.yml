@@ -65,7 +65,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           echo "starting deployment"
-          echo "LOG=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> out3.log
+          npx vercel --confirm --token $VERCEL_TOKEN >> out3.log
           echo "deployment complete"
           echo "Output: $(cat out3.log)"
           echo "link: $(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)"
