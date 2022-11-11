@@ -46,10 +46,11 @@ jobs:
       - uses: actions/checkout@v2
 
       # Setup node
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: "14"
-      # - run: npm install
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+        run: npm install
 
       # - name: Pull Staging Secrets
       #   env:
@@ -64,13 +65,11 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          echo "starting deployment"
-          npx vercel --confirm --token $VERCEL_TOKEN >> out3.log
-          echo "deployment complete"
-          echo "Output: $(cat out3.log)"
-          echo "link: $(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)"
-          echo "DEPLOY_LINK=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)" >> $GITHUB_OUTPUT
-          echo "linked"
+          npx vercel --confirm --token $VERCEL_TOKEN >> out.log
+          deploy_link=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out.log)
+          echo "link: $deploy_link"
+          echo "DEPLOY_LINK=$deploy_link" >> $GITHUB_OUTPUT
+          echo "Deployment successful"
 
       # Comment deployment link on PRs
       - name: Comment Deployment on PR
