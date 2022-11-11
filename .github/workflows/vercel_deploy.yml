@@ -67,10 +67,6 @@ jobs:
           echo "starting deployment"
           echo "LOG=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> out3.log
           echo "deployment complete"
-
-      - name: Get Deployment Link
-        id: get_link
-        run: |
           echo "Output: $(cat out3.log)"
           echo "link: $(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)"
           echo "DEPLOY_LINK=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)" >> $GITHUB_OUTPUT
