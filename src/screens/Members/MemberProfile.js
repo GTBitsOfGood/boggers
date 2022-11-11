@@ -2,7 +2,6 @@
 import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect, useRef} from "react";
 import {getSession} from "next-auth/react";
-import {Transition} from "react-transition-group";
 import axios from "axios";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
@@ -118,12 +117,9 @@ export const MemberProfile = () => {
     console.log(semester, year, department, role, project, status);
   }
 
-  const buttonRef = useRef(null);
-  const transitionStyles = {
-    entering: {width: "135px"},
-    entered: {width: "150px", backgroundColor: "#0f904d", borderColor: "#0f904d"},
-    exiting: {width: "150px"},
-    exited: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"},
+  const buttonTransition = {
+    original: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"},
+    new: {width: "150px", backgroundColor: "#0f904d", borderColor: "#0f904d"},
   };
 
   return (
@@ -154,14 +150,13 @@ export const MemberProfile = () => {
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
-            <Transition nodeRef={buttonRef} in={saved} timeout={0}>
-              {(state) => (
-                <div ref={buttonRef} className={styles.MemberProfileSaveButton} style={transitionStyles[state]} onClick={handleSave}>
-                  <img src={Save.src} alt="Save Icon" />
-                  {saved ? "Saved!" : "Save"}
-                </div>
-              )}
-            </Transition>
+            <div
+              className={styles.MemberProfileSaveButton}
+              style={saved ? buttonTransition.new : buttonTransition.original}
+              onClick={handleSave}>
+              <img src={Save.src} alt="Save Icon" />
+              {saved ? "Saved!" : "Save"}
+            </div>
           </div>
         </div>
       </div>
