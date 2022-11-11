@@ -3,6 +3,7 @@ import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect, useRef} from "react";
 import {getSession} from "next-auth/react";
 import {Transition} from "react-transition-group";
+import axios from "axios";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -15,6 +16,16 @@ import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
 import Photo from "./Photo.jpg";
 
+const convertToBase64 = (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+  });
+};
+
 export const MemberProfile = () => {
   const [displayModal, setDisplayModal] = useState(false);
   const [image, setImage] = useState(Avatar.src);
@@ -25,6 +36,7 @@ export const MemberProfile = () => {
   const [email, setEmail] = useState("johndoe@gatech.edu");
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
+  const [imageBlob, setImageBlob] = useState(null);
 
   const [department, setDepartment] = useState("Engineering");
   const [role, setRole] = useState("Developer");
@@ -34,8 +46,10 @@ export const MemberProfile = () => {
   const semester = "Spring";
   const year = 2022;
 
+  const closeModal = () => setDisplayModal(false);
+
   useEffect(() => {
-    const getData = async () => {
+    const getInitialData = async () => {
       const user = await getSession();
       const result = await sendRequest("get_user", "GET");
       const userData = result.payload.user;
@@ -49,14 +63,13 @@ export const MemberProfile = () => {
       setImage(result.payload.imageUrl ?? Avatar.src);
     };
 
-    getData();
+    getInitialData();
   }, []);
 
-  const closeModal = () => setDisplayModal(false);
-  const handleClick = async () => {
+  const handleSave = async () => {
     setSaved(true);
     const id = (await getSession()).user.id;
-    await sendRequest("update_member", "PUT", {
+    sendRequest("update_member", "PUT", {
       memberId: id,
       firstName,
       lastName,
@@ -67,6 +80,16 @@ export const MemberProfile = () => {
       year,
       isAdminView: false,
     });
+
+    if (imageBlob) {
+      const convertedFile = await convertToBase64(imageBlob);
+      axios.put("/api/image_upload", {
+        image: convertedFile,
+        name: imageBlob.name,
+        type: imageBlob.type,
+      });
+      setImageBlob(null);
+    }
 
     setTimeout(() => setSaved(false), 1000);
   };
@@ -84,7 +107,7 @@ export const MemberProfile = () => {
       {displayModal ? (
         <>
           <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} />
-          <UploadPhotoModal closeModal={closeModal} setImage={setImage} />
+          <UploadPhotoModal closeModal={closeModal} setImage={setImage} setImageBlob={setImageBlob} />
         </>
       ) : null}
       <div className={styles.MemberProfileBody}>
@@ -109,7 +132,7 @@ export const MemberProfile = () => {
           <div className={styles.MemberProfileSave}>
             <Transition nodeRef={buttonRef} in={saved} timeout={0}>
               {(state) => (
-                <div ref={buttonRef} className={styles.MemberProfileSaveButton} style={transitionStyles[state]} onClick={handleClick}>
+                <div ref={buttonRef} className={styles.MemberProfileSaveButton} style={transitionStyles[state]} onClick={handleSave}>
                   <img src={Save.src} alt="Save Icon" />
                   {saved ? "Saved!" : "Save"}
                 </div>

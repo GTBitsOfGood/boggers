@@ -1,19 +1,8 @@
 import {useState} from "react";
 import styles from "./UploadPhotoModal.module.css";
-import axios from "axios";
 
-export default function UploadPhotoModal({closeModal, setImage}) {
+export default function UploadPhotoModal({closeModal, setImage, setImageBlob}) {
   const [uploading, setUploading] = useState(false);
-
-  const convertToBase64 = (file) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-    });
-  };
 
   return (
     <div className={styles.Modal}>
@@ -35,14 +24,7 @@ export default function UploadPhotoModal({closeModal, setImage}) {
                   setUploading(true);
                   const uploadedImage = e.target.files[0];
                   const imageUrl = URL.createObjectURL(uploadedImage);
-
-                  const convertedFile = await convertToBase64(uploadedImage);
-                  await axios.put("/api/image_upload", {
-                    image: convertedFile,
-                    name: uploadedImage.name,
-                    type: uploadedImage.type,
-                  });
-
+                  setImageBlob(uploadedImage);
                   setImage(imageUrl);
                   setUploading(false);
                   closeModal();
