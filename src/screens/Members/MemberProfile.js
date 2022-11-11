@@ -23,16 +23,21 @@ export const MemberProfile = () => {
   const [project, setProject] = useState("Umi Feeds");
   const [status, setStatus] = useState("Active");
 
-  const disableModal = () => setDisplayModal(false);
+  const closeModal = () => setDisplayModal(false);
 
   return (
     <div className={styles.MemberProfile}>
-      {displayModal ? <UploadPhotoModal disableModal={disableModal} /> : null}
+      {displayModal ? (
+        <>
+          <div className={styles.MemberProfileOverlay} onClick={() => setDisplayModal(false)} />
+          <UploadPhotoModal closeModal={closeModal} />
+        </>
+      ) : null}
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
           <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
             <img className={styles.MemberProfileImage} src={Photo.src} alt="User Picture" />
-            <div className={styles.MemberProfileImageOverlay} style={disableModal ? {opacity: "30%"} : {}} />
+            <div className={styles.MemberProfileImageOverlay} />
             <div className={styles.MemberProfilePencilBackground}>
               <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
             </div>
