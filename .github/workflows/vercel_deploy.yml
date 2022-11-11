@@ -65,14 +65,14 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           echo "starting deployment"
-          echo "LOG=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> out.log
+          echo "LOG=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> out3.log
           echo "deployment complete"
 
       - name: Get Deployment Link
         id: get_link
         run: |
-          echo "Output: $(cat out.log)"
-          echo "link: $(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out.log)"
+          echo "Output: $(cat out3.log)"
+          echo "link: $(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out3.log)"
           echo "DEPLOY_LINK=https://boggers-4pmta1ib5-bitsofgood.vercel.app" >> $GITHUB_OUTPUT
           echo "linked"
 
