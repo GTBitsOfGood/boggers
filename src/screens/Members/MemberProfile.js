@@ -65,7 +65,7 @@ export const MemberProfile = () => {
       console.log("tenures: ", tenures);
       setTenures(tenures);
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
-      setImage(result.payload.imageUrl ?? Avatar.src);
+      setImage(result.payload.imageUrl ? result.payload.imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : Avatar.src);
     };
 
     getInitialData();
