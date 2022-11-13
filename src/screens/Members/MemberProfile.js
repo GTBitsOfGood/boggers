@@ -1,6 +1,6 @@
 import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect} from "react";
-import {getSession} from "next-auth/react";
+import {getSession, signOut} from "next-auth/react";
 import axios from "axios";
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
@@ -14,6 +14,7 @@ import SuccessBox from "./SuccessBox/SuccessBox";
 import Avatar from "../../public/Avatar.png";
 import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const convertToBase64 = (file) => {
   return new Promise((resolve) => {
@@ -249,6 +250,7 @@ export const MemberProfile = () => {
         setImageUrl={setImageUrl}
         setImageBlob={setImageBlob}
       />
+      <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
       <div className={styles.MemberProfileBody}>
         <div className={styles.MemberProfileHeader}>
           <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>

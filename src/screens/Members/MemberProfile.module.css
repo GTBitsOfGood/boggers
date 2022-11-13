@@ -16,6 +16,16 @@
   z-index: 1;
 }
 
+.MemberProfileLogout {
+  position: absolute;
+  top: 3%;
+  right: 3%;
+  color: #000000;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
 .MemberProfileBody {
   display: flex;
   flex-direction: column;
