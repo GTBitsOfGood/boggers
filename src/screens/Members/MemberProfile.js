@@ -2,12 +2,13 @@ import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect} from "react";
 import {getSession} from "next-auth/react";
 import axios from "axios";
+import sendRequest from "../../../utils/sendToBackend";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
 import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
-import sendRequest from "../../../utils/sendToBackend";
+import SuccessBox from "./SuccessBox/SuccessBox";
 
 import Avatar from "../../public/Avatar.png";
 import Pencil from "../../public/Pencil.png";
@@ -49,7 +50,7 @@ export const MemberProfile = () => {
   const requestStatus = (success) => {
     setTimeout(() => setSaved(false), 1000);
     setSuccess(success ? 1 : 2);
-    setTimeout(() => setSuccess(0), 3000);
+    setTimeout(() => setSuccess(0), 5000);
   };
   console.log("success", success);
 
@@ -257,6 +258,7 @@ export const MemberProfile = () => {
             </div>
           </div>
           <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
+          {success === 0 ? null : <SuccessBox success={success === 1} closeBox={() => setSuccess(0)} />}
         </div>
         <div className={styles.MemberProfileFields}>
           <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />

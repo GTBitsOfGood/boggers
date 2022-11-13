@@ -27,10 +27,11 @@
 }
 
 .MemberProfileHeader {
-  margin-left: 10%;
+  margin: 0% 15% 0% 10%;
   display: flex;
   flex-direction: row;
   padding-bottom: 1%;
+  align-items: center;
 }
 
 .MemberProfileImageContainer {
@@ -94,8 +95,7 @@
   font-weight: 600;
   font-family: "Poppins";
   color: #333333;
-  align-self: center;
-  margin-left: 1.75%;
+  margin-left: 2%;
 }
 
 .MemberProfileFields {
