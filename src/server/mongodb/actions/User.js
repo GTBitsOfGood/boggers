@@ -22,10 +22,20 @@ async function updatePassword(email, password) {
   await User.updateOne({email}, {password: await bcrypt.hash(password, 10)});
 }
 
+async function setVerified(email) {
+  await connectMongo();
+  await User.updateOne({email}, {emailVerified: true});
+}
+
+async function changeEmail(email, newEmail) {
+  await connectMongo();
+  await User.updateOne({email}, {email: newEmail});
+}
+
 async function upsertUser(name, email, phoneNumber, preference, role, status) {
   await connectMongo();
   const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
   return newUser;
 }
 
-export {getUser, createUser, upsertUser, updatePassword};
+export {getUser, createUser, upsertUser, updatePassword, setVerified, changeEmail};

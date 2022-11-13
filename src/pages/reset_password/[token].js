@@ -7,7 +7,8 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  async function changePassword() {
+  async function changePassword(event) {
+    event.preventDefault();
     if (password !== confirmPassword) {
       alert("passwords don't match");
     } else {

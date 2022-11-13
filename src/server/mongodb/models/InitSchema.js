@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["Active", "Inactive"],
   },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 const tenureSchema = new mongoose.Schema({
