@@ -1,7 +1,7 @@
 import {useState} from "react";
 import styles from "./UploadPhotoModal.module.css";
 
-export default function UploadPhotoModal({displayModal, closeModal, setImage, setImageBlob}) {
+export default function UploadPhotoModal({displayModal, closeModal, setImageUrl, setImageBlob}) {
   const [uploading, setUploading] = useState(false);
 
   const modalTransition = {
@@ -35,7 +35,7 @@ export default function UploadPhotoModal({displayModal, closeModal, setImage, se
                   const uploadedImage = e.target.files[0];
                   const imageUrl = URL.createObjectURL(uploadedImage);
                   setImageBlob(uploadedImage);
-                  setImage(imageUrl);
+                  setImageUrl(imageUrl);
                   setUploading(false);
                   closeModal();
                 }}
