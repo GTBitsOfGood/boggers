@@ -25,10 +25,11 @@ const urls = {
     resetPassword: "/reset_password",
   },
   api: {
-    login: "/api/login",
-    hello: "/api/hello",
     bulkUpload: "/api/bulk_upload",
+    getUser: "/api/get_user",
+    imageUpload: "/api/image_upload",
     resetPassword: "/api/reset_password",
+    updateMember: "/api/update_member",
   },
 };
 

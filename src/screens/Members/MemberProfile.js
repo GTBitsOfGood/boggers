@@ -29,6 +29,7 @@ export const MemberProfile = () => {
   const [imageUrl, setImageUrl] = useState(Avatar.src);
   const [imageBlob, setImageBlob] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [success, setSuccess] = useState(0);
 
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
@@ -44,6 +45,13 @@ export const MemberProfile = () => {
   const [role, setRole] = useState("-");
   const [project, setProject] = useState("-");
   const [status, setStatus] = useState("-");
+
+  const requestStatus = (success) => {
+    setTimeout(() => setSaved(false), 1000);
+    setSuccess(success ? 1 : 2);
+    setTimeout(() => setSuccess(0), 3000);
+  };
+  console.log("success", success);
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -135,9 +143,8 @@ export const MemberProfile = () => {
     } else {
       newTenures[currIndex] = updatedTenure;
     }
-    setTenures(newTenures);
 
-    sendRequest("update_member", "PUT", {
+    const result = await sendRequest("update_member", "PUT", {
       memberId: id,
       firstName,
       lastName,
@@ -152,17 +159,29 @@ export const MemberProfile = () => {
       status,
     });
 
+    if (result.success) {
+      setTenures(newTenures);
+    } else {
+      return requestStatus(false);
+    }
+
+    let imageResult;
     if (imageBlob) {
       const convertedFile = await convertToBase64(imageBlob);
-      axios.put("/api/image_upload", {
+      imageResult = await axios.put("/api/image_upload", {
         image: convertedFile,
         name: imageBlob.name,
         type: imageBlob.type,
       });
-      setImageBlob(null);
+    } else {
+      return requestStatus(true);
     }
 
-    setTimeout(() => setSaved(false), 1000);
+    console.log(imageResult);
+    if (imageResult.data.success) {
+      setImageBlob(null);
+    }
+    requestStatus(imageResult.data.success);
   };
 
   const handleArrowClick = (isLeft) => {

@@ -22,16 +22,24 @@ async function handler(req, res) {
     });
   }
 
-  let member;
-  if (memberId) {
-    member = await updateUser(memberId, firstName, lastName, email, phoneNumber, preference);
-  } else {
-    member = await createUser(firstName, lastName, email, phoneNumber, preference);
-  }
+  try {
+    let member;
+    if (memberId) {
+      member = await updateUser(memberId, firstName, lastName, email, phoneNumber, preference);
+    } else {
+      member = await createUser(firstName, lastName, email, phoneNumber, preference);
+    }
 
-  if (user.access > 0) {
-    const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
-    await addTenure(member._id, tenure);
+    if (user.access > 0) {
+      const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
+      await addTenure(member._id, tenure);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: error.name === "ValidationError" ? "Invalid user data" : "Error adding user data to MongoDB",
+    });
   }
 
   res.status(200).json({

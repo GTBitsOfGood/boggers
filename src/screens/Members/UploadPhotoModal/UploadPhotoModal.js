@@ -33,6 +33,10 @@ export default function UploadPhotoModal({displayModal, closeModal, setImageUrl,
                 onChange={async (e) => {
                   setUploading(true);
                   const uploadedImage = e.target.files[0];
+                  if (!uploadedImage) {
+                    setUploading(false);
+                    return;
+                  }
                   const imageUrl = URL.createObjectURL(uploadedImage);
                   setImageBlob(uploadedImage);
                   setImageUrl(imageUrl);

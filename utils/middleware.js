@@ -15,12 +15,28 @@ export default function requestWrapper(handler, method) {
       });
     }
 
-    if (req.body !== "" && req.url !== "/api/image_upload") {
-      req.body = JSON.parse(req.body);
+    if (req.body !== "" && req.url !== urls.api.imageUpload) {
+      try {
+        req.body = JSON.parse(req.body);
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+          success: false,
+          message: "Invalid request body",
+        });
+      }
     }
 
     if (!cache) {
-      cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
+      try {
+        cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+          success: false,
+          message: "Error connecting to MongoDB",
+        });
+      }
     }
 
     return handler(req, res);
