@@ -84,7 +84,7 @@ export const MemberProfile = () => {
         role,
         project,
         status;
-      if (tenures.length > 0) {
+      if (!isAdmin && tenures.length > 0) {
         index = tenures.length - 1;
         ({semester, year, department, role, project, status} = tenures[index]);
       } else {
@@ -127,6 +127,16 @@ export const MemberProfile = () => {
   const handleSave = async () => {
     setSaved(true);
     const id = (await getSession()).user.id;
+
+    const newTenures = tenures.map((tenure) => structuredClone(tenure));
+    const updatedTenure = {semester, year, department, role, project, status};
+    if (currIndex === -1) {
+      newTenures.push(updatedTenure);
+    } else {
+      newTenures[currIndex] = updatedTenure;
+    }
+    setTenures(newTenures);
+
     sendRequest("update_member", "PUT", {
       memberId: id,
       firstName,
@@ -136,7 +146,10 @@ export const MemberProfile = () => {
       preference,
       semester,
       year,
-      isAdminView: false,
+      department,
+      role,
+      project,
+      status,
     });
 
     if (imageBlob) {

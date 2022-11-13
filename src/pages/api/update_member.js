@@ -4,7 +4,7 @@ import {createUser, updateUser, addTenure} from "../../server/mongodb/actions/Us
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = (await getToken({req}))?.user;
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -12,24 +12,10 @@ async function handler(req, res) {
     });
   }
 
-  const {
-    memberId,
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    preference,
-    semester,
-    year,
-    department,
-    role,
-    project,
-    status,
-    notes,
-    isAdminView,
-  } = req.body;
+  const {memberId, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes} =
+    req.body;
 
-  if (user.access === 0 && user._id !== memberId) {
+  if (user.access === 0 && user.id !== memberId) {
     return res.status(401).json({
       success: false,
       message: "User does not have the correct access level",
@@ -43,7 +29,7 @@ async function handler(req, res) {
     member = await createUser(firstName, lastName, email, phoneNumber, preference);
   }
 
-  if (isAdminView) {
+  if (user.access > 0) {
     const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
     await addTenure(member._id, tenure);
   }

@@ -10,6 +10,7 @@ async function upsertTenure(userId, semester, year, department, role, project, s
     toUpdate.notes = notes;
   }
 
+  console.log(toUpdate);
   await Tenure.validate({userId, semester, year, ...toUpdate});
   const newTenure = await Tenure.findOneAndUpdate({userId, semester, year}, toUpdate, {upsert: true, new: true});
   return newTenure;
