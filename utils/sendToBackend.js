@@ -1,6 +1,4 @@
 const sendRequest = async (route, method, data = {}) => {
-  route = `/api/${route}`;
-
   let result;
   if (method === "GET") {
     result = await fetch(route);

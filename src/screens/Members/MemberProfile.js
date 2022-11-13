@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import {getSession} from "next-auth/react";
 import axios from "axios";
 import sendRequest from "../../../utils/sendToBackend";
+import urls from "../../../utils/urls";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -60,7 +61,7 @@ export const MemberProfile = () => {
       const isAdmin = currentUser.user.access > 0;
       setAdmin(isAdmin);
 
-      const result = await sendRequest("get_user", "GET");
+      const result = await sendRequest(urls.api.getUser, "GET");
       const userData = result.payload.user;
       setFirstName(userData.firstName ?? "");
       setLastName(userData.lastName ?? "");
@@ -145,7 +146,7 @@ export const MemberProfile = () => {
       newTenures[currIndex] = updatedTenure;
     }
 
-    const result = await sendRequest("update_member", "PUT", {
+    const result = await sendRequest(urls.api.updateMember, "PUT", {
       memberId: id,
       firstName,
       lastName,
@@ -169,7 +170,7 @@ export const MemberProfile = () => {
     let imageResult;
     if (imageBlob) {
       const convertedFile = await convertToBase64(imageBlob);
-      imageResult = await axios.put("/api/image_upload", {
+      imageResult = await axios.put(urls.api.imageUpload, {
         image: convertedFile,
         name: imageBlob.name,
         type: imageBlob.type,
