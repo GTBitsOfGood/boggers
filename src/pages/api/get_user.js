@@ -12,12 +12,27 @@ async function handler(req, res) {
     });
   }
 
-  const userData = await getUserById(user.user.id);
-
-  res.status(200).json({
-    success: true,
-    payload: {user: userData, imageUrl: userData.image ? baseAwsUrl + user.user.id : null},
-  });
+  const {id} = req.query;
+  try {
+    const userData = await getUserById(id);
+    if (userData) {
+      res.status(200).json({
+        success: true,
+        payload: {user: userData, imageUrl: userData.image ? baseAwsUrl + id : null},
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "User does not exist in the database",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: "User does not exist in the database",
+    });
+  }
 }
 
 export default requestWrapper(handler, "GET");

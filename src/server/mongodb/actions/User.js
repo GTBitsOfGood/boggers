@@ -23,6 +23,10 @@ async function createRootUser() {
   });
 }
 
+async function createSeedUser(email, password, access) {
+  return await User.create({email, password: await bcrypt.hash(password, 10), firstName: "seed", lastName: "seed", access});
+}
+
 async function updateUser(userId, firstName, lastName, email, phoneNumber, preference) {
   return await User.findByIdAndUpdate(
     userId,
@@ -52,4 +56,4 @@ async function addImage(id) {
   }
 }
 
-export {getUser, getUserById, createUser, createRootUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};
+export {getUser, getUserById, createUser, createRootUser, createSeedUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};

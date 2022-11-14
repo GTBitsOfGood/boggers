@@ -1,5 +1,6 @@
 import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect} from "react";
+import {useRouter} from "next/router";
 import {getSession, signOut} from "next-auth/react";
 import axios from "axios";
 import sendRequest from "../../../utils/sendToBackend";
@@ -27,6 +28,8 @@ const convertToBase64 = (file) => {
 };
 
 export const MemberProfile = () => {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(Avatar.src);
@@ -56,13 +59,43 @@ export const MemberProfile = () => {
     setTimeout(() => setSuccess(0), 5000);
   };
 
+  const resetRouter = () => router.push(urls.base + urls.pages.members);
+
   useEffect(() => {
     const getInitialData = async () => {
-      const currentUser = await getSession();
-      const isAdmin = currentUser.user.access > 0;
+      const queryLength = Object.keys(router.query).length;
+      if (!(queryLength === 0 || queryLength === 3)) {
+        return resetRouter();
+      }
+
+      const userViewing = await getSession();
+      const isAdmin = userViewing.user.access > 0;
       setAdmin(isAdmin);
 
-      const result = await sendRequest(urls.api.getUser, "GET");
+      let currentUserId;
+      if (queryLength === 3) {
+        if (
+          !isAdmin ||
+          !router.query.id ||
+          !router.query.semester ||
+          !router.query.year ||
+          !["Spring", "Summer", "Fall"].includes(router.query.semester) ||
+          !(Number.parseInt(router.query.year) >= 2010 && Number.parseInt(router.query.year) <= 2040)
+        ) {
+          return resetRouter();
+        } else {
+          currentUserId = router.query.id;
+        }
+      } else {
+        currentUserId = userViewing.user.id;
+      }
+
+      const result = await sendRequest(urls.api.getUser + `?id=${currentUserId}`, "GET");
+      if (!result.success) {
+        return resetRouter();
+      }
+      setUser(currentUserId);
+
       const userData = result.payload.user;
       setFirstName(userData.firstName ?? "");
       setLastName(userData.lastName ?? "");
@@ -84,7 +117,6 @@ export const MemberProfile = () => {
           return 1;
         }
       });
-      console.log("tenures: ", tenures);
       setTenures(tenures);
       setImageUrl(result.payload.imageUrl ? result.payload.imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : Avatar.src);
 
@@ -99,22 +131,28 @@ export const MemberProfile = () => {
         index = tenures.length - 1;
         ({semester, year, department, role, project, status} = tenures[index]);
       } else {
-        const date = new Date();
-        const day = date.getDate();
-        const month = date.getMonth();
-        year = date.getFullYear();
-        if ((month >= 0 && month <= 3) || (month == 4 && day <= 14)) {
-          semester = "Spring";
-        } else if ((month == 4 && day >= 15) || (month >= 5 && month <= 6) || (month == 7 && day <= 14)) {
-          semester = "Summer";
+        if (queryLength === 3) {
+          ({semester, year} = router.query);
+          year = Number.parseInt(year);
         } else {
-          semester = "Fall";
+          const date = new Date();
+          const day = date.getDate();
+          const month = date.getMonth();
+          year = date.getFullYear();
+          if ((month >= 0 && month <= 3) || (month == 4 && day <= 14)) {
+            semester = "Spring";
+          } else if ((month == 4 && day >= 15) || (month >= 5 && month <= 6) || (month == 7 && day <= 14)) {
+            semester = "Summer";
+          } else {
+            semester = "Fall";
+          }
         }
 
         if (isAdmin) {
           index = tenures.findIndex((tenure) => tenure.semester === semester && tenure.year === year);
           if (index === -1) {
-            department = role = project = status = "";
+            department = role = project = "";
+            status = "Active";
           } else {
             ({department, role, project, status} = tenures[index]);
           }
@@ -133,12 +171,10 @@ export const MemberProfile = () => {
     };
 
     getInitialData();
-  }, []);
+  }, [router]);
 
   const handleSave = async () => {
     setSaved(1);
-    const id = (await getSession()).user.id;
-
     const newTenures = tenures.map((tenure) => structuredClone(tenure));
     const updatedTenure = {semester, year, department, role, project, status};
     if (currIndex === -1) {
@@ -148,7 +184,7 @@ export const MemberProfile = () => {
     }
 
     const result = await sendRequest(urls.api.updateMember, "PUT", {
-      memberId: id,
+      memberId: user,
       firstName,
       lastName,
       email,
@@ -180,7 +216,6 @@ export const MemberProfile = () => {
       return requestStatus(true);
     }
 
-    console.log(imageResult);
     if (imageResult.data.success) {
       setImageBlob(null);
     }
@@ -218,7 +253,8 @@ export const MemberProfile = () => {
 
       index = tenures.findIndex((tenure) => tenure.semester === newSemester && tenure.year === newYear);
       if (index === -1) {
-        department = role = project = status = "";
+        department = role = project = "";
+        status = "Active";
       } else {
         ({department, role, project, status} = tenures[index]);
       }
