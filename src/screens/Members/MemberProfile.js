@@ -31,8 +31,8 @@ export const MemberProfile = () => {
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(Avatar.src);
   const [imageBlob, setImageBlob] = useState(null);
-  const [saved, setSaved] = useState(false);
   const [success, setSuccess] = useState(0);
+  const [saved, setSaved] = useState(0);
 
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
@@ -50,11 +50,11 @@ export const MemberProfile = () => {
   const [status, setStatus] = useState("-");
 
   const requestStatus = (success) => {
-    setTimeout(() => setSaved(false), 1000);
     setSuccess(success ? 1 : 2);
+    setSaved(success ? 2 : 3);
+    setTimeout(() => setSaved(0), 2000);
     setTimeout(() => setSuccess(0), 5000);
   };
-  console.log("success", success);
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -136,7 +136,7 @@ export const MemberProfile = () => {
   }, []);
 
   const handleSave = async () => {
-    setSaved(true);
+    setSaved(1);
     const id = (await getSession()).user.id;
 
     const newTenures = tenures.map((tenure) => structuredClone(tenure));
@@ -236,10 +236,12 @@ export const MemberProfile = () => {
     setStatus(status);
   };
 
-  const buttonTransition = {
-    original: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"},
-    new: {width: "150px", backgroundColor: "#0f904d", borderColor: "#0f904d"},
-  };
+  const buttonTransition = [
+    {styles: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"}, message: "Save"},
+    {styles: {width: "185px", backgroundColor: "#fc5b42", borderColor: "#fc5b42"}, message: "Processing"},
+    {styles: {width: "145px", backgroundColor: "#0f904d", borderColor: "#0f904d"}, message: "Saved!"},
+    {styles: {width: "140px", backgroundColor: "#c63636", borderColor: "#c63636"}, message: "Error!"},
+  ];
 
   return (
     <div className={styles.MemberProfile}>
@@ -272,12 +274,9 @@ export const MemberProfile = () => {
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
-            <div
-              className={styles.MemberProfileSaveButton}
-              style={saved ? buttonTransition.new : buttonTransition.original}
-              onClick={handleSave}>
+            <div className={styles.MemberProfileSaveButton} style={buttonTransition[saved].styles} onClick={handleSave}>
               <img src={Save.src} alt="Save Icon" />
-              {saved ? "Saved!" : "Save"}
+              {buttonTransition[saved].message}
             </div>
           </div>
         </div>
