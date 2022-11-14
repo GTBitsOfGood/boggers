@@ -1,41 +1,86 @@
-import connectMongo from "../connectMongo.js";
-import {User} from "../models/InitSchema.js";
+import User from "../models/User";
 import bcrypt from "bcrypt";
 
 async function getUser(email) {
-  await connectMongo();
   return User.findOne({email});
 }
 
-async function createUser(email, name, password, admin = false) {
-  await connectMongo();
+async function getUserById(id) {
+  return User.findById(id).populate("tenures", "-_id");
+}
+
+async function createUser(firstName, lastName, email, phoneNumber, preference) {
+  return await User.create({firstName, lastName, email, phoneNumber, preference});
+}
+
+async function createRootUser() {
   return await User.create({
-    email,
-    password: await bcrypt.hash(password, 10),
-    name,
-    admin,
+    email: "root@boggers.com",
+    password: await bcrypt.hash("root", 10),
+    firstName: "boggers",
+    lastName: "boggers",
+    access: 2,
   });
 }
 
-async function updatePassword(email, password) {
-  await connectMongo();
-  await User.updateOne({email}, {password: await bcrypt.hash(password, 10)});
+async function createSeedUser(email, password, access) {
+  return await User.create({email, password: await bcrypt.hash(password, 10), firstName: "seed", lastName: "seed", access});
 }
 
 async function setVerified(email) {
-  await connectMongo();
   await User.updateOne({email}, {emailVerified: true});
 }
 
 async function changeEmail(email, newEmail) {
-  await connectMongo();
   await User.updateOne({email}, {email: newEmail});
 }
 
 async function upsertUser(name, email, phoneNumber, preference, role, status) {
-  await connectMongo();
   const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
   return newUser;
 }
 
-export {getUser, createUser, upsertUser, updatePassword, setVerified, changeEmail};
+async function updateUser(userId, firstName, lastName, email, phoneNumber, preference) {
+  return await User.findByIdAndUpdate(
+    userId,
+    {firstName, lastName, email, phoneNumber, preference},
+    {new: true, runValidators: true, context: "query"},
+  );
+}
+
+async function updatePassword(email, password) {
+  await User.updateOne({email}, {$set: {password: await bcrypt.hash(password, 10)}});
+}
+
+async function upsertUserCsv(firstName, lastName, email, phoneNumber, preference) {
+  await User.validate({firstName, lastName, email, phoneNumber, preference});
+  const newUser = await User.findOneAndUpdate({firstName, lastName}, {email, phoneNumber, preference}, {upsert: true, new: true});
+  return newUser;
+}
+
+async function addTenure(userId, tenure) {
+  return await User.findOneAndUpdate({_id: userId, tenures: {$ne: tenure._id}}, {$addToSet: {tenures: tenure._id}}, {new: true});
+}
+
+async function addImage(id) {
+  const user = await User.findById(id).select("image");
+  if (!user.image) {
+    await User.findByIdAndUpdate(id, {image: true});
+  }
+}
+
+export {
+  getUser,
+  getUserById,
+  createUser,
+  createRootUser,
+  createSeedUser,
+  updateUser,
+  upsertUserCsv,
+  addTenure,
+  updatePassword,
+  addImage,
+  setVerified,
+  changeEmail,
+  upsertUser,
+};

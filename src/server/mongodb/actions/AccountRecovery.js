@@ -7,7 +7,6 @@ async function createAccountRecovery(email) {
 }
 
 async function getAccountRecovery(token) {
-  await connectMongo();
   return AccountRecovery.findOne({where: {token}});
 }
 

@@ -1,0 +1,182 @@
+.MemberProfile {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8%;
+  overflow-y: overlay;
+}
+
+.MemberProfileOverlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 30%;
+  z-index: 1;
+}
+
+.MemberProfileLogout {
+  position: absolute;
+  top: 3%;
+  right: 3%;
+  color: #000000;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.MemberProfileBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 2;
+  align-content: center;
+  padding-top: 3%;
+  row-gap: 4vh;
+}
+
+.MemberProfileHeader {
+  margin: 0% 15% 0% 10%;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1%;
+  align-items: center;
+}
+
+.MemberProfileImageContainer {
+  position: relative;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.MemberProfileImage {
+  pointer-events: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.MemberProfileImageOverlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background-color: black;
+  border-radius: 50%;
+  opacity: 0%;
+}
+
+.MemberProfilePencilBackground {
+  position: absolute;
+  display: flex;
+  width: 27px;
+  height: 27px;
+  top: 5px;
+  right: 5px;
+  background-color: black;
+  border-radius: 50%;
+  opacity: 0%;
+  justify-content: center;
+  align-items: center;
+}
+
+.MemberProfileImageContainer:hover .MemberProfileImageOverlay {
+  transition: 0.3s ease;
+  opacity: 30%;
+}
+
+.MemberProfileImageContainer:hover .MemberProfilePencilBackground {
+  transition: 0.3s ease;
+  opacity: 100%;
+}
+
+.MemberProfilePencil {
+  width: 18px;
+  height: 18px;
+}
+
+.MemberProfileName {
+  font-size: 40px;
+  font-weight: 600;
+  font-family: "Poppins";
+  color: #333333;
+  margin-left: 2%;
+}
+
+.MemberProfileFields {
+  margin-left: 12.5%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 6vh;
+}
+
+.MemberProfileRadioSave {
+  padding-top: 1.5%;
+  margin-left: 12.5%;
+  display: flex;
+}
+
+.MemberProfileSave {
+  width: 37.5%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.MemberProfileSaveButton {
+  width: 135px;
+  height: 50px;
+  background: #2d285c;
+  border: 1px solid #2d285c;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+  font-size: 24px;
+  color: #ffffff;
+  transition: 0.3s ease;
+}
+
+.MemberProfileFooter {
+  flex-grow: 1;
+  background: linear-gradient(74.59deg, #fd8033 0%, #fb3552 100%);
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.MemberProfileFooterPageContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 3%;
+  padding-top: 1%;
+}
+
+.MemberProfileFooterPage {
+  display: flex;
+  width: 144px;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 16px;
+  color: #ffffff;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.MemberProfileFooterBottom {
+  display: flex;
+  justify-content: center;
+  column-gap: 7%;
+  padding-top: 0.5%;
+  padding-bottom: 3%;
+}

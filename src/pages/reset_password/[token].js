@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useRouter} from "next/router";
+import urls from "../../../utils/urls";
 
 export default function ResetPassword() {
   const router = useRouter();
@@ -7,12 +8,12 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  async function changePassword(event) {
-    event.preventDefault();
+  async function changePassword(e) {
+    e.preventDefault();
     if (password !== confirmPassword) {
       alert("passwords don't match");
     } else {
-      await fetch("/api/reset_password", {
+      await fetch(urls.base + urls.api.resetPassword, {
         method: "POST",
         body: JSON.stringify({
           password,

@@ -2,8 +2,10 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import {getUser} from "../../../server/mongodb/actions/User";
+import connectMongo from "../../../server/mongodb/connectMongo";
+import urls from "../../../../utils/urls";
 
-const authOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -12,8 +14,8 @@ const authOptions = {
         password: {label: "Password", type: "password"},
       },
       async authorize(credentials) {
+        await connectMongo();
         const user = await getUser(credentials.email);
-
         if (user && (await bcrypt.compare(credentials.password, user.password))) {
           return user;
         } else {
@@ -22,6 +24,7 @@ const authOptions = {
       },
     }),
   ],
+  secret: urls.nextAuthSecret,
   callbacks: {
     async jwt({token, user}) {
       if (user) token.user = user;
@@ -30,9 +33,6 @@ const authOptions = {
     async session({session, token}) {
       session.user = token.user;
       return session;
-    },
-    async redirect() {
-      return "/members";
     },
   },
   pages: {
