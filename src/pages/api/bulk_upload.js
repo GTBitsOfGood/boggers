@@ -20,7 +20,7 @@ async function handler(req, res) {
   const {semester = "Fall", year = 2022} = req.body;
   const parsed = req.body.csv.split(/\r?\n/);
 
-  for (let i = 0; i < parsed.length; i++) {
+  for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
     const record = parsed[i].split(",");
     const [firstName, lastName, email, phoneNumber, preference, role, status, project, department] = record;
