@@ -17,19 +17,13 @@ async function handler(req, res) {
     });
   }
 
-  // const {semester = "Fall", year = 2022} = req.body;
+  const {semester = "Fall", year = 2022} = req.body;
+  const parsed = req.body.csv.split(/\r?\n/);
 
-  // const parsed = req.body.csv.split(/\r?\n/);
-  const parsed = [
-    ["bogger", "boggers", "root@boggers.com", "4706665647", "Back-end", "Developer", "Active", "A", "P", "Fall", 2021],
-    ["bogger", "boggers", "root@boggers.com", "4706665647", "Back-end", "Senior Dev", "Active", "B", "Q", "Spring", 2022],
-    ["bogger", "boggers", "root@boggers.com", "4706665647", "Back-end", "Director", "Active", "C", "R", "Fall", 2022],
-    ["bogger", "boggers", "root@boggers.com", "4706665647", "Front-end", "Alumni", "Inactive", "-", "-", "Spring", 2023],
-  ];
   for (let i = 0; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
-    const record = parsed[i];
-    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record;
+    const record = parsed[i].split(",");
+    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department] = record;
     const member = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
     const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
     await addTenure(member._id, tenure);
@@ -40,4 +34,4 @@ async function handler(req, res) {
   });
 }
 
-export default requestWrapper(handler, "GET");
+export default requestWrapper(handler, "POST");
