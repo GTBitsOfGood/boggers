@@ -1,5 +1,9 @@
 import Tenure from "../models/Tenure";
 
+async function getTenures() {
+  return Tenure.find({});
+}
+
 async function getTenure(userId, semester, year) {
   return Tenure.findOne({userId, semester, year});
 }
@@ -25,4 +29,4 @@ async function upsertTenureCsv(userId, semester, year, role, status, project, de
   return newTenure;
 }
 
-export {getTenure, upsertTenure, upsertTenureCsv};
+export {getTenures, getTenure, upsertTenure, upsertTenureCsv};

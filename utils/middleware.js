@@ -14,8 +14,7 @@ export default function requestWrapper(handler, method) {
         message: "Request Failure: Invalid method for request",
       });
     }
-
-    if (req.body !== "" && req.url !== urls.api.imageUpload) {
+    if (req.body !== "" && req.url !== urls.api.imageUpload && req.url !== urls.api.bulkUpload) {
       try {
         req.body = JSON.parse(req.body);
       } catch (error) {

@@ -22,6 +22,7 @@ const urls = {
     login: "/login",
     members: "/members",
     forgotPassword: "/ForgotPassword",
+    exec: "/exec",
     resetPassword: "/reset_password",
   },
   api: {
