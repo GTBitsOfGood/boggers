@@ -2,16 +2,16 @@ import {createEmailVerification} from "../../server/mongodb/actions/EmailVerific
 import {getUser} from "../../server/mongodb/actions/User";
 import sendEmailVerificationEmail from "../../server/nodemailer/actions/emailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
+import requestWrapper from "../../../utils/middleware";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method === "POST") {
-    const body = JSON.parse(req.body);
-    const user = await getUser(body.email);
+    const user = await getUser(req.body.email);
     // If user does not exist, let next auth handle it
     if (!user || user.emailVerified) {
       res.status(200).send();
     } else {
-      const accountRecovery = await createEmailVerification(body.email);
+      const accountRecovery = await createEmailVerification(req.body.email);
       const transporter = await connectMailer();
       await sendEmailVerificationEmail(transporter, accountRecovery.email, accountRecovery.token);
       res.status(401).send();
@@ -23,3 +23,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default requestWrapper(handler, "POST");
