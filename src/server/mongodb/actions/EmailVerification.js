@@ -13,7 +13,7 @@ async function createEmailChangeVerification(email, newEmail) {
 
 async function getEmailVerification(token) {
   await connectMongo();
-  return EmailVerification.findOne({where: {token}});
+  return EmailVerification.findOne({token});
 }
 
 export {createEmailVerification, createEmailChangeVerification, getEmailVerification};

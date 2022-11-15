@@ -6,12 +6,14 @@ export default function ResetPassword() {
   const {token} = router.query;
 
   useEffect(() => {
-    fetch("/api/email_verification", {
-      method: "POST",
-      body: JSON.stringify({
-        token,
-      }),
-    }).then(() => alert("Email verified"));
+    if (token) {
+      fetch("/api/email_verification", {
+        method: "POST",
+        body: JSON.stringify({
+          token,
+        }),
+      }).then(() => alert("Email verified"));
+    }
   }, [token]);
 
   return <p>placeholder page</p>;
