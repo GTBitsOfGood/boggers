@@ -16,14 +16,14 @@ async function handler(req, res) {
       message: "User is not an admin",
     });
   }
-
-  const {semester = "Fall", year = 2022} = req.body;
-  const parsed = req.body.csv.split(/\r?\n/);
-
+  
+  const csv = req.body;
+  const parsed = csv.split(/\r?\n/);
   for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
-    const record = parsed[i].split(",");
-    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department] = record;
+    const record = parsed[i];
+    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record.split(",");
+
     const member = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
     const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
     await addTenure(member._id, tenure);

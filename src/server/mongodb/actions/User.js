@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
@@ -8,11 +10,19 @@ async function getUser(email) {
 async function getUserById(id) {
   return User.findById(id).populate("tenures", "-_id");
 }
-
-async function createUser(firstName, lastName, email, phoneNumber, preference) {
-  return await User.create({firstName, lastName, email, phoneNumber, preference});
+/* es*/
+async function getUsers() {
+  return User.find({});
 }
 
+async function createUser(firstName, lastName, email, phoneNumber) {
+  return await User.create({firstName, lastName, email, phoneNumber});
+}
+
+async function deleteUser(email) {
+  const res = await User.deleteOne({email: email});
+  return res;
+}
 async function createRootUser() {
   return await User.create({
     email: "root@boggers.com",

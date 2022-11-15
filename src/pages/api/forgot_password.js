@@ -5,7 +5,8 @@ import sendAccountRecoveryEmail from "../../server/nodemailer/actions/accountRec
 import connectMailer from "../../server/nodemailer/connectMailer";
 
 const forgotPasswordHandler = async function handler(req, res) {
-  const user = await getUser(req.body.email);
+  const {body} = req;
+  const user = await getUser(body.email);
   if (!user) {
     return res.status(404).send("User not found");
   }
