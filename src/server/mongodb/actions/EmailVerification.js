@@ -3,7 +3,7 @@ import EmailVerification from "../models/EmailVerification";
 
 async function createEmailVerification(email) {
   await connectMongo();
-  return EmailVerification.findOneAndUpdate({email}, {email}, {upsert: true, new: true});
+  return EmailVerification.findOneAndUpdate({email}, {email, newEmail: undefined}, {upsert: true, new: true});
 }
 
 async function createEmailChangeVerification(email, newEmail) {
