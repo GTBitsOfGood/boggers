@@ -37,6 +37,19 @@ async function createSeedUser(email, password, access) {
   return await User.create({email, password: await bcrypt.hash(password, 10), firstName: "seed", lastName: "seed", access});
 }
 
+async function setVerified(email) {
+  await User.updateOne({email}, {emailVerified: true});
+}
+
+async function changeEmail(email, newEmail) {
+  await User.updateOne({email}, {email: newEmail});
+}
+
+async function upsertUser(name, email, phoneNumber, preference, role, status) {
+  const newUser = await User.findOneAndUpdate({name}, {email, phoneNumber, preference, role, status}, {upsert: true, new: true});
+  return newUser;
+}
+
 async function updateUser(userId, firstName, lastName, email, phoneNumber, preference) {
   return await User.findByIdAndUpdate(
     userId,
@@ -66,4 +79,18 @@ async function addImage(id) {
   }
 }
 
-export {getUser, getUserById, createUser, createRootUser, createSeedUser, updateUser, upsertUserCsv, addTenure, updatePassword, addImage};
+export {
+  getUser,
+  getUserById,
+  createUser,
+  createRootUser,
+  createSeedUser,
+  updateUser,
+  upsertUserCsv,
+  addTenure,
+  updatePassword,
+  addImage,
+  setVerified,
+  changeEmail,
+  upsertUser,
+};

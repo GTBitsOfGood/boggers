@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema({
     },
   ],
   image: Boolean,
+  emailVerified: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 userSchema.set("toJSON", {

@@ -1,7 +1,10 @@
 import {getToken} from "next-auth/jwt";
 import {upsertTenure} from "../../server/mongodb/actions/Tenure";
-import {createUser, updateUser, addTenure} from "../../server/mongodb/actions/User";
+import {createUser, updateUser, addTenure, getUserById} from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
+import {createEmailChangeVerification} from "../../server/mongodb/actions/EmailVerification";
+import connectMailer from "../../server/nodemailer/connectMailer";
+import sendEmailVerificationEmail from "../../server/nodemailer/actions/emailVerification";
 
 async function handler(req, res) {
   const user = (await getToken({req}))?.user;
@@ -22,10 +25,19 @@ async function handler(req, res) {
     });
   }
 
+  let emailChanged = false;
+
   try {
     let member;
     if (memberId) {
-      member = await updateUser(memberId, firstName, lastName, email, phoneNumber, preference);
+      const originalEntry = await getUserById(memberId);
+      member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference);
+      if (originalEntry.email !== email) {
+        emailChanged = true;
+        const accountRecovery = await createEmailChangeVerification(originalEntry.email, email);
+        const transporter = await connectMailer();
+        await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
+      }
     } else {
       member = await createUser(firstName, lastName, email, phoneNumber, preference);
     }
@@ -44,6 +56,7 @@ async function handler(req, res) {
 
   res.status(200).json({
     success: true,
+    emailChanged,
     message: "Updated record successfully",
   });
 }

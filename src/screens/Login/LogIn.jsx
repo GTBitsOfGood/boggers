@@ -15,6 +15,15 @@ export function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const res = await fetch("/api/user", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    if (res.status === 401) {
+      alert(`You need to verify your email before logging in. An email was sent to ${email}`);
+    }
     await signIn("credentials", {
       email: email,
       password: password,

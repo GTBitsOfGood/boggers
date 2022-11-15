@@ -42,6 +42,7 @@ export const MemberProfile = () => {
   const [email, setEmail] = useState("johndoe@gatech.edu");
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
+  const [emailVerified, setEmailVerified] = useState(true);
 
   const [tenures, setTenures] = useState([]);
   const [currIndex, setCurrIndex] = useState(-1);
@@ -200,6 +201,9 @@ export const MemberProfile = () => {
 
     if (result.success) {
       setTenures(newTenures);
+      if (result.emailChanged) {
+        setEmailVerified(false);
+      }
     } else {
       return requestStatus(false);
     }
@@ -304,7 +308,16 @@ export const MemberProfile = () => {
         <div className={styles.MemberProfileFields}>
           <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />
           <InputField fieldName="LAST NAME" fieldState={lastName} setFieldState={setLastName} />
-          <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
+          <div>
+            <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
+            {emailVerified ? null : (
+              <p style={{color: "red"}}>
+                A verification email has been sent to your new email.
+                <br />
+                Your email will not be changed until it is verified.
+              </p>
+            )}
+          </div>
           <InputField fieldName="PHONE NUMBER" fieldState={phoneNumber} setFieldState={setPhoneNumber} isOptional={true} />
         </div>
         <div className={styles.MemberProfileRadioSave}>
