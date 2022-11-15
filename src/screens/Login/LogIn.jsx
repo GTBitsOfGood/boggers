@@ -24,7 +24,6 @@ export function LoginPage() {
     if (res.status === 401) {
       alert(`You need to verify your email before logging in. An email was sent to ${email}`);
     }
-    await signIn("credentials", {email, password});
     await signIn("credentials", {
       email: email,
       password: password,
