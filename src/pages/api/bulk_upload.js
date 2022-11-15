@@ -17,17 +17,15 @@ async function handler(req, res) {
     });
   }
 
-  const {semester = "Fall", year = 2022} = req;
-
-  const parsed = req.body.split(/\r?\n/);
+  // const {semester = "Fall", year = 2022} = req.body;
+  const csv = req.body;
+  const parsed = csv.split(/\r?\n/);
   for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
-    const record = parsed[i].split(",");
-
-    const [fullName, email, phoneNumber, preference, role, status] = record;
-    const [firstName, lastName] = fullName.split(" ");
-    const member = await upsertUserCsv(firstName, lastName, email, phoneNumber);
-    const tenure = await upsertTenureCsv(member._id, semester, year, preference, role, status);
+    const record = parsed[i];
+    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record.split(",");
+    const member = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
+    const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
     await addTenure(member._id, tenure);
   }
   res.status(200).json({

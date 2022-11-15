@@ -20,20 +20,14 @@ const tenureSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    required: true,
   },
   project: {
     type: String,
-  },
-  preference: {
-    type: String,
-    enum: ["Front-end", "Full-stack", "Back-end", "-"],
   },
   status: {
     type: String,
     enum: ["Active", "Inactive"],
     default: "Active",
-    required: true,
   },
   notes: String,
 });

@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
   },
   password: String,
   phoneNumber: String,
+  preference: {
+    type: String,
+    enum: ["Front-end", "Full-stack", "Back-end", "-"],
+  },
   access: {
     type: Number,
     default: 0,
@@ -27,6 +31,7 @@ const userSchema = new mongoose.Schema({
       ref: "Tenure",
     },
   ],
+  image: Boolean,
 });
 
 userSchema.set("toJSON", {
@@ -46,4 +51,5 @@ userSchema.set("toJSON", {
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
+
 export default User;

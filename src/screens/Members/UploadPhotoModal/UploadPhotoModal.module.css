@@ -1,0 +1,56 @@
+.Modal {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
+.ModalBox {
+  margin-top: 18%;
+  position: relative;
+  min-width: 450px;
+  min-height: 200px;
+  width: 32%;
+  height: 27%;
+  z-index: 2;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  transition: opacity 0.3s linear;
+}
+
+.ModalCross {
+  position: absolute;
+  top: 7%;
+  right: 8%;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.ModalHeader {
+  margin-top: 6vh;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  margin-bottom: 5vh;
+}
+
+.ModalUploadButton {
+  width: 40%;
+  height: 20%;
+  background-color: #e25702;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ffffff;
+  letter-spacing: px;
+}

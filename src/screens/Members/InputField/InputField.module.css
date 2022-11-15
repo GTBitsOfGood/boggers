@@ -1,0 +1,33 @@
+.InputField {
+  margin-right: 7vw;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.InputFieldHeader {
+  display: flex;
+  column-gap: 1%;
+}
+
+.InputFieldName {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.InputFieldOptional {
+  align-self: center;
+  font-size: 14px;
+  color: #c4c4c4;
+}
+
+.InputFieldInput {
+  width: 33vw;
+  height: 5vh;
+  border-radius: 4px;
+  border-color: #c4c4c4;
+  border-style: solid;
+  font-size: 20px;
+  color: #1a1a1a;
+  padding: 20px;
+}
