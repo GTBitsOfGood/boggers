@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import style from "./EditMemberModal.module.css";
 import {Typography, TextField, Button, MenuItem, Select} from "@mui/material";
 import fields from "../../../../utils/fields";
+import urls from "../../../../utils/urls";
 
 const Label = ({label}) => {
   return (
@@ -29,18 +30,18 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
 
   const {firstName: memberFirstName, lastName: memberLastName, email: memberEmail, phoneNumber: memberPhoneNumber} = row.member;
   const [memberSemester, memberYear] = splitSemesterString(currentSemester);
-  console.log(row);
-  const [newFirstName, setNewFirstName] = useState("");
-  const [newLastName, setNewLastName] = useState("");
-  const [newSemester, setNewSemester] = useState("");
-  const [newYear, setNewYear] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newPhoneNumber, setNewPhoneNumber] = useState("");
-  const [newDepartment, setNewDepartment] = useState("");
-  const [newRole, setNewRole] = useState("");
-  const [newProject, setNewProject] = useState("");
-  const [newPreference, setNewPreference] = useState("");
-  const [newStatus, setNewStatus] = useState("");
+
+  const [newFirstName, setNewFirstName] = useState(memberFirstName);
+  const [newLastName, setNewLastName] = useState(memberLastName);
+  const [newSemester, setNewSemester] = useState(memberSemester);
+  const [newYear, setNewYear] = useState(memberYear);
+  const [newEmail, setNewEmail] = useState(memberEmail);
+  const [newPhoneNumber, setNewPhoneNumber] = useState(memberPhoneNumber);
+  const [newDepartment, setNewDepartment] = useState(memberDepartment);
+  const [newRole, setNewRole] = useState(memberRole);
+  const [newProject, setNewProject] = useState(memberProject);
+  const [newPreference, setNewPreference] = useState(memberPreference);
+  const [newStatus, setNewStatus] = useState(memberStatus);
 
   const {departments, roles, projects, preferences, status, memberTypes} = fields;
   return (
@@ -54,31 +55,29 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
           <div>
             <p className={style.header}>{`${memberFirstName} ${memberLastName}`}</p>
             <p className={style.subHeader}>{`${memberSemester} ${memberYear}`}</p>
-            {/* <p className={style.header}>Luke Kim</p>
-            <p className={style.subHeader}>Spring 2022</p> */}
           </div>
         </div>
 
         <div className={style.fieldListContainer}>
           <div className={style.fieldContainer}>
             <Label label="FIRST NAME" />
-            <TextField size="small" style={{width: "100%"}} value={memberFirstName} onChange={(e) => setNewFirstName(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={newFirstName} onChange={(e) => setNewFirstName(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="LAST NAME" />
-            <TextField size="small" style={{width: "100%"}} value={memberLastName} onChange={(e) => setNewLastName(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={newLastName} onChange={(e) => setNewLastName(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="EMAIL" />
-            <TextField size="small" style={{width: "100%"}} value={memberEmail} onChange={(e) => setNewEmail(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="PHONE NUMBER" />
-            <TextField size="small" style={{width: "100%"}} value={memberPhoneNumber} onChange={(e) => setNewPhoneNumber(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={newPhoneNumber} onChange={(e) => setNewPhoneNumber(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="DEPARTMENT" />
-            <Select size="small" style={{width: "100%"}} value={memberDepartment} onChange={(e) => setNewDepartment(e.target.value)}>
+            <Select size="small" style={{width: "100%"}} value={newDepartment} onChange={(e) => setNewDepartment(e.target.value)}>
               {Object.keys(departments).map((key) => (
                 <MenuItem value={departments[key]}>{departments[key]}</MenuItem>
               ))}
@@ -86,7 +85,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
           </div>
           <div className={style.fieldContainer}>
             <Label label="ROLE" />
-            <Select size="small" style={{width: "100%"}} value={memberRole} onChange={(e) => setNewRole(e.target.value)}>
+            <Select size="small" style={{width: "100%"}} value={newRole} onChange={(e) => setNewRole(e.target.value)}>
               {Object.keys(roles).map((key) => (
                 <MenuItem value={roles[key]}>{roles[key]}</MenuItem>
               ))}
@@ -94,7 +93,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
           </div>
           <div className={style.fieldContainer}>
             <Label label="PROJECT" />
-            <Select size="small" style={{width: "100%"}} value={memberProject} onChange={(e) => setNewProject(e.target.value)}>
+            <Select size="small" style={{width: "100%"}} value={newProject} onChange={(e) => setNewProject(e.target.value)}>
               {Object.keys(projects).map((key) => (
                 <MenuItem value={projects[key]}>{projects[key]}</MenuItem>
               ))}
@@ -102,7 +101,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
           </div>
           <div className={style.fieldContainer}>
             <Label label="TECH PREFERENCE" />
-            <Select size="small" style={{width: "100%"}} value={memberPreference} onChange={(e) => setNewPreference(e.target.value)}>
+            <Select size="small" style={{width: "100%"}} value={newPreference} onChange={(e) => setNewPreference(e.target.value)}>
               {Object.keys(preferences).map((key) => (
                 <MenuItem value={preferences[key]}>{preferences[key]}</MenuItem>
               ))}
@@ -110,7 +109,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
           </div>
           <div className={style.fieldContainer}>
             <Label label="STATUS" />
-            <Select size="small" style={{width: "100%"}} value={memberStatus} onChange={(e) => setNewStatus(e.target.value)}>
+            <Select size="small" style={{width: "100%"}} value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
               {Object.keys(status).map((key) => (
                 <MenuItem value={status[key]}>{status[key]}</MenuItem>
               ))}
@@ -130,7 +129,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
             {" "}
             REMOVE MEMBER
           </Button>
-          <Button variant="contained" style={{marginLeft: "10px"}}>
+          <Button variant="contained" style={{marginLeft: "10px"}} onClick={updateMemberHandler}>
             {" "}
             SAVE{" "}
           </Button>

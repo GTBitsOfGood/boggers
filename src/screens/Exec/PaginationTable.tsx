@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
 import EditMemberModal from "./EditMemberModal";
+import styles from "./PaginationTable.module.css";
 
 interface TableProps {
   rows: TRow[];
@@ -31,21 +32,29 @@ function Row({row, columns, onClick}: RowProps) {
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={`${row.key}TR`} onClick={onClick}>
       <TableCell key={`member_${key}`} align="left">
-        <p>{`${member.firstName} ${member.lastName}`}</p>
-        <p>{member.email}</p>
-        <p>{member.phoneNumber}</p>
+        <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
+        <p className={styles.rowEmail}>{member.email}</p>
+        <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
       </TableCell>
       <TableCell key={`department_${key}`} align="center">
-        <p>{department}</p>
+        <div className={styles.orangeHighlight}>
+          <p>{department}</p>
+        </div>
       </TableCell>
       <TableCell key={`role_${key}`} align="center">
-        <p>{role}</p>
+        <div className={styles.orangeHighlight}>
+          <p>{department}</p>
+        </div>
       </TableCell>
       <TableCell key={`project_${key}`} align="center">
-        <p>{project}</p>
+        <div className={styles.orangeHighlight}>
+          <p>{project}</p>
+        </div>
       </TableCell>
       <TableCell key={`status_${key}`} align="center">
-        <p>{status}</p>
+        <div className={status === "Active" ? styles.greenHighlight : styles.redHighlight}>
+          <p>{status}</p>
+        </div>
       </TableCell>
       <TableCell key={`notes_${key}`} align="center">
         <p>{notes}</p>

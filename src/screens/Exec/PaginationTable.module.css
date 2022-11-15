@@ -1,0 +1,49 @@
+.rowMemberName {
+  font-family: "Poppins";
+  font-size: large;
+  margin-bottom: 2px;
+}
+
+.rowEmail {
+  margin: 0;
+}
+
+.rowPhoneNumber {
+  margin: 0;
+}
+
+.orangeHighlight {
+  background-color: #febf98;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.orangeHighlight > p {
+  margin: 5px;
+  color: #e25702;
+  font-size: 18px;
+}
+
+.redHighlight {
+  background-color: #ffdccd;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.redHighlight > p {
+  margin: 5px;
+  color: #e20e00;
+  font-size: 18px;
+}
+
+.greenHighlight {
+  background-color: #cdffcd;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.greenHighlight > p {
+  margin: 5px;
+  color: #007f00;
+  font-size: 18px;
+}
