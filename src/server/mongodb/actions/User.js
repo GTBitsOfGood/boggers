@@ -64,7 +64,7 @@ async function updatePassword(email, password) {
 
 async function upsertUserCsv(firstName, lastName, email, phoneNumber, preference) {
   await User.validate({firstName, lastName, email, phoneNumber, preference});
-  const newUser = await User.findOneAndUpdate({firstName, lastName}, {email, phoneNumber, preference}, {upsert: true, new: true});
+  const newUser = await User.findOneAndUpdate({email}, {firstName, lastName, phoneNumber, preference}, {upsert: true, new: true});
   return newUser;
 }
 
