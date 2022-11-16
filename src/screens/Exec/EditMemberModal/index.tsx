@@ -129,7 +129,7 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
             {" "}
             REMOVE MEMBER
           </Button>
-          <Button variant="contained" style={{marginLeft: "10px"}} onClick={updateMemberHandler}>
+          <Button variant="contained" style={{marginLeft: "10px"}}>
             {" "}
             SAVE{" "}
           </Button>

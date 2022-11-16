@@ -70,7 +70,7 @@ export const MemberProfile = () => {
       }
 
       const userViewing = await getSession();
-      const isAdmin = userViewing.user.access > 0;
+      const isAdmin = false;
       setAdmin(isAdmin);
 
       let currentUserId;
