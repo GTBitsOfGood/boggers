@@ -16,9 +16,10 @@ async function handler(req, res) {
       message: "User is not an admin",
     });
   }
-  
+
   const csv = req.body;
   const parsed = csv.split(/\r?\n/);
+  console.log(parsed);
   for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
     const record = parsed[i];

@@ -33,6 +33,7 @@ export default function UploadCSVModal({displayModal, closeModal, setFileUrl, se
                 onChange={async (e) => {
                   setUploading(true);
                   const uploadedFile = e.target.files[0];
+                  console.log(uploadedFile);
                   if (!uploadedFile) {
                     setUploading(false);
                     return;
@@ -41,7 +42,6 @@ export default function UploadCSVModal({displayModal, closeModal, setFileUrl, se
                   setFileBlob(uploadedFile);
                   setFileUrl(imageUrl);
                   setUploading(false);
-                  closeModal();
                 }}
               />
               Select File

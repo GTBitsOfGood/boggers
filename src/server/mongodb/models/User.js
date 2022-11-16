@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
   emailVerified: {
     type: Boolean,
     default: false,
-    required: true,
   },
 });
 
