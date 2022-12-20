@@ -23,6 +23,8 @@ async function handler(req, res) {
     }
     case "seedCredentials": {
       const {email, password, access} = req.query;
+      if (!email || !password) return res.status(400).json({error: "Missing/Invalid email or password"});
+
       const user = await createSeedUser(email, password, access);
       return res.status(200).json(user);
     }

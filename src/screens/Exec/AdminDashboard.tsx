@@ -67,7 +67,7 @@ function AdminDashboardPage() {
   };
 
   const uploadAndClostModal = async () => {
-    console.log('fileBlob', fileBlob);
+    console.log("fileBlob", fileBlob);
     fetch(urls.base + urls.api.bulkUpload, {
       method: "POST",
       body: fileBlob,

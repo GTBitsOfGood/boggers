@@ -1,22 +1,13 @@
-import React from 'react';
-import { Grid } from '@mui/material';
-
-
+import React from "react";
+import {Grid} from "@mui/material";
 
 interface AnyChildren {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-function ScreenGrid({ children }: AnyChildren) {
+function ScreenGrid({children}: AnyChildren) {
   return (
-    <Grid
-      container
-      xs={12}
-      height="100vh"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-    >
+    <Grid container xs={12} height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
       {children}
     </Grid>
   );
