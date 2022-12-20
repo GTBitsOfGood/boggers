@@ -3,8 +3,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  row-gap: 8%;
   overflow-y: overlay;
+  row-gap: 3vh;
 }
 
 .MemberProfileOverlay {
@@ -26,22 +26,12 @@
   cursor: pointer;
 }
 
-.MemberProfileBody {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-grow: 2;
-  align-content: center;
-  padding-top: 3%;
-  row-gap: 4vh;
-}
-
 .MemberProfileHeader {
-  margin: 0% 15% 0% 10%;
+  margin: 2% 15% 0% 10%;
   display: flex;
   flex-direction: row;
-  padding-bottom: 1%;
   align-items: center;
+  flex-grow: 1;
 }
 
 .MemberProfileImageContainer {
@@ -111,12 +101,12 @@
   margin-left: 12.5%;
   display: flex;
   flex-wrap: wrap;
-  row-gap: 6vh;
+  flex-grow: 2;
+  row-gap: 3vh;
 }
 
 .MemberProfileRadioSave {
-  padding-top: 1.5%;
-  margin-left: 12.5%;
+  width: 100%;
   display: flex;
 }
 
@@ -150,7 +140,8 @@
   background: linear-gradient(74.59deg, #fd8033 0%, #fb3552 100%);
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  justify-content: center;
+  padding: 1.5% 0% 2% 0%;
 }
 
 .MemberProfileFooterPageContainer {
@@ -158,7 +149,6 @@
   display: flex;
   justify-content: flex-end;
   padding-right: 3%;
-  padding-top: 1%;
 }
 
 .MemberProfileFooterPage {
@@ -176,7 +166,6 @@
 .MemberProfileFooterBottom {
   display: flex;
   justify-content: center;
+  align-items: center;
   column-gap: 7%;
-  padding-top: 0.5%;
-  padding-bottom: 3%;
 }

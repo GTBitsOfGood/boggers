@@ -293,33 +293,31 @@ export const MemberProfile = () => {
         setImageBlob={setImageBlob}
       />
       <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
-      <div className={styles.MemberProfileBody}>
-        <div className={styles.MemberProfileHeader}>
-          <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
-            <img className={styles.MemberProfileImage} src={imageUrl} alt="User Picture" />
-            <div className={styles.MemberProfileImageOverlay} />
-            <div className={styles.MemberProfilePencilBackground}>
-              <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
-            </div>
+      <div className={styles.MemberProfileHeader}>
+        <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
+          <img className={styles.MemberProfileImage} src={imageUrl} alt="User Picture" />
+          <div className={styles.MemberProfileImageOverlay} />
+          <div className={styles.MemberProfilePencilBackground}>
+            <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
           </div>
-          <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
-          {success === 0 ? null : <SuccessBox success={success === 1} closeBox={() => setSuccess(0)} />}
         </div>
-        <div className={styles.MemberProfileFields}>
-          <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />
-          <InputField fieldName="LAST NAME" fieldState={lastName} setFieldState={setLastName} />
-          <div>
-            <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
-            {emailVerified ? null : (
-              <p style={{color: "red"}}>
-                A verification email has been sent to your new email.
-                <br />
-                Your email will not be changed until it is verified.
-              </p>
-            )}
-          </div>
-          <InputField fieldName="PHONE NUMBER" fieldState={phoneNumber} setFieldState={setPhoneNumber} isOptional={true} />
+        <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
+        {success === 0 ? null : <SuccessBox success={success === 1} closeBox={() => setSuccess(0)} />}
+      </div>
+      <div className={styles.MemberProfileFields}>
+        <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />
+        <InputField fieldName="LAST NAME" fieldState={lastName} setFieldState={setLastName} />
+        <div>
+          <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
+          {emailVerified ? null : (
+            <p style={{color: "red"}}>
+              A verification email has been sent to your new email.
+              <br />
+              Your email will not be changed until it is verified.
+            </p>
+          )}
         </div>
+        <InputField fieldName="PHONE NUMBER" fieldState={phoneNumber} setFieldState={setPhoneNumber} isOptional={true} />
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
