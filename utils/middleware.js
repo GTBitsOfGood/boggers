@@ -4,8 +4,6 @@ import urls from "./urls";
 import User from "../src/server/mongodb/models/User";
 import Tenure from "../src/server/mongodb/models/Tenure";
 
-let cache = null;
-
 export default function requestWrapper(handler, method) {
   return async (req, res) => {
     if (req.method !== method) {
@@ -26,9 +24,9 @@ export default function requestWrapper(handler, method) {
       }
     }
 
-    if (!cache) {
+    if (!global.cache) {
       try {
-        cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
+        global.cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
       } catch (error) {
         console.log(error);
         return res.status(400).json({
