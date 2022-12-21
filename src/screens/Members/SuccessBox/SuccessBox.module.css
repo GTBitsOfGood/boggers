@@ -1,0 +1,36 @@
+.SuccessBox {
+  width: 20vw;
+  justify-self: flex-end;
+  margin-left: auto;
+  display: flex;
+  column-gap: 4%;
+  align-items: baseline;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+
+.SuccessBoxCenter {
+  display: flex;
+  flex-direction: column;
+}
+
+.SuccessBoxCenterHeader {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.SuccessBoxCenterMessage {
+  font-size: 17px;
+  letter-spacing: 0.5px;
+}
+
+.SuccessBoxIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.SuccessBoxCross {
+  cursor: pointer;
+}

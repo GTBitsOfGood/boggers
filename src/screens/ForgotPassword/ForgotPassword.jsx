@@ -66,7 +66,7 @@ export function ForgotPassword() {
         <div></div>
       )}
       {send ? (
-        <div className={classes.errorContainer}>
+        <div className={classes.sendContainer}>
           <div className={classes.errorFirst}>
             <Image
               alt="Sucess"

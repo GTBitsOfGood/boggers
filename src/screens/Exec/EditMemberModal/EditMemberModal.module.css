@@ -1,0 +1,70 @@
+.background {
+  background-color: rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+
+.editModalContainer {
+  background-color: white;
+  min-width: 600px;
+  width: 30%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 40px;
+}
+
+.editModalTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editModalContainer .header {
+  font-weight: bold;
+  font-size: 48px;
+  margin: 0;
+  font-family: "Poppins";
+}
+
+.editModalContainer .subHeader {
+  font-size: 22px;
+  text-align: center;
+  margin: 0;
+  color: gray;
+}
+
+.fieldListContainer {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100px 100px 100px 100px 100px;
+  /* border: 1px solid red; */
+}
+
+.fieldContainer {
+  margin: 10px;
+}
+
+.noteContainer {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.updateButtonGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  padding: 10px;
+}
+
+.exitButton {
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
