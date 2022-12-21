@@ -19,16 +19,16 @@ async function handler(req, res) {
     req.body;
   let {memberId} = req.body;
 
+  let emailChanged = false;
+  if (isMemberView) {
+    memberId = user.id;
+  }
+
   if (user.access === 0 && user.id !== memberId) {
     return res.status(401).json({
       success: false,
       message: "User does not have the correct access level",
     });
-  }
-
-  let emailChanged = false;
-  if (isMemberView) {
-    memberId = user.id;
   }
 
   try {
