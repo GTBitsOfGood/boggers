@@ -12,7 +12,7 @@ async function handler(req, res) {
     });
   }
 
-  const {id} = req.query;
+  const {id} = user.user;
   try {
     const userData = await getUserById(id);
     if (userData) {

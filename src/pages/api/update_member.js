@@ -15,8 +15,9 @@ async function handler(req, res) {
     });
   }
 
-  const {memberId, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes} =
+  const {isMemberView, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes} =
     req.body;
+  let {memberId} = req.body;
 
   if (user.access === 0 && user.id !== memberId) {
     return res.status(401).json({
@@ -26,6 +27,9 @@ async function handler(req, res) {
   }
 
   let emailChanged = false;
+  if (isMemberView) {
+    memberId = user.id;
+  }
 
   try {
     let member;
@@ -42,7 +46,7 @@ async function handler(req, res) {
       member = await createUser(firstName, lastName, email, phoneNumber, preference);
     }
 
-    if (user.access > 0) {
+    if (!isMemberView) {
       const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
       await addTenure(member._id, tenure);
     }

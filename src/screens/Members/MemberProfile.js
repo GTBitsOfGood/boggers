@@ -1,10 +1,11 @@
 import styles from "./MemberProfile.module.css";
 import React, {useState, useEffect} from "react";
-import {useRouter} from "next/router";
-import {getSession, signOut} from "next-auth/react";
+import {signOut} from "next-auth/react";
 import axios from "axios";
+
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
+import {sortTenures, getCurrSemesterYear, convertToBase64} from "../../../utils/memberProfileUtils";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -17,20 +18,7 @@ import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-const convertToBase64 = (file) => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      resolve(reader.result);
-    };
-  });
-};
-
 export const MemberProfile = () => {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [admin, setAdmin] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(Avatar.src);
   const [imageBlob, setImageBlob] = useState(null);
@@ -43,15 +31,8 @@ export const MemberProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState("1234567890");
   const [preference, setPreference] = useState("Full-stack");
   const [emailVerified, setEmailVerified] = useState(true);
-
   const [tenures, setTenures] = useState([]);
   const [currIndex, setCurrIndex] = useState(-1);
-  const [semester, setSemester] = useState("Fall");
-  const [year, setYear] = useState("2022");
-  const [department, setDepartment] = useState("-");
-  const [role, setRole] = useState("-");
-  const [project, setProject] = useState("-");
-  const [status, setStatus] = useState("-");
 
   const requestStatus = (success) => {
     setSuccess(success ? 1 : 2);
@@ -60,147 +41,40 @@ export const MemberProfile = () => {
     setTimeout(() => setSuccess(0), 5000);
   };
 
-  const resetRouter = () => router.push(urls.base + urls.pages.members);
-
   useEffect(() => {
     const getInitialData = async () => {
-      const queryLength = Object.keys(router.query).length;
-      if (!(queryLength === 0 || queryLength === 3)) {
-        return resetRouter();
-      }
-
-      const userViewing = await getSession();
-      const isAdmin = false;
-      setAdmin(isAdmin);
-
-      let currentUserId;
-      if (queryLength === 3) {
-        if (
-          !isAdmin ||
-          !router.query.id ||
-          !router.query.semester ||
-          !router.query.year ||
-          !["Spring", "Summer", "Fall"].includes(router.query.semester) ||
-          !(Number.parseInt(router.query.year) >= 2010 && Number.parseInt(router.query.year) <= 2040)
-        ) {
-          return resetRouter();
-        } else {
-          currentUserId = router.query.id;
-        }
-      } else {
-        currentUserId = userViewing.user.id;
-      }
-
-      const result = await sendRequest(urls.api.getUser + `?id=${currentUserId}`, "GET");
+      const result = await sendRequest(urls.api.getUser, "GET");
       if (!result.success) {
-        return resetRouter();
+        return requestStatus(false);
       }
-      setUser(currentUserId);
+      const {user, imageUrl} = result.payload;
+      const tenures = sortTenures(user.tenures);
 
-      const userData = result.payload.user;
-      setFirstName(userData.firstName ?? "");
-      setLastName(userData.lastName ?? "");
-      setEmail(userData.email ?? "");
-      setPhoneNumber(userData.phoneNumber ?? "");
-      setPreference(userData.preference ?? "");
-
-      const tenures = userData.tenures.sort((a, b) => {
-        if (a.year < b.year) {
-          return -1;
-        } else if (a.year > b.year) {
-          return 1;
-        } else if (
-          (a.semester === "Spring" && (b.semester === "Spring" || b.semester === "Fall")) ||
-          (a.semester === "Summer" && b.semester === "Fall")
-        ) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
+      setFirstName(user.firstName ?? "");
+      setLastName(user.lastName ?? "");
+      setEmail(user.email ?? "");
+      setPhoneNumber(user.phoneNumber ?? "");
+      setPreference(user.preference ?? "");
       setTenures(tenures);
-      setImageUrl(result.payload.imageUrl ? result.payload.imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : Avatar.src);
-
-      let index = -1,
-        semester,
-        year,
-        department,
-        role,
-        project,
-        status;
-      if (!isAdmin && tenures.length > 0) {
-        index = tenures.length - 1;
-        ({semester, year, department, role, project, status} = tenures[index]);
-      } else {
-        if (queryLength === 3) {
-          ({semester, year} = router.query);
-          year = Number.parseInt(year);
-        } else {
-          const date = new Date();
-          const day = date.getDate();
-          const month = date.getMonth();
-          year = date.getFullYear();
-          if ((month >= 0 && month <= 3) || (month == 4 && day <= 14)) {
-            semester = "Spring";
-          } else if ((month == 4 && day >= 15) || (month >= 5 && month <= 6) || (month == 7 && day <= 14)) {
-            semester = "Summer";
-          } else {
-            semester = "Fall";
-          }
-        }
-
-        if (isAdmin) {
-          index = tenures.findIndex((tenure) => tenure.semester === semester && tenure.year === year);
-          if (index === -1) {
-            department = role = project = "";
-            status = "Active";
-          } else {
-            ({department, role, project, status} = tenures[index]);
-          }
-        } else {
-          department = role = project = status = "-";
-        }
-      }
-
-      setCurrIndex(index);
-      setSemester(semester);
-      setYear(year);
-      setDepartment(department);
-      setRole(role);
-      setProject(project);
-      setStatus(status);
+      setImageUrl(user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : Avatar.src);
+      setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
     };
 
     getInitialData();
-  }, [router]);
+  }, []);
 
   const handleSave = async () => {
     setSaved(1);
-    const newTenures = tenures.map((tenure) => structuredClone(tenure));
-    const updatedTenure = {semester, year, department, role, project, status};
-    if (currIndex === -1) {
-      newTenures.push(updatedTenure);
-    } else {
-      newTenures[currIndex] = updatedTenure;
-    }
-
     const result = await sendRequest(urls.api.updateMember, "PUT", {
-      memberId: user,
+      isMemberView: true,
       firstName,
       lastName,
       email,
       phoneNumber,
       preference,
-      semester,
-      year,
-      department,
-      role,
-      project,
-      status,
     });
 
     if (result.success) {
-      setTenures(newTenures);
       if (result.emailChanged) {
         setEmailVerified(false);
       }
@@ -227,54 +101,20 @@ export const MemberProfile = () => {
   };
 
   const handleArrowClick = (isLeft) => {
-    let index = currIndex == -1 ? -1 : isLeft ? Math.max(currIndex - 1, 0) : Math.min(currIndex + 1, tenures.length - 1);
-    let newSemester,
-      newYear = year,
-      department,
-      role,
-      project,
-      status;
-    if (admin) {
-      if (isLeft) {
-        if (semester === "Spring") {
-          newSemester = "Fall";
-          newYear -= 1;
-        } else if (semester === "Summer") {
-          newSemester = "Spring";
-        } else {
-          newSemester = "Summer";
-        }
-      } else {
-        if (semester === "Spring") {
-          newSemester = "Summer";
-        } else if (semester === "Summer") {
-          newSemester = "Fall";
-        } else {
-          newSemester = "Spring";
-          newYear += 1;
-        }
-      }
-
-      index = tenures.findIndex((tenure) => tenure.semester === newSemester && tenure.year === newYear);
-      if (index === -1) {
-        department = role = project = "";
-        status = "Active";
-      } else {
-        ({department, role, project, status} = tenures[index]);
-      }
-    } else if (currIndex == -1) {
+    if (currIndex === -1) {
       return;
-    } else {
-      ({semester: newSemester, year: newYear, department, role, project, status} = tenures[index]);
     }
-    setCurrIndex(index);
-    setSemester(newSemester);
-    setYear(newYear);
-    setDepartment(department);
-    setRole(role);
-    setProject(project);
-    setStatus(status);
+    setCurrIndex(isLeft ? Math.max(currIndex - 1, 0) : Math.min(currIndex + 1, tenures.length - 1));
   };
+
+  let semester, year, department, role, project, status_;
+  if (currIndex !== -1) {
+    ({semester, year, department, role, project} = tenures[currIndex]);
+    status_ = tenures[currIndex].status;
+  } else {
+    ({semester, year} = getCurrSemesterYear());
+    department = role = project = status_ = "-";
+  }
 
   const buttonTransition = [
     {styles: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"}, message: "Save"},
@@ -341,10 +181,10 @@ export const MemberProfile = () => {
           </div>
         </div>
         <div className={styles.MemberProfileFooterBottom}>
-          <FooterElement admin={admin} title="DEPARTMENT" state={department} setState={setDepartment} />
-          <FooterElement admin={admin} title="ROLE" state={role} setState={setRole} />
-          <FooterElement admin={admin} title="PROJECT" state={project} setState={setProject} />
-          <FooterElement admin={admin} title="STATUS" state={status} setState={setStatus} />
+          <FooterElement title="DEPARTMENT" state={department} />
+          <FooterElement title="ROLE" state={role} />
+          <FooterElement title="PROJECT" state={project} />
+          <FooterElement title="STATUS" state={status_} />
         </div>
       </div>
     </div>
