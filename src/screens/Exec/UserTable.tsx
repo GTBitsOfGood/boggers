@@ -48,34 +48,31 @@ function UserTable({currentSemester}) {
         const {users} = response;
         setUserList(users);
       });
-  }, [currentSemester]);
+  }, []);
 
-  const rowData = useMemo(() => {
-    const memberRowData: AdminDashboardRow[] = [];
-    userList.forEach((member, index) => {
-      const {tenures, firstName, lastName, email, phoneNumber, preference} = member;
+  const memberRowData: AdminDashboardRow[] = [];
+  userList.forEach((member, index) => {
+    const {tenures, firstName, lastName, email, phoneNumber, preference, id} = member;
 
-      const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
-      if (!currentTenure) return;
-      const {role, notes, department, project, status} = currentTenure;
-      memberRowData.push({
-        key: `${index}`,
-        member: {
-          firstName,
-          lastName,
-          phoneNumber,
-          email,
-        },
-        preference,
-        notes,
-        department,
-        role,
-        project,
-        status,
-      });
+    const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
+    if (!currentTenure) return;
+    const {role, notes, department, project, status} = currentTenure;
+    memberRowData.push({
+      key: `${index}`,
+      member: {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+      },
+      preference,
+      notes,
+      department,
+      role,
+      project,
+      status,
     });
-    return memberRowData;
-  }, [userList]);
+  });
 
   const columns: TColumn[] = [
     {id: "member", label: "Member"},
@@ -98,7 +95,7 @@ function UserTable({currentSemester}) {
     );
   }
   // return <PaginationTable rows={userList.map((user: IUser, index) => createAdminDashboardRow(user, index))} columns={columns} />;
-  return <PaginationTable rows={rowData} columns={columns} currentSemester={currentSemester} />;
+  return <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />;
 }
 
 export default UserTable;
