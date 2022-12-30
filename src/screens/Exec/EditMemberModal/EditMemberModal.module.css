@@ -19,7 +19,7 @@
   padding: 20px 30px;
   overflow-y: auto;
   z-index: 4;
-  transition: .15s ease-in;
+  transition: 0.15s ease-in;
 }
 
 .editModalTitleContainer {
@@ -77,7 +77,6 @@
 .noteField::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
 }
-
 
 .updateButtonGroup {
   display: flex;

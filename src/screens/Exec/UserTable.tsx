@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {PaginationTable, TColumn} from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/TableContext";
-import { getCurrSemesterYear } from "../../../utils/utilFunctions";
+import {getCurrSemesterYear} from "../../../utils/utilFunctions";
 
 interface AdminDashboardRow {
   key: string;
@@ -59,12 +59,12 @@ function UserTable({currentSemester, setSemester, setSemesters}) {
           user.tenures.forEach((tenure) => {
             semesters.add(`${tenure.semester} ${tenure.year}`);
             if (!randomSemester) {
-              randomSemester = `${tenure.semester} ${tenure.year}`
-            };
+              randomSemester = `${tenure.semester} ${tenure.year}`;
+            }
           });
         });
         setSemesters(semesters);
-        
+
         let curr = getCurrSemesterYear();
         curr = `${curr.semester} ${curr.year}`;
         setSemester(semesters.has(curr) ? curr : randomSemester);

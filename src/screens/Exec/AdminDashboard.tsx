@@ -8,7 +8,7 @@ import Image from "next/image";
 import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
-import { sortTenures } from "../../../utils/utilFunctions";
+import {sortTenures} from "../../../utils/utilFunctions";
 
 const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
@@ -76,7 +76,7 @@ function AdminDashboardPage() {
   return (
     <>
       {showUploadModal ? (
-        <div 
+        <div
           style={{
             position: "absolute",
             width: "100vw",
@@ -134,22 +134,22 @@ function AdminDashboardPage() {
               </Button>
               <Select
                 value={semester}
-                MenuProps={{PaperProps:{sx:{maxHeight: 150}}}}
+                MenuProps={{PaperProps: {sx: {maxHeight: 150}}}}
                 style={{
                   height: "3rem",
                   width: "9rem",
                   textAlign: "center",
                 }}
-                onChange={changeSemesterHandler}
-              >
-                {Array.from(semesters).sort(sortTenures(false)).map((semester) => {
-                  return (
-                    <MenuItem value={semester} style={{justifyContent: "center"}}>
-                      {semester.toUpperCase()}
-                    </MenuItem>
-                  );
-                })
-                }
+                onChange={changeSemesterHandler}>
+                {Array.from(semesters)
+                  .sort(sortTenures(false))
+                  .map((semester) => {
+                    return (
+                      <MenuItem value={semester} style={{justifyContent: "center"}}>
+                        {semester.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
               </Select>
             </Box>
           </Box>

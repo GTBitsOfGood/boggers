@@ -56,7 +56,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
       setStatus(row.status);
       setNotes(row.notes ?? "");
     }
-  }, [row])
+  }, [row]);
 
   const updateHandler = async () => {
     closeModal();
@@ -80,7 +80,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
     if (result.success) {
       setUserList(userList.map((user) => (user.id === row.member.id ? result.user : user)));
     }
-  }
+  };
 
   const animation = {
     false: {
@@ -92,7 +92,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
       container: {visibility: "visible", opacity: 1},
     },
   };
-  console.log(isVisible);
+
   const {departments, roles, projects, preferences, statuses, memberTypes} = fields;
   return (
     <div>
