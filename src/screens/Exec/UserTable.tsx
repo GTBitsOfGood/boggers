@@ -116,7 +116,7 @@ function UserTable({currentSemester, setSemester, setSemesters}) {
       </div>
     );
   }
-  // return <PaginationTable rows={userList.map((user: IUser, index) => createAdminDashboardRow(user, index))} columns={columns} />;
+
   return (
     <TableContext.Provider value={{userList, setUserList}}>
       <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />

@@ -130,7 +130,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="DEPARTMENT" />
             <Select size="small" style={{width: "100%"}} value={department} onChange={(e) => setDepartment(e.target.value)}>
               {departments.map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem key={key} value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
@@ -138,7 +138,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="ROLE" />
             <Select size="small" style={{width: "100%"}} value={role} onChange={(e) => setRole(e.target.value)}>
               {roles.map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem key={key} value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
@@ -146,7 +146,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="PROJECT" />
             <Select size="small" style={{width: "100%"}} value={project} onChange={(e) => setProject(e.target.value)}>
               {projects.map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem key={key} value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
@@ -154,7 +154,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="TECH PREFERENCE" />
             <Select size="small" style={{width: "100%"}} value={preference} onChange={(e) => setPreference(e.target.value)}>
               {preferences.map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem key={key} value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
@@ -162,7 +162,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="STATUS" />
             <Select size="small" style={{width: "100%"}} value={status} onChange={(e) => setStatus(e.target.value)}>
               {statuses.map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem key={key} value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
@@ -170,7 +170,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="MEMBER TYPE" />
             <Select size="small" style={{width: "100%"}} value={memberType} onChange={(e) => setMemberType(e.target.value)}>
               {Object.keys(memberTypes).map((key) => (
-                <MenuItem value={key}>{memberTypes[key]}</MenuItem>
+                <MenuItem key={memberTypes[key]} value={key}>{memberTypes[key]}</MenuItem>
               ))}
             </Select>
           </div>

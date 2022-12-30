@@ -1,6 +1,5 @@
 import React, {useMemo, useEffect, useState} from "react";
 import {Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
-import {makeStyles} from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import ScreenGrid from "./ScreenGrid";
 import UserTable from "./UserTable";
@@ -25,7 +24,7 @@ function AdminDashboardPage() {
     position: "relative",
     border: "solid",
     borderColor: "#C4C4C4",
-    borderWidth: "1px",
+    borderWidth: "2px",
     height: "3rem",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -54,6 +53,37 @@ function AdminDashboardPage() {
       [theme.breakpoints.up("md")]: {
         width: "21ch",
       },
+    },
+  }));
+
+  const StyledButton = styled(Button)(({theme}) => ({
+    color: "black",
+    border: "solid",
+    borderColor: "#C4C4C4",
+    borderWidth: "2px",
+    fontSize: "16px",
+    fontWeight: "400",
+    height: "3rem",
+    width: "8rem",
+    "&:hover": {
+      backgroundColor: "#EAE6FF",
+      borderColor: "#473F91",
+    },
+  }));
+
+  const StyledSelect = styled(Select)(({theme}) => ({
+    color: "black",
+    border: "1px solid #C4C4C4",
+    fontSize: "16px",
+    fontWeight: "400",
+    height: "3rem",
+    transition: "0.2s ease-out",
+    width: "10rem",
+    outline: "none",
+    textAlign: "center",
+    "&:hover": {
+      backgroundColor: "#EAE6FF",
+      borderColor: "#473F91",
     },
   }));
 
@@ -121,36 +151,22 @@ function AdminDashboardPage() {
                 </SearchIconWrapper>
                 <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
               </Search>
-              <Button
-                variant="outlined"
-                style={{
-                  color: "black",
-                  fontWeight: "400",
-                  height: "3rem",
-                  backgroundColor: fileBlob ? "#EAE6FF" : "none",
-                }}
-                onClick={() => setShowUploadModal(true)}>
-                UPLOAD CSV
-              </Button>
-              <Select
+              <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
+              <StyledSelect
                 value={semester}
                 MenuProps={{PaperProps: {sx: {maxHeight: 150}}}}
-                style={{
-                  height: "3rem",
-                  width: "9rem",
-                  textAlign: "center",
-                }}
-                onChange={changeSemesterHandler}>
+                onChange={changeSemesterHandler}
+              >
                 {Array.from(semesters)
                   .sort(sortTenures(false))
                   .map((semester) => {
                     return (
-                      <MenuItem value={semester} style={{justifyContent: "center"}}>
+                      <MenuItem key={semester} value={semester} style={{justifyContent: "center"}}>
                         {semester.toUpperCase()}
                       </MenuItem>
                     );
                   })}
-              </Select>
+              </StyledSelect>
             </Box>
           </Box>
           <div style={{height: "75vh", width: "90vw"}}>
