@@ -29,4 +29,9 @@ async function upsertTenureCsv(userId, semester, year, role, status, project, de
   return newTenure;
 }
 
-export {getTenures, getTenure, upsertTenure, upsertTenureCsv};
+async function deleteTenures(userId) {
+  const res = await Tenure.deleteMany({userId});
+  return res;
+}
+
+export {getTenures, getTenure, upsertTenure, upsertTenureCsv, deleteTenures};

@@ -1,48 +1,42 @@
-import React from "react";
+import React, {useContext} from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import urls from "../../../utils/urls";
+import sendRequest from "../../../utils/sendToBackend";
+import TableContext from "../../../utils/TableContext";
 
 interface IConfirmModal {
-  buttonText: string;
-  title: string;
-  body: string;
-  onConfirm: Function;
+  isOpen: boolen;
+  handleCancel: Function;
+  handleConfirm: Function;
+  userId: string;
 }
-export default function ConfirmModal({buttonText, title, body, onConfirm}: IConfirmModal) {
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+export default function ConfirmationModal({isOpen, handleCancel, handleConfirm, userId}: IConfirmModal) {
+  const {userList, setUserList} = useContext(TableContext);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleConfirm = () => {
-    onConfirm();
-    handleClose();
+  const deleteUser = async () => {
+    handleConfirm();
+    const res = await sendRequest(urls.api.deleteUser, "DELETE", {id: userId});
+    if (res.success) {
+      setUserList(userList.filter((user) => user.id !== userId));
+    }
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        {buttonText}
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <Dialog aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" open={isOpen}>
+        <DialogTitle id="alert-dialog-title">Are you sure you want to remove this user?</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{body}</DialogContentText>
+          <DialogContentText id="alert-dialog-description">This action is permanent. User information will not be able to be recovered.</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm} autoFocus>
-            Confirm
-          </Button>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button autoFocus onClick={deleteUser}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>

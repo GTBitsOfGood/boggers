@@ -5,6 +5,7 @@ import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
 import sendRequest from "../../../../utils/sendToBackend";
 import TableContext from "../../../../utils/TableContext";
+import ConfirmationModal from "../ConfirmationModal";
 
 const Label = ({label}) => {
   return (
@@ -30,6 +31,7 @@ const splitSemesterString = (semesterString) => {
 export default function EditMemberModal({row, isVisible, closeModal, currentSemester}) {
   const {userList, setUserList} = useContext(TableContext);
   const [semester, year] = splitSemesterString(currentSemester);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -97,6 +99,15 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
   return (
     <div>
       <div className={style.background} style={animation[isVisible].background} onClick={() => closeModal()} />
+      <ConfirmationModal
+        isOpen={confirmModal}
+        handleCancel={() => setConfirmModal(false)}
+        handleConfirm={() => {
+          setConfirmModal(false);
+          closeModal();
+        }}
+        userId={row?.member.id}
+      />
       <div className={style.editModalContainer} style={animation[isVisible].container}>
         <div className={style.exitButton} onClick={() => closeModal()}>
           X
@@ -180,14 +191,8 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
           <TextField className={style.noteField} multiline value={notes} onChange={(e) => setNotes(e.target.value)} />
         </div>
         <div className={style.updateButtonGroup}>
-          <Button variant="contained" style={{marginLeft: "10px"}}>
-            {" "}
-            REMOVE MEMBER
-          </Button>
-          <Button variant="contained" style={{marginLeft: "10px"}} onClick={updateHandler}>
-            {" "}
-            SAVE{" "}
-          </Button>
+          <Button variant="contained" style={{marginLeft: "10px"}} onClick={() => setConfirmModal(true)}>REMOVE MEMBER</Button>
+          <Button variant="contained" style={{marginLeft: "10px"}} onClick={updateHandler}>SAVE</Button>
         </div>
       </div>
     </div>

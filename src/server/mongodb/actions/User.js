@@ -19,8 +19,8 @@ async function createUser(firstName, lastName, email, phoneNumber) {
   return await User.create({firstName, lastName, email, phoneNumber});
 }
 
-async function deleteUser(email) {
-  const res = await User.deleteOne({email: email});
+async function deleteUser(id) {
+  const res = await User.deleteOne({id});
   return res;
 }
 async function createRootUser() {
@@ -85,6 +85,7 @@ export {
   createUser,
   createRootUser,
   createSeedUser,
+  deleteUser,
   updateUser,
   upsertUserCsv,
   addTenure,
