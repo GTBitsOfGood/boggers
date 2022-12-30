@@ -78,17 +78,16 @@ function AdminDashboardPage() {
       <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
       <ScreenGrid>
         <Grid item>
-          <Box sx={{display: "flex"}} style={{marginBottom: "1rem"}}>
-            <Box sx={{display: "flex", columnGap: 1}}>
+          <Box sx={{display: "flex", alignItems: "center"}} style={{marginBottom: "1.5rem"}}>
+            <Box sx={{display: "flex", alignItems: "center", columnGap: 1.5}}>
               <Image
                 alt="BOG logo"
                 src={BOG}
-                width={50}
-                height={30}
+                width={70}
+                height={70}
                 style={{
                   maxWidth: "100%",
                   height: "auto",
-                  marginTop: "0.1rem",
                 }}
               />
               <Typography
@@ -141,7 +140,7 @@ function AdminDashboardPage() {
               </Select>
             </Box>
           </Box>
-          <div style={{height: "75vh", width: "80vw"}}>
+          <div style={{height: "75vh", width: "90vw"}}>
             <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} />
           </div>
         </Grid>

@@ -88,22 +88,19 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
   };
 
   function headerStyle(column) {
+    let style = {
+      minWidth: column.minWidth,
+      borderBottom: "none",
+      backgroundColor: "#EEEEEE",
+      color: "#727474",
+      fontSize: "20px",
+      fontWeight: 400,
+    };
+
     if (column.label !== "Notes") {
-      return {
-        minWidth: column.minWidth,
-        ...cellStyle,
-        borderBottom: "none",
-        backgroundColor: "#EEEEEE",
-        color: "#727474",
-      };
-    } else {
-      return {
-        minWidth: column.minWidth,
-        borderBottom: "none",
-        backgroundColor: "#EEEEEE",
-        color: "#727474",
-      };
+      style = {...style, ...cellStyle};
     }
+    return style;
   }
 
   const showModalHandler = (row) => {
@@ -126,7 +123,7 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
               <TableRow>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align || "center"} style={headerStyle(column)}>
-                    {column.label}
+                    {column.label.toUpperCase()}
                   </TableCell>
                 ))}
               </TableRow>
