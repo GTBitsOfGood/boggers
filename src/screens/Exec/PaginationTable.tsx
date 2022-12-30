@@ -28,37 +28,45 @@ interface TRow {
   [key: string]: any;
 }
 
+const cellStyle = {
+  border: "none",
+  borderRight: "solid",
+  borderBottom: "solid",
+  borderWidth: "1px",
+  borderColor: "#DCDCDC",
+};
+
 function Row({row, columns, onClick}: RowProps) {
   const {key, member, department, role, preference, project, notes, status} = row;
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={`${row.key}TR`} onClick={onClick}>
-      <TableCell key={`member_${key}`} align="left">
+      <TableCell key={`member_${key}`} align="left" style={cellStyle}>
         <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
         <p className={styles.rowEmail}>{member.email}</p>
         <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
       </TableCell>
-      <TableCell key={`department_${key}`} align="center">
+      <TableCell key={`department_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
           <p>{department}</p>
         </div>
       </TableCell>
-      <TableCell key={`role_${key}`} align="center">
+      <TableCell key={`role_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
           <p>{department}</p>
         </div>
       </TableCell>
-      <TableCell key={`project_${key}`} align="center">
+      <TableCell key={`project_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
           <p>{project}</p>
         </div>
       </TableCell>
-      <TableCell key={`status_${key}`} align="center">
+      <TableCell key={`status_${key}`} align="center" style={cellStyle}>
         <div className={status === "Active" ? styles.greenHighlight : styles.redHighlight}>
           <p>{status}</p>
         </div>
       </TableCell>
-      <TableCell key={`notes_${key}`} align="center">
-        {notes ? <ChatBubbleOutlineRoundedIcon /> : null}
+      <TableCell key={`notes_${key}`} align="center" style={{...cellStyle, borderRight: "none"}}>
+        {notes ? <ChatBubbleOutlineRoundedIcon style={{color: "#657788"}} /> : null}
       </TableCell>
     </TableRow>
   );
@@ -83,10 +91,8 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
     if (column.label !== "Notes") {
       return {
         minWidth: column.minWidth,
-        border: "hidden",
-        borderRight: "solid",
-        borderWidth: "1px",
-        borderColor: "#DCDCDC",
+        ...cellStyle,
+        borderBottom: "none",
         backgroundColor: "#EEEEEE",
         color: "#727474",
       };

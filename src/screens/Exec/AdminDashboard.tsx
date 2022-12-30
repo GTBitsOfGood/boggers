@@ -50,7 +50,7 @@ function AdminDashboardPage() {
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("md")]: {
-        width: "20ch",
+        width: "21ch",
       },
     },
   }));
@@ -122,8 +122,11 @@ function AdminDashboardPage() {
                 value={semester}
                 style={{
                   height: "3rem",
+                  width: "9rem",
+                  textAlign: "center",
                 }}
-                onChange={changeSemesterHandler}>
+                onChange={changeSemesterHandler}
+              >
                 <MenuItem value={"FALL 2022"}>FALL 2022</MenuItem>
                 <MenuItem value={"SPRING 2022"}>SPRING 2022</MenuItem>
                 <MenuItem value={"FALL 2021"}>FALL 2021</MenuItem>
