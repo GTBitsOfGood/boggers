@@ -20,7 +20,7 @@ async function createUser(firstName, lastName, email, phoneNumber) {
 }
 
 async function deleteUser(id) {
-  const res = await User.deleteOne({id});
+  const res = await User.deleteOne({_id: id});
   return res;
 }
 async function createRootUser() {

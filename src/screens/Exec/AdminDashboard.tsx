@@ -13,7 +13,7 @@ const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
 };
 
-function AdminDashboardPage() {
+function AdminDashboardPage({url}) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -170,7 +170,7 @@ function AdminDashboardPage() {
             </Box>
           </Box>
           <div style={{height: "75vh", width: "90vw"}}>
-            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} />
+            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} />
           </div>
         </Grid>
       </ScreenGrid>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useMemo} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import {PaginationTable, TColumn} from "./PaginationTable";
+import PaginationTable, {TColumn} from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/TableContext";
 import {getCurrSemesterYear} from "../../../utils/utilFunctions";
@@ -39,9 +39,11 @@ interface IUser {
   tenures: any;
   preference: string;
   status: string;
+  image: string;
+  emailVerified: boolean;
 }
 
-function UserTable({currentSemester, setSemester, setSemesters}) {
+function UserTable({currentSemester, setSemester, setSemesters, url}) {
   const [userList, setUserList] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function UserTable({currentSemester, setSemester, setSemesters}) {
 
   const memberRowData: AdminDashboardRow[] = [];
   userList.forEach((member, index) => {
-    const {id, tenures, firstName, lastName, email, phoneNumber, preference} = member;
+    const {id, tenures, firstName, lastName, email, phoneNumber, preference, image} = member;
 
     const currentTenure = tenures.find((tenure) => currentSemester === `${tenure.semester} ${tenure.year}`);
     if (!currentTenure) return;
@@ -86,6 +88,7 @@ function UserTable({currentSemester, setSemester, setSemesters}) {
         lastName,
         phoneNumber,
         email,
+        image,
       },
       preference,
       notes,
@@ -119,7 +122,7 @@ function UserTable({currentSemester, setSemester, setSemesters}) {
 
   return (
     <TableContext.Provider value={{userList, setUserList}}>
-      <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />
+      <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} url={url} />
     </TableContext.Provider>
   );
 }

@@ -3,6 +3,8 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagi
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
+import {baseAwsUrl} from "../../../utils/awsConfig";
+import Avatar from "../../public/Avatar.png";
 
 interface TableProps {
   rows: TRow[];
@@ -36,11 +38,12 @@ const cellStyle = {
   borderColor: "#DCDCDC",
 };
 
-function Row({row, columns, onClick}: RowProps) {
+function Row({row, columns, url, onClick}: RowProps) {
   const {key, member, department, role, preference, project, notes, status} = row;
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={`${row.key}TR`} onClick={onClick}>
       <TableCell key={`member_${key}`} align="left" style={cellStyle}>
+        <img src={member.image ? url + member.id : Avatar.src} />
         <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
         <p className={styles.rowEmail}>{member.email}</p>
         <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
@@ -72,7 +75,7 @@ function Row({row, columns, onClick}: RowProps) {
   );
 }
 
-function PaginationTable({rows, columns, currentSemester}: TableProps) {
+function PaginationTable({rows, columns, currentSemester, url}: TableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -135,7 +138,7 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
             </TableHead>
             <TableBody>
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                return <Row row={row} key={row.key} columns={columns} onClick={(event) => showModalHandler(row)} />;
+                return <Row row={row} key={row.key} columns={columns} url={url} onClick={(event) => showModalHandler(row)} />;
               })}
             </TableBody>
           </Table>
@@ -155,5 +158,5 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
   );
 }
 
-export {PaginationTable};
+export default PaginationTable;
 export type {TRow, TColumn};
