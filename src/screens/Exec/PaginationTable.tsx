@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
 
@@ -57,7 +58,7 @@ function Row({row, columns, onClick}: RowProps) {
         </div>
       </TableCell>
       <TableCell key={`notes_${key}`} align="center">
-        <p>{notes}</p>
+        {notes ? <ChatBubbleOutlineRoundedIcon /> : null}
       </TableCell>
     </TableRow>
   );
