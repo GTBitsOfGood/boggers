@@ -3,6 +3,7 @@ import style from "./EditMemberModal.module.css";
 import {Typography, TextField, Button, MenuItem, Select} from "@mui/material";
 import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
+import sendRequest from "../../../../utils/sendToBackend";
 
 const Label = ({label}) => {
   return (
@@ -26,26 +27,44 @@ const splitSemesterString = (semesterString) => {
 };
 
 export default function EditMemberModal({row, setShowModal, currentSemester}) {
-  const {department: memberDepartment, role: memberRole, project: memberProject, preference: memberPreference, status: memberStatus} = row;
+  const [semester, year] = splitSemesterString(currentSemester);
 
-  const {firstName: memberFirstName, lastName: memberLastName, email: memberEmail, phoneNumber: memberPhoneNumber} = row.member;
-  const [memberSemester, memberYear] = splitSemesterString(currentSemester);
+  const [firstName, setFirstName] = useState(row.member.firstName);
+  const [lastName, setLastName] = useState(row.member.lastName);
+  const [email, setEmail] = useState(row.member.email);
+  const [phoneNumber, setPhoneNumber] = useState(row.member.phoneNumber);
+  const [department, setDepartment] = useState(row.department);
+  const [role, setRole] = useState(row.role);
+  const [project, setProject] = useState(row.project);
+  const [preference, setPreference] = useState(row.preference);
+  const [status, setStatus] = useState(row.status);
+  const [memberType, setMemberType] = useState(0);
+  const [notes, setNotes] = useState(row.notes ?? "");
 
-  const [newFirstName, setNewFirstName] = useState(memberFirstName);
-  const [newLastName, setNewLastName] = useState(memberLastName);
-  const [newSemester, setNewSemester] = useState(memberSemester);
-  const [newYear, setNewYear] = useState(memberYear);
-  const [newEmail, setNewEmail] = useState(memberEmail);
-  const [newPhoneNumber, setNewPhoneNumber] = useState(memberPhoneNumber);
-  const [newDepartment, setNewDepartment] = useState(memberDepartment);
-  const [newRole, setNewRole] = useState(memberRole);
-  const [newProject, setNewProject] = useState(memberProject);
-  const [newPreference, setNewPreference] = useState(memberPreference);
-  const [newStatus, setNewStatus] = useState(memberStatus);
+  const updateHandler = async () => {
+    setShowModal(false);
+    const result = await sendRequest(urls.api.updateMember, "PUT", {
+      memberId: row.member.id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      semester,
+      year,
+      department,
+      role,
+      project,
+      preference,
+      status,
+      notes,
+    });
+    console.log(result);
+  }
 
-  const {departments, roles, projects, preferences, status, memberTypes} = fields;
+  const {departments, roles, projects, preferences, statuses, memberTypes} = fields;
   return (
-    <div className={style.background}>
+    <div>
+      <div className={style.background} onClick={() => setShowModal(false)} />
       <div className={style.editModalContainer}>
         <div className={style.exitButton} onClick={() => setShowModal(false)}>
           X
@@ -53,83 +72,87 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
         <div className={style.editModalTitleContainer}>
           <img className={style.arrow} />
           <div>
-            <p className={style.header}>{`${memberFirstName} ${memberLastName}`}</p>
-            <p className={style.subHeader}>{`${memberSemester} ${memberYear}`}</p>
+            <p className={style.header}>{`${firstName} ${lastName}`}</p>
+            <p className={style.subHeader}>{`${semester} ${year}`}</p>
           </div>
         </div>
 
         <div className={style.fieldListContainer}>
           <div className={style.fieldContainer}>
             <Label label="FIRST NAME" />
-            <TextField size="small" style={{width: "100%"}} value={newFirstName} onChange={(e) => setNewFirstName(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="LAST NAME" />
-            <TextField size="small" style={{width: "100%"}} value={newLastName} onChange={(e) => setNewLastName(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={lastName} onChange={(e) => setLastName(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="EMAIL" />
-            <TextField size="small" style={{width: "100%"}} value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="PHONE NUMBER" />
-            <TextField size="small" style={{width: "100%"}} value={newPhoneNumber} onChange={(e) => setNewPhoneNumber(e.target.value)} />
+            <TextField size="small" style={{width: "100%"}} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
           </div>
           <div className={style.fieldContainer}>
             <Label label="DEPARTMENT" />
-            <Select size="small" style={{width: "100%"}} value={newDepartment} onChange={(e) => setNewDepartment(e.target.value)}>
-              {Object.keys(departments).map((key) => (
-                <MenuItem value={departments[key]}>{departments[key]}</MenuItem>
+            <Select size="small" style={{width: "100%"}} value={department} onChange={(e) => setDepartment(e.target.value)}>
+              {departments.map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
           <div className={style.fieldContainer}>
             <Label label="ROLE" />
-            <Select size="small" style={{width: "100%"}} value={newRole} onChange={(e) => setNewRole(e.target.value)}>
-              {Object.keys(roles).map((key) => (
-                <MenuItem value={roles[key]}>{roles[key]}</MenuItem>
+            <Select size="small" style={{width: "100%"}} value={role} onChange={(e) => setRole(e.target.value)}>
+              {roles.map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
           <div className={style.fieldContainer}>
             <Label label="PROJECT" />
-            <Select size="small" style={{width: "100%"}} value={newProject} onChange={(e) => setNewProject(e.target.value)}>
-              {Object.keys(projects).map((key) => (
-                <MenuItem value={projects[key]}>{projects[key]}</MenuItem>
+            <Select size="small" style={{width: "100%"}} value={project} onChange={(e) => setProject(e.target.value)}>
+              {projects.map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
           <div className={style.fieldContainer}>
             <Label label="TECH PREFERENCE" />
-            <Select size="small" style={{width: "100%"}} value={newPreference} onChange={(e) => setNewPreference(e.target.value)}>
-              {Object.keys(preferences).map((key) => (
-                <MenuItem value={preferences[key]}>{preferences[key]}</MenuItem>
+            <Select size="small" style={{width: "100%"}} value={preference} onChange={(e) => setPreference(e.target.value)}>
+              {preferences.map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
           <div className={style.fieldContainer}>
             <Label label="STATUS" />
-            <Select size="small" style={{width: "100%"}} value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
-              {Object.keys(status).map((key) => (
-                <MenuItem value={status[key]}>{status[key]}</MenuItem>
+            <Select size="small" style={{width: "100%"}} value={status} onChange={(e) => setStatus(e.target.value)}>
+              {statuses.map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
               ))}
             </Select>
           </div>
           <div className={style.fieldContainer}>
             <Label label="MEMBER TYPE" />
-            <TextField label="" size="small" style={{width: "100%"}} />
+            <Select size="small" style={{width: "100%"}} value={memberType} onChange={(e) => setMemberType(e.target.value)}>
+              {Object.keys(memberTypes).map((key) => (
+                <MenuItem value={key}>{memberTypes[key]}</MenuItem>
+              ))}
+            </Select>
           </div>
         </div>
         <div className={style.noteContainer}>
           <Label label="NOTES" />
-          <TextField multiline style={{width: "100%", height: "150px", overflow: "auto"}} />
+          <TextField className={style.noteField} multiline value={notes} onChange={(e) => setNotes(e.target.value)} />
         </div>
         <div className={style.updateButtonGroup}>
           <Button variant="contained" style={{marginLeft: "10px"}}>
             {" "}
             REMOVE MEMBER
           </Button>
-          <Button variant="contained" style={{marginLeft: "10px"}}>
+          <Button variant="contained" style={{marginLeft: "10px"}} onClick={updateHandler}>
             {" "}
             SAVE{" "}
           </Button>

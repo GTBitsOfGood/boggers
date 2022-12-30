@@ -1,35 +1,16 @@
-const departments = {
-  engineering: "Engineering",
-};
+const departments = ["Engineering"];
 
-const roles = {
-  developer: "Developer",
-  seniorDeveloper: "Senior Developer",
-  associateDirector: "Associate Director",
-  director: "Director",
-  alumni: "Alumni",
-};
+const roles = ["Developer", "Senior Developer", "Associate Director", "Director", "Alumni"];
 
-const projects = {
-  helpingMama: "Helping Mamas",
-  gtScheduler: "GT Scheduler",
-  productMaintenance: "Product Maintenance",
-  exec: "Exec",
-};
+const projects = ["Helping Mamas", "GT Scheduler", "Product Maintenance", "Exec"];
 
-const preferences = {
-  frontend: "Front-end",
-  backend: "Back-end",
-  fullStack: "Full-stack",
-};
+const preferences = ["Front-end", "Back-end", "Full-stack"];
 
-const status = {
-  active: "Active",
-  inactive: "Inactive",
-};
+const statuses = ["Active", "Inactive"];
 
-const memberType = {
-  member: "Member",
+const memberTypes = {
+  0: "Member",
+  1: "Admin",
 };
 
 const fields = {
@@ -37,8 +18,8 @@ const fields = {
   roles,
   projects,
   preferences,
-  status,
-  memberType,
+  statuses,
+  memberTypes,
 };
 
 export default fields;

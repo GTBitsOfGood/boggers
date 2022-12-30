@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 10;
+  z-index: 3;
 }
 
 .editModalContainer {
@@ -16,7 +16,9 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 40px;
+  padding: 20px 30px;
+  overflow-y: auto;
+  z-index: 4;
 }
 
 .editModalTitleContainer {
@@ -56,11 +58,31 @@
   padding-right: 10px;
 }
 
+.noteField {
+  width: 100%;
+  max-height: 150px;
+  overflow: auto;
+}
+
+.noteField::-webkit-scrollbar {
+  width: 6px;
+}
+
+.noteField::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+}
+
+.noteField::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+
 .updateButtonGroup {
   display: flex;
   flex-direction: row;
   justify-content: right;
-  padding: 10px;
+  padding: 30px 10px 10px;
 }
 
 .exitButton {
