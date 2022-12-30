@@ -3,6 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {PaginationTable, TColumn} from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/TableContext";
+import { getCurrSemesterYear } from "../../../utils/utilFunctions";
 
 interface AdminDashboardRow {
   key: string;
@@ -40,7 +41,7 @@ interface IUser {
   status: string;
 }
 
-function UserTable({currentSemester}) {
+function UserTable({currentSemester, setSemester, setSemesters}) {
   const [userList, setUserList] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -51,6 +52,22 @@ function UserTable({currentSemester}) {
       .then((response) => {
         const {users} = response;
         setUserList(users);
+
+        const semesters = new Set();
+        let randomSemester = null;
+        users.forEach((user) => {
+          user.tenures.forEach((tenure) => {
+            semesters.add(`${tenure.semester} ${tenure.year}`);
+            if (!randomSemester) {
+              randomSemester = `${tenure.semester} ${tenure.year}`
+            };
+          });
+        });
+        setSemesters(semesters);
+        
+        let curr = getCurrSemesterYear();
+        curr = `${curr.semester} ${curr.year}`;
+        setSemester(semesters.has(curr) ? curr : randomSemester);
       });
   }, []);
 
@@ -58,7 +75,7 @@ function UserTable({currentSemester}) {
   userList.forEach((member, index) => {
     const {id, tenures, firstName, lastName, email, phoneNumber, preference} = member;
 
-    const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
+    const currentTenure = tenures.find((tenure) => currentSemester === `${tenure.semester} ${tenure.year}`);
     if (!currentTenure) return;
     const {role, notes, department, project, status} = currentTenure;
     memberRowData.push({

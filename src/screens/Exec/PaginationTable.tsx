@@ -99,6 +99,7 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
     } else {
       return {
         minWidth: column.minWidth,
+        borderBottom: "none",
         backgroundColor: "#EEEEEE",
         color: "#727474",
       };

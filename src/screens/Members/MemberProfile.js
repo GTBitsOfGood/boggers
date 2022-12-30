@@ -5,7 +5,7 @@ import axios from "axios";
 
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
-import {sortTenures, getCurrSemesterYear, convertToBase64} from "../../../utils/memberProfileUtils";
+import {sortTenures, getCurrSemesterYear, convertToBase64} from "../../../utils/utilFunctions";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -48,7 +48,7 @@ export const MemberProfile = ({session}) => {
         return requestStatus(false);
       }
       const {user, imageUrl} = result.payload;
-      const tenures = sortTenures(user.tenures);
+      const tenures = user.tenures.sort(sortTenures(true));
 
       setFirstName(user.firstName ?? "");
       setLastName(user.lastName ?? "");

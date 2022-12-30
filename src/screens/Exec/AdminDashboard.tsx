@@ -8,13 +8,15 @@ import Image from "next/image";
 import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
+import { sortTenures } from "../../../utils/utilFunctions";
 
 const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
 };
 
 function AdminDashboardPage() {
-  const [semester, setSemester] = useState("FALL 2022");
+  const [semesters, setSemesters] = useState([]);
+  const [semester, setSemester] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [fileBlob, setFileBlob] = useState(null);
@@ -120,6 +122,7 @@ function AdminDashboardPage() {
               </Button>
               <Select
                 value={semester}
+                MenuProps={{PaperProps:{sx:{maxHeight: 150}}}}
                 style={{
                   height: "3rem",
                   width: "9rem",
@@ -127,15 +130,19 @@ function AdminDashboardPage() {
                 }}
                 onChange={changeSemesterHandler}
               >
-                <MenuItem value={"FALL 2022"}>FALL 2022</MenuItem>
-                <MenuItem value={"SPRING 2022"}>SPRING 2022</MenuItem>
-                <MenuItem value={"FALL 2021"}>FALL 2021</MenuItem>
-                // TODO: un-hardcode this
+                {Array.from(semesters).sort(sortTenures(false)).map((semester) => {
+                  return (
+                    <MenuItem value={semester} style={{justifyContent: "center"}}>
+                      {semester.toUpperCase()}
+                    </MenuItem>
+                  );
+                })
+                }
               </Select>
             </Box>
           </Box>
           <div style={{height: "75vh", width: "80vw"}}>
-            <UserTable currentSemester={semester} />
+            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} />
           </div>
         </Grid>
       </ScreenGrid>
