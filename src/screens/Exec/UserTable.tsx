@@ -7,11 +7,14 @@ import {bool} from "aws-sdk/clients/redshiftdata";
 interface AdminDashboardRow {
   key: string;
   member: {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
   };
+  semester: string;
+  year: int;
   department: string;
   role: string;
   preference: string;
@@ -21,6 +24,7 @@ interface AdminDashboardRow {
 }
 
 interface IUser {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -52,14 +56,15 @@ function UserTable({currentSemester}) {
 
   const memberRowData: AdminDashboardRow[] = [];
   userList.forEach((member, index) => {
-    const {tenures, firstName, lastName, email, phoneNumber, preference, id} = member;
+    const {id, tenures, firstName, lastName, email, phoneNumber, preference} = member;
 
     const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
     if (!currentTenure) return;
     const {role, notes, department, project, status} = currentTenure;
     memberRowData.push({
-      key: `${index}`,
+      key: `${id}${index}`,
       member: {
+        id,
         firstName,
         lastName,
         phoneNumber,

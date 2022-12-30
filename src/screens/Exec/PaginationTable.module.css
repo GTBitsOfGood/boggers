@@ -50,6 +50,7 @@
 
 .TableContainer::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .TableContainer::-webkit-scrollbar-thumb {
