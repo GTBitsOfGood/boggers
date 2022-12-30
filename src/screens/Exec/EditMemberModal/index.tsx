@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import style from "./EditMemberModal.module.css";
 import {Typography, TextField, Button, MenuItem, Select} from "@mui/material";
 import fields from "../../../../utils/fields";
@@ -27,24 +27,39 @@ const splitSemesterString = (semesterString) => {
   return [semester.charAt(0).toUpperCase() + semester.slice(1).toLowerCase(), year];
 };
 
-export default function EditMemberModal({row, setShowModal, currentSemester}) {
+export default function EditMemberModal({row, isVisible, closeModal, currentSemester}) {
   const {userList, setUserList} = useContext(TableContext);
   const [semester, year] = splitSemesterString(currentSemester);
 
-  const [firstName, setFirstName] = useState(row.member.firstName);
-  const [lastName, setLastName] = useState(row.member.lastName);
-  const [email, setEmail] = useState(row.member.email);
-  const [phoneNumber, setPhoneNumber] = useState(row.member.phoneNumber);
-  const [department, setDepartment] = useState(row.department);
-  const [role, setRole] = useState(row.role);
-  const [project, setProject] = useState(row.project);
-  const [preference, setPreference] = useState(row.preference);
-  const [status, setStatus] = useState(row.status);
-  const [memberType, setMemberType] = useState(0);
-  const [notes, setNotes] = useState(row.notes ?? "");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [department, setDepartment] = useState("");
+  const [role, setRole] = useState("");
+  const [project, setProject] = useState("");
+  const [preference, setPreference] = useState("");
+  const [status, setStatus] = useState("");
+  const [memberType, setMemberType] = useState("");
+  const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (row) {
+      setFirstName(row.member.firstName);
+      setLastName(row.member.lastName);
+      setEmail(row.member.email);
+      setPhoneNumber(row.member.phoneNumber);
+      setDepartment(row.department);
+      setRole(row.role);
+      setProject(row.project);
+      setPreference(row.preference);
+      setStatus(row.status);
+      setNotes(row.notes ?? "");
+    }
+  }, [row])
 
   const updateHandler = async () => {
-    setShowModal(false);
+    closeModal();
     const result = await sendRequest(urls.api.updateMember, "PUT", {
       memberId: row.member.id,
       firstName,
@@ -67,12 +82,23 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
     }
   }
 
+  const animation = {
+    false: {
+      background: {visibility: "hidden"},
+      container: {visibility: "hidden", opacity: 0},
+    },
+    true: {
+      background: {visibility: "visible"},
+      container: {visibility: "visible", opacity: 1},
+    },
+  };
+  console.log(isVisible);
   const {departments, roles, projects, preferences, statuses, memberTypes} = fields;
   return (
     <div>
-      <div className={style.background} onClick={() => setShowModal(false)} />
-      <div className={style.editModalContainer}>
-        <div className={style.exitButton} onClick={() => setShowModal(false)}>
+      <div className={style.background} style={animation[isVisible].background} onClick={() => closeModal()} />
+      <div className={style.editModalContainer} style={animation[isVisible].container}>
+        <div className={style.exitButton} onClick={() => closeModal()}>
           X
         </div>
         <div className={style.editModalTitleContainer}>

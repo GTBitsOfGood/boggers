@@ -4,7 +4,6 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  z-index: 10;
 }
 
 .ModalBox {
@@ -14,7 +13,7 @@
   min-height: 200px;
   width: 32%;
   height: 27%;
-  z-index: 2;
+  z-index: 4;
   background-color: white;
   border-radius: 5px;
   border: 1px solid #c4c4c4;

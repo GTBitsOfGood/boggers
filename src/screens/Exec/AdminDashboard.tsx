@@ -75,6 +75,19 @@ function AdminDashboardPage() {
 
   return (
     <>
+      {showUploadModal ? (
+        <div 
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "black",
+            opacity: "30%",
+            zIndex: 3,
+          }}
+          onClick={() => setShowUploadModal(false)}
+        />
+      ) : null}
       <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
       <ScreenGrid>
         <Grid item>

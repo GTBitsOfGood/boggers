@@ -109,7 +109,12 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
 
   return (
     <>
-      {selectedRow && <EditMemberModal setShowModal={() => setSelectedRow(null)} row={selectedRow} currentSemester={currentSemester} />}
+      <EditMemberModal
+        isVisible={!!selectedRow}
+        closeModal={() => setSelectedRow(null)}
+        row={selectedRow}
+        currentSemester={currentSemester}
+      />
       <Paper
         sx={{
           width: "100%",
