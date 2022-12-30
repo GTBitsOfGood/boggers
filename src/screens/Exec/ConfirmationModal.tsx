@@ -32,11 +32,15 @@ export default function ConfirmationModal({isOpen, handleCancel, handleConfirm, 
       <Dialog aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" open={isOpen}>
         <DialogTitle id="alert-dialog-title">Are you sure you want to remove this user?</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">This action is permanent. User information will not be able to be recovered.</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            This action is permanent. User information will not be able to be recovered.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button autoFocus onClick={deleteUser}>Confirm</Button>
+          <Button autoFocus onClick={deleteUser}>
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
