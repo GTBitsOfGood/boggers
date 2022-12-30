@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
-import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
 
@@ -52,7 +52,7 @@ function Row({row, columns, onClick}: RowProps) {
       </TableCell>
       <TableCell key={`role_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
-          <p>{department}</p>
+          <p>{role}</p>
         </div>
       </TableCell>
       <TableCell key={`project_${key}`} align="center" style={cellStyle}>

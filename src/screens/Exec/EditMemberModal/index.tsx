@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import style from "./EditMemberModal.module.css";
 import {Typography, TextField, Button, MenuItem, Select} from "@mui/material";
 import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
 import sendRequest from "../../../../utils/sendToBackend";
+import TableContext from "../../../../utils/TableContext";
 
 const Label = ({label}) => {
   return (
@@ -27,6 +28,7 @@ const splitSemesterString = (semesterString) => {
 };
 
 export default function EditMemberModal({row, setShowModal, currentSemester}) {
+  const {userList, setUserList} = useContext(TableContext);
   const [semester, year] = splitSemesterString(currentSemester);
 
   const [firstName, setFirstName] = useState(row.member.firstName);
@@ -59,6 +61,10 @@ export default function EditMemberModal({row, setShowModal, currentSemester}) {
       notes,
     });
     console.log(result);
+
+    if (result.success) {
+      setUserList(userList.map((user) => (user.id === row.member.id ? result.user : user)));
+    }
   }
 
   const {departments, roles, projects, preferences, statuses, memberTypes} = fields;

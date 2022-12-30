@@ -33,8 +33,8 @@ async function handler(req, res) {
     });
   }
 
+  let member, tenure;
   try {
-    let member;
     if (memberId) {
       const originalEntry = await getUserById(memberId);
       member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference);
@@ -49,7 +49,7 @@ async function handler(req, res) {
     }
 
     if (!isMemberView) {
-      const tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
+      tenure = await upsertTenure(member._id, semester, year, department, role, project, status, notes);
       await addTenure(member._id, tenure);
     }
   } catch (error) {
@@ -63,6 +63,7 @@ async function handler(req, res) {
   res.status(200).json({
     success: true,
     emailChanged,
+    user: await member.populate("tenures"),
     message: "Updated record successfully",
   });
 }

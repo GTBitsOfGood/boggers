@@ -2,7 +2,7 @@ import React, {useEffect, useState, useMemo} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import {PaginationTable, TColumn} from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
-import {bool} from "aws-sdk/clients/redshiftdata";
+import TableContext from "../../../utils/TableContext";
 
 interface AdminDashboardRow {
   key: string;
@@ -100,7 +100,11 @@ function UserTable({currentSemester}) {
     );
   }
   // return <PaginationTable rows={userList.map((user: IUser, index) => createAdminDashboardRow(user, index))} columns={columns} />;
-  return <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />;
+  return (
+    <TableContext.Provider value={{userList, setUserList}}>
+      <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />
+    </TableContext.Provider>
+  );
 }
 
 export default UserTable;
