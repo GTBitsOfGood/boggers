@@ -20,11 +20,13 @@ async function handler(req, res) {
   let {memberId} = req.body;
 
   let emailChanged = false;
-  if (isMemberView) {
-    memberId = user.id;
-  }
 
-  if (user.access === 0 && user.id !== memberId) {
+  if (isMemberView && user.id !== memberId) {
+    return res.status(401).json({
+      success: false,
+      message: "User cannot modify other members in Member View",
+    });
+  } else if (!isMemberView && user.access < 1) {
     return res.status(401).json({
       success: false,
       message: "User does not have the correct access level",

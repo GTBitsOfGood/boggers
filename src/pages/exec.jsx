@@ -11,6 +11,13 @@ export async function getServerSideProps(context) {
         permanent: false,
       },
     };
+  } else if (session.user.access < 1) {
+    return {
+      redirect: {
+        destination: "/members",
+        permanent: false,
+      },
+    };
   }
 
   return {

@@ -18,18 +18,18 @@ import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-export const MemberProfile = () => {
+export const MemberProfile = ({session}) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(Avatar.src);
   const [imageBlob, setImageBlob] = useState(null);
   const [success, setSuccess] = useState(0);
   const [saved, setSaved] = useState(0);
 
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Doe");
-  const [email, setEmail] = useState("johndoe@gatech.edu");
-  const [phoneNumber, setPhoneNumber] = useState("1234567890");
-  const [preference, setPreference] = useState("Full-stack");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [preference, setPreference] = useState("");
   const [emailVerified, setEmailVerified] = useState(true);
   const [tenures, setTenures] = useState([]);
   const [currIndex, setCurrIndex] = useState(-1);
@@ -66,6 +66,7 @@ export const MemberProfile = () => {
   const handleSave = async () => {
     setSaved(1);
     const result = await sendRequest(urls.api.updateMember, "PUT", {
+      memberId: session.user.id,
       isMemberView: true,
       firstName,
       lastName,
@@ -73,6 +74,7 @@ export const MemberProfile = () => {
       phoneNumber,
       preference,
     });
+    console.log(result);
 
     if (result.success) {
       if (result.emailChanged) {
