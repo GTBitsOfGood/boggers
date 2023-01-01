@@ -108,10 +108,6 @@ function UserTable({currentSemester, setSemester, setSemesters, url}) {
     {id: "notes", label: "Notes"},
   ];
 
-  const removeUser = (user: IUser) => {
-    setUserList(userList.filter((entry: IUser) => entry && entry.email && entry.email !== user.email));
-  };
-
   if (!userList) {
     return (
       <div style={{width: "0", margin: "auto"}}>
