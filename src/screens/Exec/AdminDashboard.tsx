@@ -1,7 +1,6 @@
 import React, {useMemo, useEffect, useState} from "react";
 import {Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ScreenGrid from "./ScreenGrid";
 import UserTable from "./UserTable";
 import Image from "next/image";
 import BOG from "../../public/BOG.svg";
@@ -119,7 +118,7 @@ function AdminDashboardPage({url}) {
         />
       ) : null}
       <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
-      <ScreenGrid>
+      <Grid container height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
         <Grid item>
           <Box sx={{display: "flex", alignItems: "center"}} style={{marginBottom: "1.5rem"}}>
             <Box sx={{display: "flex", alignItems: "center", columnGap: 1.5}}>
@@ -169,7 +168,7 @@ function AdminDashboardPage({url}) {
             <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} />
           </div>
         </Grid>
-      </ScreenGrid>
+      </Grid>
     </>
   );
 }
