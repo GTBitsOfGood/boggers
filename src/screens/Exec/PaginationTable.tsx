@@ -42,11 +42,32 @@ function Row({row, columns, url, onClick}: RowProps) {
   const {key, member, department, role, preference, project, notes, status} = row;
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={`${row.key}TR`} onClick={onClick}>
-      <TableCell key={`member_${key}`} align="left" style={cellStyle}>
-        <img src={member.image ? url + member.id : Avatar.src} />
-        <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
-        <p className={styles.rowEmail}>{member.email}</p>
-        <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
+      <TableCell
+        key={`member_${key}`}
+        align="left"
+        style={{
+          ...cellStyle,
+          display: "flex",
+          alignItems: "center",
+          columnGap: "1.5rem",
+        }}
+      >
+        <img
+          src={member.image ? url + member.id : Avatar.src}
+          alt="User Picture"
+          style={{
+            pointerEvents: "auto",
+            width: "6rem",
+            height: "6rem",
+            objectFit: "cover",
+            borderRadius: "50%",
+          }}
+        />
+        <div>
+          <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
+          <p className={styles.rowEmail}>{member.email}</p>
+          <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
+        </div>
       </TableCell>
       <TableCell key={`department_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
