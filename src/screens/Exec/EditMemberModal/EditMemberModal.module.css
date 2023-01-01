@@ -83,6 +83,7 @@
   flex-direction: row;
   justify-content: right;
   padding: 30px 10px 10px;
+  column-gap: 10px;
 }
 
 .exitButton {

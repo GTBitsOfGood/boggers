@@ -14,26 +14,49 @@ interface IConfirmModal {
   handleCancel: Function;
   handleConfirm: Function;
   userId: string;
+  semester: string;
+  year: Number;
 }
 
-export default function ConfirmationModal({isOpen, handleCancel, handleConfirm, userId}: IConfirmModal) {
+export default function ConfirmationModal({confirmModal, handleCancel, handleConfirm, userId, semester, year}: IConfirmModal) {
   const {userList, setUserList} = useContext(TableContext);
+  const mapping = {
+    1: {
+      lower: "tenure",
+      upper: "Tenure",
+      route: urls.api.deleteTenure,
+      data: {id: userId, semester, year},
+      newUserList: (() => {
+        const newUserList = JSON.parse(JSON.stringify(userList));
+        const user = newUserList.find((user) => user.id === userId);
+        if (user) user.tenures = user?.tenures.filter((tenure) => tenure.semester !== semester || tenure.year !== year);
+        return newUserList;
+      })(),
+    },
+    2: {
+      lower: "user",
+      upper: "User",
+      route: urls.api.deleteUser,
+      data: {id: userId},
+      newUserList: userList.filter((user) => user.id !== userId),
+    },
+  }
 
   const deleteUser = async () => {
     handleConfirm();
-    const res = await sendRequest(urls.api.deleteUser, "DELETE", {id: userId});
+    const res = await sendRequest(mapping[confirmModal].route, "DELETE", mapping[confirmModal].data);
     if (res.success) {
-      setUserList(userList.filter((user) => user.id !== userId));
+      setUserList(mapping[confirmModal].newUserList);
     }
   };
 
   return (
     <div>
-      <Dialog aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" open={isOpen}>
-        <DialogTitle id="alert-dialog-title">Are you sure you want to remove this user?</DialogTitle>
+      <Dialog aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" open={confirmModal !== 0}>
+        <DialogTitle id="alert-dialog-title">Are you sure you want to remove this {mapping[confirmModal]?.lower}?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action is permanent. User information will not be able to be recovered.
+            This action is permanent. {mapping[confirmModal]?.upper} information will not be able to be recovered.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

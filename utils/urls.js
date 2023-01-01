@@ -31,6 +31,7 @@ const urls = {
     imageUpload: "/api/image_upload",
     resetPassword: "/api/reset_password",
     deleteUser: "/api/delete_user",
+    deleteTenure: "/api/delete_tenure",
     updateMember: "/api/update_member",
   },
 };
