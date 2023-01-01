@@ -50,8 +50,7 @@ function Row({row, columns, url, onClick}: RowProps) {
           display: "flex",
           alignItems: "center",
           columnGap: "1.5rem",
-        }}
-      >
+        }}>
         <img
           src={member.image ? url + member.id : Avatar.src}
           alt="User Picture"

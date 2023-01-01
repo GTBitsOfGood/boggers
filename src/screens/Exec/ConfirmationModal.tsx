@@ -40,7 +40,7 @@ export default function ConfirmationModal({confirmModal, handleCancel, handleCon
       data: {id: userId},
       newUserList: userList.filter((user) => user.id !== userId),
     },
-  }
+  };
 
   const deleteUser = async () => {
     handleConfirm();

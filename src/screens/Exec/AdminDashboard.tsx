@@ -152,11 +152,7 @@ function AdminDashboardPage({url}) {
                 <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
               </Search>
               <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
-              <StyledSelect
-                value={semester}
-                MenuProps={{PaperProps: {sx: {maxHeight: 150}}}}
-                onChange={changeSemesterHandler}
-              >
+              <StyledSelect value={semester} MenuProps={{PaperProps: {sx: {maxHeight: 150}}}} onChange={changeSemesterHandler}>
                 {Array.from(semesters)
                   .sort(sortTenures(false))
                   .map((semester) => {
