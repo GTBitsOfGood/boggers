@@ -123,12 +123,7 @@ function AdminDashboardPage({url}) {
         <Grid item>
           <Box sx={{display: "flex", alignItems: "center"}} style={{marginBottom: "1.5rem"}}>
             <Box sx={{display: "flex", alignItems: "center", columnGap: 1.5}}>
-              <Image
-                alt="BOG logo"
-                src={BOG}
-                width={70}
-                height={70}
-              />
+              <Image alt="BOG logo" src={BOG} width={70} height={70} />
               <Typography
                 variant="h2"
                 style={{
@@ -145,7 +140,12 @@ function AdminDashboardPage({url}) {
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" value={filter} inputProps={{"aria-label": "search"}} onChange={(e) => setFilter(e.target.value)} />
+                <StyledInputBase
+                  placeholder="Search…"
+                  value={filter}
+                  inputProps={{"aria-label": "search"}}
+                  onChange={(e) => setFilter(e.target.value)}
+                />
               </Search>
               <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
               <StyledSelect value={semester} MenuProps={{PaperProps: {sx: {maxHeight: 150}}}} onChange={changeSemesterHandler}>
