@@ -12,79 +12,80 @@ const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
 };
 
+const Search = styled("div")(({theme}) => ({
+  position: "relative",
+  border: "solid",
+  borderColor: "#C4C4C4",
+  borderWidth: "2px",
+  height: "3rem",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({theme}) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({theme}) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1.35, 1, 1.5, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "21ch",
+    },
+  },
+}));
+
+const StyledButton = styled(Button)(({theme}) => ({
+  color: "black",
+  border: "solid",
+  borderColor: "#C4C4C4",
+  borderWidth: "2px",
+  fontSize: "16px",
+  fontWeight: "400",
+  height: "3rem",
+  width: "8rem",
+  "&:hover": {
+    backgroundColor: "#EAE6FF",
+    borderColor: "#473F91",
+  },
+}));
+
+const StyledSelect = styled(Select)(({theme}) => ({
+  color: "black",
+  border: "1px solid #C4C4C4",
+  fontSize: "16px",
+  fontWeight: "400",
+  height: "3rem",
+  transition: "0.2s ease-out",
+  width: "10rem",
+  outline: "none",
+  textAlign: "center",
+  "&:hover": {
+    backgroundColor: "#EAE6FF",
+    borderColor: "#473F91",
+  },
+}));
+
 function AdminDashboardPage({url}) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [fileBlob, setFileBlob] = useState(null);
-
-  const Search = styled("div")(({theme}) => ({
-    position: "relative",
-    border: "solid",
-    borderColor: "#C4C4C4",
-    borderWidth: "2px",
-    height: "3rem",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({theme}) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1.35, 1, 1.5, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: "21ch",
-      },
-    },
-  }));
-
-  const StyledButton = styled(Button)(({theme}) => ({
-    color: "black",
-    border: "solid",
-    borderColor: "#C4C4C4",
-    borderWidth: "2px",
-    fontSize: "16px",
-    fontWeight: "400",
-    height: "3rem",
-    width: "8rem",
-    "&:hover": {
-      backgroundColor: "#EAE6FF",
-      borderColor: "#473F91",
-    },
-  }));
-
-  const StyledSelect = styled(Select)(({theme}) => ({
-    color: "black",
-    border: "1px solid #C4C4C4",
-    fontSize: "16px",
-    fontWeight: "400",
-    height: "3rem",
-    transition: "0.2s ease-out",
-    width: "10rem",
-    outline: "none",
-    textAlign: "center",
-    "&:hover": {
-      backgroundColor: "#EAE6FF",
-      borderColor: "#473F91",
-    },
-  }));
+  const [filter, setFilter] = useState("");
 
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
@@ -127,10 +128,6 @@ function AdminDashboardPage({url}) {
                 src={BOG}
                 width={70}
                 height={70}
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
               />
               <Typography
                 variant="h2"
@@ -148,7 +145,7 @@ function AdminDashboardPage({url}) {
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
+                <StyledInputBase placeholder="Search…" value={filter} inputProps={{"aria-label": "search"}} onChange={(e) => setFilter(e.target.value)} />
               </Search>
               <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
               <StyledSelect value={semester} MenuProps={{PaperProps: {sx: {maxHeight: 150}}}} onChange={changeSemesterHandler}>
@@ -165,7 +162,7 @@ function AdminDashboardPage({url}) {
             </Box>
           </Box>
           <div style={{height: "75vh", width: "90vw"}}>
-            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} />
+            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} filter={filter} />
           </div>
         </Grid>
       </Grid>

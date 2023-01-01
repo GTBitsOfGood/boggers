@@ -43,7 +43,7 @@ interface IUser {
   emailVerified: boolean;
 }
 
-function UserTable({currentSemester, setSemester, setSemesters, url}) {
+function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
   const [userList, setUserList] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -73,12 +73,14 @@ function UserTable({currentSemester, setSemester, setSemesters, url}) {
       });
   }, []);
 
+  const regex = new RegExp(filter, "i");
+
   const memberRowData: AdminDashboardRow[] = [];
   userList.forEach((member, index) => {
     const {id, tenures, firstName, lastName, email, phoneNumber, preference, image} = member;
 
     const currentTenure = tenures.find((tenure) => currentSemester === `${tenure.semester} ${tenure.year}`);
-    if (!currentTenure) return;
+    if (!currentTenure || !regex.test(`${firstName} ${lastName}`)) return;
     const {role, notes, department, project, status} = currentTenure;
     memberRowData.push({
       key: `${id}${index}`,

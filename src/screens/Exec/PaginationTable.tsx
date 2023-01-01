@@ -10,12 +10,14 @@ interface TableProps {
   rows: TRow[];
   columns: TColumn[];
   currentSemester: any;
+  url: string;
 }
 
 interface RowProps {
   row: TRow;
   columns: TColumn[];
   onClick: any;
+  url: string;
 }
 
 interface TColumn {
