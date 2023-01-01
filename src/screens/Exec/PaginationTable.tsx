@@ -112,7 +112,7 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
           display: "flex",
           flexDirection: "column",
         }}>
-        <TableContainer sx={{flexGrow: 1, flexShrink: 1}}>
+        <TableContainer className={styles.TableContainer} sx={{flexGrow: 1, flexShrink: 1}}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

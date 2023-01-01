@@ -47,3 +47,16 @@
   color: #007f00;
   font-size: 18px;
 }
+
+.TableContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.TableContainer::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+}
+
+.TableContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}

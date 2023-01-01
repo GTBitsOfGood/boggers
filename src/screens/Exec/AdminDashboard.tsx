@@ -1,5 +1,5 @@
 import React, {useMemo, useEffect, useState} from "react";
-import {Typography, Grid, Stack, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
+import {Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import ScreenGrid from "./ScreenGrid";
@@ -30,13 +30,6 @@ function AdminDashboardPage() {
     "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(10),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
   }));
 
   const SearchIconWrapper = styled("div")(({theme}) => ({
@@ -52,7 +45,7 @@ function AdminDashboardPage() {
   const StyledInputBase = styled(InputBase)(({theme}) => ({
     color: "inherit",
     "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
+      padding: theme.spacing(1.35, 1, 1.5, 0),
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
@@ -66,7 +59,7 @@ function AdminDashboardPage() {
     setSemester(event.target.value);
   };
 
-  const uploadAndClostModal = async () => {
+  const uploadAndCloseModal = async () => {
     console.log("fileBlob", fileBlob);
     fetch(urls.base + urls.api.bulkUpload, {
       method: "POST",
@@ -80,67 +73,65 @@ function AdminDashboardPage() {
 
   return (
     <>
-      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndClostModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
+      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
       <ScreenGrid>
-        <Grid item direction="column" justifyContent="flex-start" alignItems="stretch">
-          <Stack
-            direction="row"
-            spacing={2}
-            style={{
-              marginBottom: "1rem",
-            }}>
-            <Image
-              alt="BOG logo"
-              src={BOG}
-              width={40}
-              height={20}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <Typography
-              variant="h2"
-              style={{
-                fontFamily: "Poppins",
-                color: "#333333",
-                fontSize: "2.2rem",
-                fontWeight: "500",
-                marginRight: "0.8rem",
-              }}>
-              Members
-            </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
-            </Search>
-            <Button
-              variant="outlined"
-              style={{
-                color: "black",
-                fontWeight: "400",
-                height: "3rem",
-                backgroundColor: fileBlob ? "#EAE6FF" : "none",
-              }}
-              onClick={() => setShowUploadModal(true)}>
-              UPLOAD CSV
-            </Button>
-            <Select
-              value={semester}
-              style={{
-                height: "3rem",
-              }}
-              onChange={changeSemesterHandler}>
-              <MenuItem value={"FALL 2022"}>FALL 2022</MenuItem>
-              <MenuItem value={"SPRING 2022"}>SPRING 2022</MenuItem>
-              <MenuItem value={"FALL 2021"}>FALL 2021</MenuItem>
-              // TODO: un-hardcode this
-            </Select>
-          </Stack>
-          <div style={{height: "60vh", width: "60vw"}}>
+        <Grid item>
+          <Box sx={{display: "flex"}} style={{marginBottom: "1rem"}}>
+            <Box sx={{display: "flex", columnGap: 1}}>
+              <Image
+                alt="BOG logo"
+                src={BOG}
+                width={50}
+                height={30}
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  marginTop: "0.1rem",
+                }}
+              />
+              <Typography
+                variant="h2"
+                style={{
+                  fontFamily: "Poppins",
+                  color: "#333333",
+                  fontSize: "2.2rem",
+                  fontWeight: "500",
+                }}>
+                Members
+              </Typography>
+            </Box>
+            <Box sx={{display: "flex", justifySelf: "flex-end", marginLeft: "auto", columnGap: 2}}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
+              </Search>
+              <Button
+                variant="outlined"
+                style={{
+                  color: "black",
+                  fontWeight: "400",
+                  height: "3rem",
+                  backgroundColor: fileBlob ? "#EAE6FF" : "none",
+                }}
+                onClick={() => setShowUploadModal(true)}>
+                UPLOAD CSV
+              </Button>
+              <Select
+                value={semester}
+                style={{
+                  height: "3rem",
+                }}
+                onChange={changeSemesterHandler}>
+                <MenuItem value={"FALL 2022"}>FALL 2022</MenuItem>
+                <MenuItem value={"SPRING 2022"}>SPRING 2022</MenuItem>
+                <MenuItem value={"FALL 2021"}>FALL 2021</MenuItem>
+                // TODO: un-hardcode this
+              </Select>
+            </Box>
+          </Box>
+          <div style={{height: "75vh", width: "80vw"}}>
             <UserTable currentSemester={semester} />
           </div>
         </Grid>
