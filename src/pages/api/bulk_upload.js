@@ -1,10 +1,10 @@
-import {upsertUserCsv, addTenure} from "../../server/mongodb/actions/User";
-import {upsertTenureCsv} from "../../server/mongodb/actions/Tenure";
-import {getToken} from "next-auth/jwt";
+import { upsertUserCsv, addTenure } from "../../server/mongodb/actions/User";
+import { upsertTenureCsv } from "../../server/mongodb/actions/Tenure";
+import { getToken } from "next-auth/jwt";
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = await getToken({ req });
   if (!user) {
     return res.status(401).json({
       success: false,

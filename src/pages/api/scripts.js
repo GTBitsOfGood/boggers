@@ -1,6 +1,6 @@
 import User from "../../server/mongodb/models/User";
 import Tenure from "../../server/mongodb/models/Tenure";
-import {createRootUser, createSeedUser} from "../../server/mongodb/actions/User";
+import { createRootUser, createSeedUser } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
@@ -22,8 +22,8 @@ async function handler(req, res) {
       return res.status(200).json(user);
     }
     case "seedCredentials": {
-      const {email, password, access} = req.query;
-      if (!email || !password) return res.status(400).json({error: "Missing/Invalid email or password"});
+      const { email, password, access } = req.query;
+      if (!email || !password) return res.status(400).json({ error: "Missing/Invalid email or password" });
 
       const user = await createSeedUser(email, password, access);
       return res.status(200).json(user);

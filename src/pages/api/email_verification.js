@@ -1,6 +1,6 @@
 import connectMongo from "../../server/mongodb/connectMongo";
-import {changeEmail, setVerified} from "../../server/mongodb/actions/User";
-import {getEmailVerification} from "../../server/mongodb/actions/EmailVerification";
+import { changeEmail, setVerified } from "../../server/mongodb/actions/User";
+import { getEmailVerification } from "../../server/mongodb/actions/EmailVerification";
 
 export default async function handler(req, res) {
   const body = JSON.parse(req.body);

@@ -25,7 +25,7 @@
   margin: 5px;
   color: #e25702;
   font-size: 18px;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .redHighlight {
@@ -38,7 +38,7 @@
   margin: 5px;
   color: #e20e00;
   font-size: 18px;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .greenHighlight {
@@ -51,5 +51,5 @@
   margin: 5px;
   color: #007f00;
   font-size: 18px;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }

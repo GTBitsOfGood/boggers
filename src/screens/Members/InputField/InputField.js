@@ -1,6 +1,6 @@
 import styles from "./InputField.module.css";
 
-export default function InputField({fieldName, fieldState, setFieldState, isOptional}) {
+export default function InputField({ fieldName, fieldState, setFieldState, isOptional }) {
   return (
     <div className={styles.InputField}>
       <div className={styles.InputFieldHeader}>

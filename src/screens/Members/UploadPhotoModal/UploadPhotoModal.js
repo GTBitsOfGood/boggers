@@ -1,17 +1,17 @@
-import {useState} from "react";
+import { useState } from "react";
 import styles from "./UploadPhotoModal.module.css";
 
-export default function UploadPhotoModal({displayModal, closeModal, setImageUrl, setImageBlob}) {
+export default function UploadPhotoModal({ displayModal, closeModal, setImageUrl, setImageBlob }) {
   const [uploading, setUploading] = useState(false);
 
   const modalTransition = {
-    original: {visibility: "hidden"},
-    new: {visibility: "visible"},
+    original: { visibility: "hidden" },
+    new: { visibility: "visible" },
   };
 
   const modalBoxTransition = {
-    original: {opacity: 0},
-    new: {opacity: 1},
+    original: { opacity: 0 },
+    new: { opacity: 1 },
   };
 
   return (
@@ -21,14 +21,14 @@ export default function UploadPhotoModal({displayModal, closeModal, setImageUrl,
           &#10006;
         </div>
         <div className={styles.ModalHeader}>UPLOAD A PHOTO</div>
-        <label className={styles.ModalUploadButton} style={uploading ? {} : {cursor: "pointer"}}>
+        <label className={styles.ModalUploadButton} style={uploading ? {} : { cursor: "pointer" }}>
           {uploading ? (
             "Uploading..."
           ) : (
             <>
               <input
                 type="file"
-                style={{display: "none"}}
+                style={{ display: "none" }}
                 accept="image/*"
                 onChange={async (e) => {
                   setUploading(true);

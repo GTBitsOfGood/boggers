@@ -1,5 +1,5 @@
-import {createEmailVerification} from "../../server/mongodb/actions/EmailVerification";
-import {getUser} from "../../server/mongodb/actions/User";
+import { createEmailVerification } from "../../server/mongodb/actions/EmailVerification";
+import { getUser } from "../../server/mongodb/actions/User";
 import sendEmailVerificationEmail from "../../server/nodemailer/actions/emailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
 import requestWrapper from "../../../utils/middleware";

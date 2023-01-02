@@ -3,7 +3,7 @@ import urls from "../../../utils/urls";
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = {db: null, promise: null};
+  cached = global.mongoose = { db: null, promise: null };
 }
 
 async function connectMongo() {

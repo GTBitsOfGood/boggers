@@ -1,5 +1,5 @@
-import {signIn} from "next-auth/react";
-import React, {useState} from "react";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 import classes from "./Login.module.css";
 import BOG from "../../public/BOG.svg";
 import warnning from "../../public/warning.png";
@@ -28,7 +28,7 @@ export function LoginPage() {
       email: email,
       password: password,
       redirect: false,
-    }).then(({ok}) => {
+    }).then(({ ok }) => {
       if (ok) {
         Router.push(urls.base + urls.pages.members);
       } else {
@@ -69,7 +69,7 @@ export function LoginPage() {
       ) : (
         <div></div>
       )}
-      <h1 style={{display: "none"}}>Hi</h1>
+      <h1 style={{ display: "none" }}>Hi</h1>
       <div className={classes.bodyContainer}>
         <div className={classes.baseContainer}>
           <div className={classes.image}>

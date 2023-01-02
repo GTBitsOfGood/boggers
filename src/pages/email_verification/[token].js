@@ -1,9 +1,9 @@
-import React, {useEffect} from "react";
-import {useRouter} from "next/router";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function ResetPassword() {
   const router = useRouter();
-  const {token} = router.query;
+  const { token } = router.query;
 
   useEffect(() => {
     if (token) {

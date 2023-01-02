@@ -1,14 +1,14 @@
-import React, {useState, useContext, useEffect, useRef} from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import style from "./EditMemberModal.module.css";
-import {Typography, TextField, Button, MenuItem, Select} from "@mui/material";
+import { Typography, TextField, Button, MenuItem, Select } from "@mui/material";
 import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
 import sendRequest from "../../../../utils/sendToBackend";
 import TableContext from "../../../../utils/TableContext";
 import ConfirmationModal from "../ConfirmationModal";
-import {EditMemberModalProps, User} from "../types";
+import { EditMemberModalProps, User } from "../types";
 
-const Label = ({label}) => {
+const Label = ({ label }) => {
   return (
     <Typography
       variant="h3"
@@ -24,8 +24,8 @@ const Label = ({label}) => {
   );
 };
 
-export default function EditMemberModal({row, isVisible, closeModal, currentSemester}: EditMemberModalProps) {
-  const {userList, setUserList} = useContext(TableContext);
+export default function EditMemberModal({ row, isVisible, closeModal, currentSemester }: EditMemberModalProps) {
+  const { userList, setUserList } = useContext(TableContext);
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
 
@@ -110,24 +110,24 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
       const semesterString = `${semester} ${year}`;
 
       const tenures = users[index].tenures;
-      tenures[semesterString] = {...tenures[semesterString], semester, year, department, role, project, status, notes};
-      users[index] = {...users[index], firstName, lastName, email, phoneNumber, preference, tenures};
+      tenures[semesterString] = { ...tenures[semesterString], semester, year, department, role, project, status, notes };
+      users[index] = { ...users[index], firstName, lastName, email, phoneNumber, preference, tenures };
       setUserList(users);
     }
   };
 
   const animation = {
     false: {
-      background: {visibility: "hidden"},
-      container: {visibility: "hidden", opacity: 0},
+      background: { visibility: "hidden" },
+      container: { visibility: "hidden", opacity: 0 },
     },
     true: {
-      background: {visibility: "visible"},
-      container: {visibility: "visible", opacity: 1},
+      background: { visibility: "visible" },
+      container: { visibility: "visible", opacity: 1 },
     },
   };
 
-  const {departments, roles, projects, preferences, statuses, memberTypes} = fields;
+  const { departments, roles, projects, preferences, statuses, memberTypes } = fields;
   return (
     <div>
       <div className={style.background} style={animation[isVisible].background} onClick={() => closeModal()} />
@@ -153,15 +153,15 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             size="small"
             value={semester && year ? `${semester} ${year}` : ""}
             onChange={semesterHandler}
-            sx={{boxShadow: "none", ".MuiOutlinedInput-notchedOutline": {border: 0}}}>
+            sx={{ boxShadow: "none", ".MuiOutlinedInput-notchedOutline": { border: 0 } }}>
             {row ? (
               Object.keys(row.tenures).map((key) => (
-                <MenuItem key={`semester_${key}`} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={`semester_${key}`} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))
             ) : (
-              <MenuItem value={`${semester} ${year}`} style={{fontFamily: "Poppins"}}>{`${semester} ${year}`}</MenuItem>
+              <MenuItem value={`${semester} ${year}`} style={{ fontFamily: "Poppins" }}>{`${semester} ${year}`}</MenuItem>
             )}
           </Select>
         </div>
@@ -171,8 +171,8 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="FIRST NAME" />
             <TextField
               size="small"
-              inputProps={{style: {fontFamily: "Poppins"}}}
-              style={{width: "100%"}}
+              inputProps={{ style: { fontFamily: "Poppins" } }}
+              style={{ width: "100%" }}
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
@@ -181,8 +181,8 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="LAST NAME" />
             <TextField
               size="small"
-              inputProps={{style: {fontFamily: "Poppins"}}}
-              style={{width: "100%"}}
+              inputProps={{ style: { fontFamily: "Poppins" } }}
+              style={{ width: "100%" }}
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
@@ -191,8 +191,8 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="EMAIL" />
             <TextField
               size="small"
-              inputProps={{style: {fontFamily: "Poppins"}}}
-              style={{width: "100%"}}
+              inputProps={{ style: { fontFamily: "Poppins" } }}
+              style={{ width: "100%" }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -201,8 +201,8 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="PHONE NUMBER" />
             <TextField
               size="small"
-              inputProps={{style: {fontFamily: "Poppins"}}}
-              style={{width: "100%"}}
+              inputProps={{ style: { fontFamily: "Poppins" } }}
+              style={{ width: "100%" }}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
@@ -211,11 +211,11 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="DEPARTMENT" />
             <Select
               size="small"
-              style={{width: "100%", fontFamily: "Poppins"}}
+              style={{ width: "100%", fontFamily: "Poppins" }}
               value={department}
               onChange={(e) => setDepartment(e.target.value)}>
               {departments.map((key) => (
-                <MenuItem key={key} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))}
@@ -223,9 +223,9 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
           </div>
           <div className={style.fieldContainer}>
             <Label label="ROLE" />
-            <Select size="small" style={{width: "100%", fontFamily: "Poppins"}} value={role} onChange={(e) => setRole(e.target.value)}>
+            <Select size="small" style={{ width: "100%", fontFamily: "Poppins" }} value={role} onChange={(e) => setRole(e.target.value)}>
               {roles.map((key) => (
-                <MenuItem key={key} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))}
@@ -235,11 +235,11 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="PROJECT" />
             <Select
               size="small"
-              style={{width: "100%", fontFamily: "Poppins"}}
+              style={{ width: "100%", fontFamily: "Poppins" }}
               value={project}
               onChange={(e) => setProject(e.target.value)}>
               {projects.map((key) => (
-                <MenuItem key={key} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))}
@@ -249,11 +249,11 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="TECH PREFERENCE" />
             <Select
               size="small"
-              style={{width: "100%", fontFamily: "Poppins"}}
+              style={{ width: "100%", fontFamily: "Poppins" }}
               value={preference}
               onChange={(e) => setPreference(e.target.value)}>
               {preferences.map((key) => (
-                <MenuItem key={key} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))}
@@ -261,9 +261,13 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
           </div>
           <div className={style.fieldContainer}>
             <Label label="STATUS" />
-            <Select size="small" style={{width: "100%", fontFamily: "Poppins"}} value={status} onChange={(e) => setStatus(e.target.value)}>
+            <Select
+              size="small"
+              style={{ width: "100%", fontFamily: "Poppins" }}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}>
               {statuses.map((key) => (
-                <MenuItem key={key} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
                   {key}
                 </MenuItem>
               ))}
@@ -273,11 +277,11 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
             <Label label="MEMBER TYPE" />
             <Select
               size="small"
-              style={{width: "100%", fontFamily: "Poppins"}}
+              style={{ width: "100%", fontFamily: "Poppins" }}
               value={memberType}
               onChange={(e) => setMemberType(e.target.value)}>
               {Object.keys(memberTypes).map((key) => (
-                <MenuItem key={memberTypes[key]} value={key} style={{fontFamily: "Poppins"}}>
+                <MenuItem key={memberTypes[key]} value={key} style={{ fontFamily: "Poppins" }}>
                   {memberTypes[key]}
                 </MenuItem>
               ))}
@@ -289,7 +293,7 @@ export default function EditMemberModal({row, isVisible, closeModal, currentSeme
           <TextField
             className={style.noteField}
             multiline
-            inputProps={{style: {fontFamily: "Poppins"}}}
+            inputProps={{ style: { fontFamily: "Poppins" } }}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />

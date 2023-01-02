@@ -1,6 +1,6 @@
 import styles from "./RadioButton.module.css";
 
-export default function RadioButton({name, preference, onChange}) {
+export default function RadioButton({ name, preference, onChange }) {
   return (
     <div className={styles.RadioButton}>
       <input

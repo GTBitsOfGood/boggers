@@ -1,13 +1,13 @@
-import {getToken} from "next-auth/jwt";
-import {upsertTenure} from "../../server/mongodb/actions/Tenure";
-import {createUser, updateUser, addTenure, getUserById} from "../../server/mongodb/actions/User";
+import { getToken } from "next-auth/jwt";
+import { upsertTenure } from "../../server/mongodb/actions/Tenure";
+import { createUser, updateUser, addTenure, getUserById } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
-import {createEmailChangeVerification} from "../../server/mongodb/actions/EmailVerification";
+import { createEmailChangeVerification } from "../../server/mongodb/actions/EmailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
 import sendEmailVerificationEmail from "../../server/nodemailer/actions/emailVerification";
 
 async function handler(req, res) {
-  const user = (await getToken({req}))?.user;
+  const user = (await getToken({ req }))?.user;
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -15,9 +15,9 @@ async function handler(req, res) {
     });
   }
 
-  const {isMemberView, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes} =
+  const { isMemberView, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes } =
     req.body;
-  let {memberId} = req.body;
+  let { memberId } = req.body;
 
   let emailChanged = false;
 

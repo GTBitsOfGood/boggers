@@ -1,4 +1,4 @@
-import {signIn, signOut} from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 const Index = () => {
   return (

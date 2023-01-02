@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from "react";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
-import {baseAwsUrl} from "../../../utils/awsConfig";
+import { baseAwsUrl } from "../../../utils/awsConfig";
 import Row from "./Row";
-import {TColumn, TableProps} from "./types";
+import { TColumn, TableProps } from "./types";
 
 const columns: TColumn[] = [
-  {id: "member", label: "Member"},
-  {id: "department", label: "Department"},
-  {id: "role", label: "Role"},
-  {id: "project", label: "Project"},
-  {id: "status", label: "Status"},
-  {id: "notes", label: "Notes"},
+  { id: "member", label: "Member" },
+  { id: "department", label: "Department" },
+  { id: "role", label: "Role" },
+  { id: "project", label: "Project" },
+  { id: "status", label: "Status" },
+  { id: "notes", label: "Notes" },
 ];
 
-function PaginationTable({rows, currentSemester, url}: TableProps) {
+function PaginationTable({ rows, currentSemester, url }: TableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -41,7 +41,7 @@ function PaginationTable({rows, currentSemester, url}: TableProps) {
     };
 
     if (column.label !== "Notes") {
-      style = {...style, border: "none", borderRight: "solid", borderBottom: "solid", borderWidth: "1px", borderColor: "#DCDCDC"};
+      style = { ...style, border: "none", borderRight: "solid", borderBottom: "solid", borderWidth: "1px", borderColor: "#DCDCDC" };
     }
     return style;
   }
@@ -65,7 +65,7 @@ function PaginationTable({rows, currentSemester, url}: TableProps) {
           display: "flex",
           flexDirection: "column",
         }}>
-        <TableContainer className={styles.TableContainer} sx={{flexGrow: 1, flexShrink: 1}}>
+        <TableContainer className={styles.TableContainer} sx={{ flexGrow: 1, flexShrink: 1 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -100,7 +100,7 @@ function PaginationTable({rows, currentSemester, url}: TableProps) {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{flexShrink: 0, flexGrow: 0}}
+          sx={{ flexShrink: 0, flexGrow: 0 }}
         />
       </Paper>
     </>

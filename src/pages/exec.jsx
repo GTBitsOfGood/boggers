@@ -1,6 +1,6 @@
 import Exec from "../screens/Exec";
-import {getSession} from "next-auth/react";
-import {baseAwsUrl} from "../../utils/awsConfig";
+import { getSession } from "next-auth/react";
+import { baseAwsUrl } from "../../utils/awsConfig";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -22,7 +22,7 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: {session, url: baseAwsUrl},
+    props: { session, url: baseAwsUrl },
   };
 }
 

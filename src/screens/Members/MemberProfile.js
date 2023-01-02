@@ -1,11 +1,11 @@
 import styles from "./MemberProfile.module.css";
-import React, {useState, useEffect} from "react";
-import {signOut} from "next-auth/react";
+import React, { useState, useEffect } from "react";
+import { signOut } from "next-auth/react";
 import axios from "axios";
 
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
-import {sortTenures, getCurrSemesterYear, convertToBase64} from "../../../utils/utilFunctions";
+import { sortTenures, getCurrSemesterYear, convertToBase64 } from "../../../utils/utilFunctions";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
@@ -18,7 +18,7 @@ import Pencil from "../../public/Pencil.png";
 import Save from "../../public/Save.png";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-export const MemberProfile = ({session}) => {
+export const MemberProfile = ({ session }) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(Avatar.src);
   const [imageBlob, setImageBlob] = useState(null);
@@ -47,7 +47,7 @@ export const MemberProfile = ({session}) => {
       if (!result.success) {
         return requestStatus(false);
       }
-      const {user, imageUrl} = result.payload;
+      const { user, imageUrl } = result.payload;
       const tenures = user.tenures.sort(sortTenures(true));
 
       setFirstName(user.firstName ?? "");
@@ -111,18 +111,18 @@ export const MemberProfile = ({session}) => {
 
   let semester, year, department, role, project, status_;
   if (currIndex !== -1) {
-    ({semester, year, department, role, project} = tenures[currIndex]);
+    ({ semester, year, department, role, project } = tenures[currIndex]);
     status_ = tenures[currIndex].status;
   } else {
-    ({semester, year} = getCurrSemesterYear());
+    ({ semester, year } = getCurrSemesterYear());
     department = role = project = status_ = "-";
   }
 
   const buttonTransition = [
-    {styles: {width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c"}, message: "Save"},
-    {styles: {width: "185px", backgroundColor: "#fc5b42", borderColor: "#fc5b42"}, message: "Processing"},
-    {styles: {width: "145px", backgroundColor: "#0f904d", borderColor: "#0f904d"}, message: "Saved!"},
-    {styles: {width: "140px", backgroundColor: "#c63636", borderColor: "#c63636"}, message: "Error!"},
+    { styles: { width: "135px", backgroundColor: "#2d285c", borderColor: "#2d285c" }, message: "Save" },
+    { styles: { width: "185px", backgroundColor: "#fc5b42", borderColor: "#fc5b42" }, message: "Processing" },
+    { styles: { width: "145px", backgroundColor: "#0f904d", borderColor: "#0f904d" }, message: "Saved!" },
+    { styles: { width: "140px", backgroundColor: "#c63636", borderColor: "#c63636" }, message: "Error!" },
   ];
 
   return (
@@ -152,7 +152,7 @@ export const MemberProfile = ({session}) => {
         <div>
           <InputField fieldName="EMAIL" fieldState={email} setFieldState={setEmail} />
           {emailVerified ? null : (
-            <p style={{color: "red"}}>
+            <p style={{ color: "red" }}>
               A verification email has been sent to your new email.
               <br />
               Your email will not be changed until it is verified.
@@ -173,11 +173,11 @@ export const MemberProfile = ({session}) => {
       <div className={styles.MemberProfileFooter}>
         <div className={styles.MemberProfileFooterPageContainer}>
           <div className={styles.MemberProfileFooterPage}>
-            <div className={styles.MemberProfileFooterPageArrow} onClick={() => handleArrowClick(true)} style={{cursor: "pointer"}}>
+            <div className={styles.MemberProfileFooterPageArrow} onClick={() => handleArrowClick(true)} style={{ cursor: "pointer" }}>
               &lt;
             </div>
             <div className={styles.MemberProfileFooterPageName}>{`${semester.toUpperCase()} ${year}`}</div>
-            <div className={styles.MemberProfileFooterPageArrow} onClick={() => handleArrowClick(false)} style={{cursor: "pointer"}}>
+            <div className={styles.MemberProfileFooterPageArrow} onClick={() => handleArrowClick(false)} style={{ cursor: "pointer" }}>
               &gt;
             </div>
           </div>

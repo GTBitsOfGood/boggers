@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -18,18 +18,18 @@ interface IConfirmModal {
   year: int;
 }
 
-export default function ConfirmationModal({confirmModal, handleCancel, handleConfirm, userId, semester, year}: IConfirmModal) {
-  const {userList, setUserList} = useContext(TableContext);
+export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, semester, year }: IConfirmModal) {
+  const { userList, setUserList } = useContext(TableContext);
   const mapping = {
     1: {
       lower: "tenure",
       upper: "Tenure",
       route: urls.api.deleteTenure,
-      data: {id: userId, semester, year},
+      data: { id: userId, semester, year },
       newUserList: (() => {
         const newUserList = JSON.parse(JSON.stringify(userList));
         const user = newUserList.find((user) => user.id === userId);
-        if (user) delete user.tenures[`${semester} ${year}`]
+        if (user) delete user.tenures[`${semester} ${year}`];
         return newUserList;
       })(),
     },
@@ -37,7 +37,7 @@ export default function ConfirmationModal({confirmModal, handleCancel, handleCon
       lower: "user",
       upper: "User",
       route: urls.api.deleteUser,
-      data: {id: userId},
+      data: { id: userId },
       newUserList: userList.filter((user) => user.id !== userId),
     },
   };

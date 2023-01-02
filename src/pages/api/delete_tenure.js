@@ -1,9 +1,9 @@
-import {getToken} from "next-auth/jwt";
+import { getToken } from "next-auth/jwt";
 import requestWrapper from "../../../utils/middleware";
-import {deleteTenure} from "../../server/mongodb/actions/Tenure";
+import { deleteTenure } from "../../server/mongodb/actions/Tenure";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = await getToken({ req });
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -18,7 +18,7 @@ async function handler(req, res) {
     });
   }
 
-  const {id, semester, year} = req.body;
+  const { id, semester, year } = req.body;
   try {
     await deleteTenure(id, semester, year);
     res.status(202).json({

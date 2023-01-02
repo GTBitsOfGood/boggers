@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 const emailVerificationSchema = new mongoose.Schema({
   email: {

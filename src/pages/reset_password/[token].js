@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import {useRouter} from "next/router";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 import urls from "../../../utils/urls";
 
 export default function ResetPassword() {
   const router = useRouter();
-  const {token} = router.query;
+  const { token } = router.query;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 

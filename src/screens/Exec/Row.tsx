@@ -1,7 +1,7 @@
 import styles from "./Row.module.css";
 import React from "react";
-import {RowProps} from "./types";
-import {TableRow, TableCell} from "@mui/material";
+import { RowProps } from "./types";
+import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import Avatar from "../../public/Avatar.png";
 
@@ -17,11 +17,11 @@ const Image = React.memo(({ src }) => (
       borderRadius: "50%",
     }}
   />
-))
+));
 
-function Row({row, url, currentSemester, onClick}: RowProps) {
-  const {id, firstName, lastName, email, phoneNumber, image} = row;
-  const {department, role, project, status, notes} = row.tenures[currentSemester];
+function Row({ row, url, currentSemester, onClick }: RowProps) {
+  const { id, firstName, lastName, email, phoneNumber, image } = row;
+  const { department, role, project, status, notes } = row.tenures[currentSemester];
 
   const cellStyle = {
     border: "none",
@@ -69,8 +69,8 @@ function Row({row, url, currentSemester, onClick}: RowProps) {
           <p>{status}</p>
         </div>
       </TableCell>
-      <TableCell key={`notes_${id}`} align="center" style={{...cellStyle, borderRight: "none"}}>
-        {notes ? <ChatBubbleOutlineRoundedIcon style={{color: "#657788"}} /> : null}
+      <TableCell key={`notes_${id}`} align="center" style={{ ...cellStyle, borderRight: "none" }}>
+        {notes ? <ChatBubbleOutlineRoundedIcon style={{ color: "#657788" }} /> : null}
       </TableCell>
     </TableRow>
   );

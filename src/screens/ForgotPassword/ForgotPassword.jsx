@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import classes from "./ForgotPassword.module.css";
 import warnning from "../../public/warning.png";
 import check from "../../public/check.png";

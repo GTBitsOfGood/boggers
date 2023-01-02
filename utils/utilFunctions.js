@@ -3,20 +3,20 @@ const sortTenures = (isMemberView) => {
 
   if (isMemberView) {
     splitFunction = (tenure) => {
-      return {semester: tenure.semester, year: tenure.year};
+      return { semester: tenure.semester, year: tenure.year };
     };
     compFunction = (num) => num;
   } else {
     splitFunction = (tenure) => {
       const split = tenure.split(" ");
-      return {semester: split[0], year: split[1]};
+      return { semester: split[0], year: split[1] };
     };
     compFunction = (num) => num * -1;
   }
 
   return (a, b) => {
-    const {semester: semester1, year: year1} = splitFunction(a);
-    const {semester: semester2, year: year2} = splitFunction(b);
+    const { semester: semester1, year: year1 } = splitFunction(a);
+    const { semester: semester2, year: year2 } = splitFunction(b);
 
     if (year1 > year2) return compFunction(1);
     else if (year1 < year2) return compFunction(-1);
@@ -48,7 +48,7 @@ const getCurrSemesterYear = () => {
     semester = "Fall";
   }
 
-  return {semester, year};
+  return { semester, year };
 };
 
 const convertToBase64 = (file) => {
@@ -61,4 +61,4 @@ const convertToBase64 = (file) => {
   });
 };
 
-export {sortTenures, getCurrSemesterYear, convertToBase64};
+export { sortTenures, getCurrSemesterYear, convertToBase64 };

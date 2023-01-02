@@ -1,10 +1,10 @@
-import {getToken} from "next-auth/jwt";
+import { getToken } from "next-auth/jwt";
 import requestWrapper from "../../../utils/middleware";
-import {deleteUser} from "../../server/mongodb/actions/User";
-import {deleteTenures} from "../../server/mongodb/actions/Tenure";
+import { deleteUser } from "../../server/mongodb/actions/User";
+import { deleteTenures } from "../../server/mongodb/actions/Tenure";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = await getToken({ req });
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -19,7 +19,7 @@ async function handler(req, res) {
     });
   }
 
-  const {id} = req.body;
+  const { id } = req.body;
   try {
     await deleteTenures(id);
     await deleteUser(id);

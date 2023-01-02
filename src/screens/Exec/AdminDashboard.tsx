@@ -1,18 +1,18 @@
-import React, {useMemo, useEffect, useState} from "react";
-import {Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
+import React, { useMemo, useEffect, useState } from "react";
+import { Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import UserTable from "./UserTable";
 import Image from "next/image";
 import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
-import {sortTenures} from "../../../utils/utilFunctions";
+import { sortTenures } from "../../../utils/utilFunctions";
 
 const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
 };
 
-const Search = styled("div")(({theme}) => ({
+const Search = styled("div")(({ theme }) => ({
   position: "relative",
   border: "solid",
   borderColor: "#C4C4C4",
@@ -25,7 +25,7 @@ const Search = styled("div")(({theme}) => ({
   },
 }));
 
-const SearchIconWrapper = styled("div")(({theme}) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -35,7 +35,7 @@ const SearchIconWrapper = styled("div")(({theme}) => ({
   justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({theme}) => ({
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     fontFamily: "Poppins",
@@ -49,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
   },
 }));
 
-const StyledButton = styled(Button)(({theme}) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   color: "black",
   border: "solid",
   borderColor: "#C4C4C4",
@@ -65,7 +65,7 @@ const StyledButton = styled(Button)(({theme}) => ({
   },
 }));
 
-const StyledSelect = styled(Select)(({theme}) => ({
+const StyledSelect = styled(Select)(({ theme }) => ({
   color: "black",
   border: "1px solid #C4C4C4",
   fontFamily: "Poppins",
@@ -82,7 +82,7 @@ const StyledSelect = styled(Select)(({theme}) => ({
   },
 }));
 
-function AdminDashboardPage({url}) {
+function AdminDashboardPage({ url }) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -124,8 +124,8 @@ function AdminDashboardPage({url}) {
       <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
       <Grid container height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
         <Grid item>
-          <Box sx={{display: "flex", alignItems: "center"}} style={{marginBottom: "1.5rem"}}>
-            <Box sx={{display: "flex", alignItems: "center", columnGap: 1.5}}>
+          <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>
+            <Box sx={{ display: "flex", alignItems: "center", columnGap: 1.5 }}>
               <Image alt="BOG logo" src={BOG} width={70} height={70} />
               <Typography
                 variant="h2"
@@ -138,7 +138,7 @@ function AdminDashboardPage({url}) {
                 Members
               </Typography>
             </Box>
-            <Box sx={{display: "flex", justifySelf: "flex-end", marginLeft: "auto", columnGap: 2}}>
+            <Box sx={{ display: "flex", justifySelf: "flex-end", marginLeft: "auto", columnGap: 2 }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -146,17 +146,17 @@ function AdminDashboardPage({url}) {
                 <StyledInputBase
                   placeholder="Search…"
                   value={filter}
-                  inputProps={{"aria-label": "search"}}
+                  inputProps={{ "aria-label": "search" }}
                   onChange={(e) => setFilter(e.target.value)}
                 />
               </Search>
               <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
-              <StyledSelect value={semester} MenuProps={{PaperProps: {sx: {maxHeight: 150}}}} onChange={changeSemesterHandler}>
+              <StyledSelect value={semester} MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }} onChange={changeSemesterHandler}>
                 {Array.from(semesters)
                   .sort(sortTenures(false))
                   .map((semester) => {
                     return (
-                      <MenuItem key={semester} value={semester} style={{justifyContent: "center", fontFamily: "Poppins"}}>
+                      <MenuItem key={semester} value={semester} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
                         {semester.toUpperCase()}
                       </MenuItem>
                     );
@@ -164,7 +164,7 @@ function AdminDashboardPage({url}) {
               </StyledSelect>
             </Box>
           </Box>
-          <div style={{height: "75vh", width: "90vw"}}>
+          <div style={{ height: "75vh", width: "90vw" }}>
             <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} filter={filter} />
           </div>
         </Grid>

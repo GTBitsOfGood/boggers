@@ -1,19 +1,19 @@
-import React, {useEffect, useState, useMemo} from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/TableContext";
-import {getCurrSemesterYear} from "../../../utils/utilFunctions";
-import {DBUser, User} from "./types";
+import { getCurrSemesterYear } from "../../../utils/utilFunctions";
+import { DBUser, User } from "./types";
 import sendRequest from "../../../utils/sendToBackend";
 
-function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
+function UserTable({ currentSemester, setSemester, setSemesters, url, filter }) {
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
     (async () => {
       const response = await sendRequest("/api/get_users", "GET");
-      const {users} = response;
+      const { users } = response;
 
       const semesters = new Set();
       let randomSemester = null;
@@ -53,14 +53,14 @@ function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
 
   if (!userList) {
     return (
-      <div style={{width: "0", margin: "auto"}}>
+      <div style={{ width: "0", margin: "auto" }}>
         <CircularProgress size={80} />
       </div>
     );
   }
 
   return (
-    <TableContext.Provider value={{userList, setUserList}}>
+    <TableContext.Provider value={{ userList, setUserList }}>
       <PaginationTable rows={rows} currentSemester={currentSemester} url={url} />
     </TableContext.Provider>
   );

@@ -6,9 +6,9 @@ export interface UserData {
   password: string;
   phoneNumber: string;
   access: {
-    type: Number,
-    default: 0,
-    enum: [0, 1, 2],
+    type: Number;
+    default: 0;
+    enum: [0, 1, 2];
   };
   preference: string;
   image: boolean;
@@ -32,7 +32,7 @@ export interface DBUser extends UserData {
 
 export interface User extends UserData {
   tenures: {
-    [semesterYear: string]: Tenure,
+    [semesterYear: string]: Tenure;
   };
 }
 

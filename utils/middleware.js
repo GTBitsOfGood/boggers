@@ -26,7 +26,7 @@ export default function requestWrapper(handler, method) {
 
     if (!global.cache) {
       try {
-        global.cache = await mongoose.connect(urls.dbUrl, {dbName: urls.dbName});
+        global.cache = await mongoose.connect(urls.dbUrl, { dbName: urls.dbName });
       } catch (error) {
         console.log(error);
         return res.status(400).json({

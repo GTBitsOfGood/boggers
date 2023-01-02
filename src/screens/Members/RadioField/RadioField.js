@@ -1,7 +1,7 @@
 import styles from "./RadioField.module.css";
 import RadioButton from "./RadioButton/RadioButton";
 
-export default function RadioField({preference, setPreference}) {
+export default function RadioField({ preference, setPreference }) {
   const onChange = (e) => setPreference(e.target.value);
 
   return (
