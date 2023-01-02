@@ -42,9 +42,16 @@
   margin-bottom: 5vh;
 }
 
+.ModalButtonContainer {
+  width: 90%;
+  height: 20%;
+  display: flex;
+  justify-content: space-around;
+}
+
 .ModalUploadButton {
   width: 40%;
-  height: 20%;
+  height: 100%;
   background-color: #e25702;
   border-radius: 5px;
   display: flex;
