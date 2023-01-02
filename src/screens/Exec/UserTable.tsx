@@ -1,114 +1,55 @@
 import React, {useEffect, useState, useMemo} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import PaginationTable, {TColumn} from "./PaginationTable";
+import PaginationTable from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/TableContext";
 import {getCurrSemesterYear} from "../../../utils/utilFunctions";
-
-interface AdminDashboardRow {
-  key: string;
-  member: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-  };
-  semester: string;
-  year: int;
-  department: string;
-  role: string;
-  preference: string;
-  project: string;
-  notes: any;
-  status: string;
-}
-
-interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phoneNumber: string;
-  access: {
-    type: Number;
-    default: 0;
-    enum: [0, 1, 2];
-  };
-  tenures: any;
-  preference: string;
-  status: string;
-  image: string;
-  emailVerified: boolean;
-}
+import {DBUser, User} from "./types";
+import sendRequest from "../../../utils/sendToBackend";
 
 function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
-  const [userList, setUserList] = useState<IUser[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch("/api/get_users")
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        const {users} = response;
-        setUserList(users);
+    (async () => {
+      const response = await sendRequest("/api/get_users", "GET");
+      const {users} = response;
 
-        const semesters = new Set();
-        let randomSemester = null;
-        users.forEach((user) => {
-          user.tenures.forEach((tenure) => {
-            semesters.add(`${tenure.semester} ${tenure.year}`);
-            if (!randomSemester) {
-              randomSemester = `${tenure.semester} ${tenure.year}`;
-            }
-          });
+      const semesters = new Set();
+      let randomSemester = null;
+      users.forEach((user: DBUser) => {
+        const tenures = {};
+        user.tenures.forEach((tenure) => {
+          const semesterYear = `${tenure.semester} ${tenure.year}`;
+          semesters.add(semesterYear);
+          tenures[semesterYear] = tenure;
+          if (!randomSemester) {
+            randomSemester = semesterYear;
+          }
         });
-        setSemesters(semesters);
-
-        let curr = getCurrSemesterYear();
-        curr = `${curr.semester} ${curr.year}`;
-        setSemester(semesters.has(curr) ? curr : randomSemester);
+        user.tenures = tenures;
       });
+      setUserList(users);
+      setSemesters(semesters);
+
+      let curr = getCurrSemesterYear();
+      curr = `${curr.semester} ${curr.year}`;
+      setSemester(semesters.has(curr) ? curr : randomSemester);
+    })();
   }, []);
 
   const regex = new RegExp(filter, "i");
+  const users = useMemo(() => {
+    return userList
+      .filter((user) => {
+        return regex.test(`${user.firstName} ${user.lastName}`);
+      })
+      .sort((a, b) => {
+        return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+      });
+  }, [userList, filter]);
 
-  const memberRowData: AdminDashboardRow[] = [];
-  userList.forEach((member, index) => {
-    const {id, tenures, firstName, lastName, email, phoneNumber, preference, image} = member;
-
-    const currentTenure = tenures.find((tenure) => currentSemester === `${tenure.semester} ${tenure.year}`);
-    if (!currentTenure || !regex.test(`${firstName} ${lastName}`)) return;
-    const {role, notes, department, project, status} = currentTenure;
-    memberRowData.push({
-      key: `${id}${index}`,
-      member: {
-        id,
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        image,
-      },
-      preference,
-      notes,
-      department,
-      role,
-      project,
-      status,
-    });
-  });
-
-  const columns: TColumn[] = [
-    {id: "member", label: "Member"},
-    {id: "department", label: "Department"},
-    {id: "role", label: "Role"},
-    {id: "project", label: "Project"},
-    {id: "status", label: "Status"},
-    {id: "notes", label: "Notes"},
-  ];
+  const rows = users.filter((user) => !!user.tenures[currentSemester]);
 
   if (!userList) {
     return (
@@ -120,7 +61,7 @@ function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
 
   return (
     <TableContext.Provider value={{userList, setUserList}}>
-      <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} url={url} />
+      <PaginationTable rows={rows} currentSemester={currentSemester} url={url} />
     </TableContext.Provider>
   );
 }

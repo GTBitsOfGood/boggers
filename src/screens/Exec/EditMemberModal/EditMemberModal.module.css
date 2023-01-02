@@ -22,10 +22,12 @@
   overflow-y: auto;
   z-index: 4;
   transition: 0.15s ease-in;
+  font-family: "Poppins";
 }
 
 .editModalTitleContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -34,18 +36,17 @@
   font-weight: bold;
   font-size: 48px;
   margin: 0;
-  font-family: "Poppins";
 }
 
 .editModalContainer .subHeader {
-  font-size: 22px;
-  text-align: center;
+  font-size: 18px;
   margin: 0;
   color: gray;
+  font-family: "Poppins"
 }
 
 .fieldListContainer {
-  margin-top: 30px;
+  margin-top: 10px;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 100px 100px 100px 100px 100px;

@@ -38,6 +38,7 @@ const SearchIconWrapper = styled("div")(({theme}) => ({
 const StyledInputBase = styled(InputBase)(({theme}) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
+    fontFamily: "Poppins",
     padding: theme.spacing(1.35, 1, 1.5, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
@@ -53,6 +54,7 @@ const StyledButton = styled(Button)(({theme}) => ({
   border: "solid",
   borderColor: "#C4C4C4",
   borderWidth: "2px",
+  fontFamily: "Poppins",
   fontSize: "16px",
   fontWeight: "400",
   height: "3rem",
@@ -66,6 +68,7 @@ const StyledButton = styled(Button)(({theme}) => ({
 const StyledSelect = styled(Select)(({theme}) => ({
   color: "black",
   border: "1px solid #C4C4C4",
+  fontFamily: "Poppins",
   fontSize: "16px",
   fontWeight: "400",
   height: "3rem",
@@ -153,7 +156,7 @@ function AdminDashboardPage({url}) {
                   .sort(sortTenures(false))
                   .map((semester) => {
                     return (
-                      <MenuItem key={semester} value={semester} style={{justifyContent: "center"}}>
+                      <MenuItem key={semester} value={semester} style={{justifyContent: "center", fontFamily: "Poppins"}}>
                         {semester.toUpperCase()}
                       </MenuItem>
                     );

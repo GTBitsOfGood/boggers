@@ -10,12 +10,12 @@ import sendRequest from "../../../utils/sendToBackend";
 import TableContext from "../../../utils/TableContext";
 
 interface IConfirmModal {
-  isOpen: boolen;
+  isOpen: boolean;
   handleCancel: Function;
   handleConfirm: Function;
   userId: string;
   semester: string;
-  year: Number;
+  year: int;
 }
 
 export default function ConfirmationModal({confirmModal, handleCancel, handleConfirm, userId, semester, year}: IConfirmModal) {
@@ -29,7 +29,7 @@ export default function ConfirmationModal({confirmModal, handleCancel, handleCon
       newUserList: (() => {
         const newUserList = JSON.parse(JSON.stringify(userList));
         const user = newUserList.find((user) => user.id === userId);
-        if (user) user.tenures = user?.tenures.filter((tenure) => tenure.semester !== semester || tenure.year !== year);
+        if (user) delete user.tenures[`${semester} ${year}`]
         return newUserList;
       })(),
     },
