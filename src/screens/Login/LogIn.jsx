@@ -76,8 +76,6 @@ export function LoginPage() {
             <Image
               alt="BOG logo"
               src={BOG}
-              width={100}
-              height={100}
               style={{
                 maxWidth: "100%",
                 height: "auto",

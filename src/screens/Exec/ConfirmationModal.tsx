@@ -1,46 +1,67 @@
-import React from "react";
+import React, {useContext} from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import urls from "../../../utils/urls";
+import sendRequest from "../../../utils/sendToBackend";
+import TableContext from "../../../utils/TableContext";
 
 interface IConfirmModal {
-  buttonText: string;
-  title: string;
-  body: string;
-  onConfirm: Function;
+  isOpen: boolen;
+  handleCancel: Function;
+  handleConfirm: Function;
+  userId: string;
+  semester: string;
+  year: Number;
 }
-export default function ConfirmModal({buttonText, title, body, onConfirm}: IConfirmModal) {
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+export default function ConfirmationModal({confirmModal, handleCancel, handleConfirm, userId, semester, year}: IConfirmModal) {
+  const {userList, setUserList} = useContext(TableContext);
+  const mapping = {
+    1: {
+      lower: "tenure",
+      upper: "Tenure",
+      route: urls.api.deleteTenure,
+      data: {id: userId, semester, year},
+      newUserList: (() => {
+        const newUserList = JSON.parse(JSON.stringify(userList));
+        const user = newUserList.find((user) => user.id === userId);
+        if (user) user.tenures = user?.tenures.filter((tenure) => tenure.semester !== semester || tenure.year !== year);
+        return newUserList;
+      })(),
+    },
+    2: {
+      lower: "user",
+      upper: "User",
+      route: urls.api.deleteUser,
+      data: {id: userId},
+      newUserList: userList.filter((user) => user.id !== userId),
+    },
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleConfirm = () => {
-    onConfirm();
-    handleClose();
+  const deleteUser = async () => {
+    handleConfirm();
+    const res = await sendRequest(mapping[confirmModal].route, "DELETE", mapping[confirmModal].data);
+    if (res.success) {
+      setUserList(mapping[confirmModal].newUserList);
+    }
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        {buttonText}
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      <Dialog aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" open={confirmModal !== 0}>
+        <DialogTitle id="alert-dialog-title">Are you sure you want to remove this {mapping[confirmModal]?.lower}?</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{body}</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            This action is permanent. {mapping[confirmModal]?.upper} information will not be able to be recovered.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button autoFocus onClick={deleteUser}>
             Confirm
           </Button>
         </DialogActions>

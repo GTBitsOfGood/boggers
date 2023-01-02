@@ -2,7 +2,7 @@ const sendRequest = async (route, method, data = {}) => {
   let result;
   if (method === "GET") {
     result = await fetch(route);
-  } else if (method === "POST" || method === "PUT") {
+  } else if (method === "POST" || method === "PUT" || method === "DELETE") {
     result = await fetch(route, {
       method,
       body: JSON.stringify(data),

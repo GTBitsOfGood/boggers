@@ -1,17 +1,21 @@
 import React, {useEffect, useState, useMemo} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import {PaginationTable, TColumn} from "./PaginationTable";
+import PaginationTable, {TColumn} from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
-import {bool} from "aws-sdk/clients/redshiftdata";
+import TableContext from "../../../utils/TableContext";
+import {getCurrSemesterYear} from "../../../utils/utilFunctions";
 
 interface AdminDashboardRow {
   key: string;
   member: {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
   };
+  semester: string;
+  year: int;
   department: string;
   role: string;
   preference: string;
@@ -21,6 +25,7 @@ interface AdminDashboardRow {
 }
 
 interface IUser {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -34,9 +39,11 @@ interface IUser {
   tenures: any;
   preference: string;
   status: string;
+  image: string;
+  emailVerified: boolean;
 }
 
-function UserTable({currentSemester}) {
+function UserTable({currentSemester, setSemester, setSemesters, url, filter}) {
   const [userList, setUserList] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -47,23 +54,43 @@ function UserTable({currentSemester}) {
       .then((response) => {
         const {users} = response;
         setUserList(users);
+
+        const semesters = new Set();
+        let randomSemester = null;
+        users.forEach((user) => {
+          user.tenures.forEach((tenure) => {
+            semesters.add(`${tenure.semester} ${tenure.year}`);
+            if (!randomSemester) {
+              randomSemester = `${tenure.semester} ${tenure.year}`;
+            }
+          });
+        });
+        setSemesters(semesters);
+
+        let curr = getCurrSemesterYear();
+        curr = `${curr.semester} ${curr.year}`;
+        setSemester(semesters.has(curr) ? curr : randomSemester);
       });
   }, []);
 
+  const regex = new RegExp(filter, "i");
+
   const memberRowData: AdminDashboardRow[] = [];
   userList.forEach((member, index) => {
-    const {tenures, firstName, lastName, email, phoneNumber, preference, id} = member;
+    const {id, tenures, firstName, lastName, email, phoneNumber, preference, image} = member;
 
-    const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
-    if (!currentTenure) return;
+    const currentTenure = tenures.find((tenure) => currentSemester === `${tenure.semester} ${tenure.year}`);
+    if (!currentTenure || !regex.test(`${firstName} ${lastName}`)) return;
     const {role, notes, department, project, status} = currentTenure;
     memberRowData.push({
-      key: `${index}`,
+      key: `${id}${index}`,
       member: {
+        id,
         firstName,
         lastName,
         phoneNumber,
         email,
+        image,
       },
       preference,
       notes,
@@ -83,10 +110,6 @@ function UserTable({currentSemester}) {
     {id: "notes", label: "Notes"},
   ];
 
-  const removeUser = (user: IUser) => {
-    setUserList(userList.filter((entry: IUser) => entry && entry.email && entry.email !== user.email));
-  };
-
   if (!userList) {
     return (
       <div style={{width: "0", margin: "auto"}}>
@@ -94,8 +117,12 @@ function UserTable({currentSemester}) {
       </div>
     );
   }
-  // return <PaginationTable rows={userList.map((user: IUser, index) => createAdminDashboardRow(user, index))} columns={columns} />;
-  return <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} />;
+
+  return (
+    <TableContext.Provider value={{userList, setUserList}}>
+      <PaginationTable rows={memberRowData} columns={columns} currentSemester={currentSemester} url={url} />
+    </TableContext.Provider>
+  );
 }
 
 export default UserTable;

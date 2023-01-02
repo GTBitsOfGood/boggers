@@ -5,18 +5,23 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 10;
+  z-index: 3;
 }
 
 .editModalContainer {
   background-color: white;
+  display: flex;
+  flex-direction: column;
   min-width: 600px;
   width: 30%;
   height: 100vh;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 40px;
+  padding: 20px 30px;
+  overflow-y: auto;
+  z-index: 4;
+  transition: 0.15s ease-in;
 }
 
 .editModalTitleContainer {
@@ -56,11 +61,33 @@
   padding-right: 10px;
 }
 
+.noteField {
+  width: 100%;
+  max-height: 150px;
+  overflow: auto;
+}
+
+.noteField::-webkit-scrollbar {
+  width: 6px;
+}
+
+.noteField::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+}
+
+.noteField::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
 .updateButtonGroup {
   display: flex;
   flex-direction: row;
   justify-content: right;
-  padding: 10px;
+  margin-top: auto;
+  justify-self: flex-end;
+  padding: 30px 10px 20px;
+  column-gap: 10px;
 }
 
 .exitButton {

@@ -1,18 +1,23 @@
 import React, {useEffect, useState} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from "@mui/material";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
+import {baseAwsUrl} from "../../../utils/awsConfig";
+import Avatar from "../../public/Avatar.png";
 
 interface TableProps {
   rows: TRow[];
   columns: TColumn[];
   currentSemester: any;
+  url: string;
 }
 
 interface RowProps {
   row: TRow;
   columns: TColumn[];
   onClick: any;
+  url: string;
 }
 
 interface TColumn {
@@ -27,43 +32,72 @@ interface TRow {
   [key: string]: any;
 }
 
-function Row({row, columns, onClick}: RowProps) {
+const cellStyle = {
+  border: "none",
+  borderRight: "solid",
+  borderBottom: "solid",
+  borderWidth: "1px",
+  borderColor: "#DCDCDC",
+};
+
+function Row({row, columns, url, onClick}: RowProps) {
   const {key, member, department, role, preference, project, notes, status} = row;
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={`${row.key}TR`} onClick={onClick}>
-      <TableCell key={`member_${key}`} align="left">
-        <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
-        <p className={styles.rowEmail}>{member.email}</p>
-        <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
+      <TableCell
+        key={`member_${key}`}
+        align="left"
+        style={{
+          ...cellStyle,
+          display: "flex",
+          alignItems: "center",
+          columnGap: "1.5rem",
+        }}>
+        <img
+          src={member.image ? url + member.id : Avatar.src}
+          alt="User Picture"
+          style={{
+            pointerEvents: "auto",
+            width: "6rem",
+            height: "6rem",
+            objectFit: "cover",
+            borderRadius: "50%",
+          }}
+        />
+        <div>
+          <p className={styles.rowMemberName}>{`${member.firstName} ${member.lastName}`}</p>
+          <p className={styles.rowEmail}>{member.email}</p>
+          <p className={styles.rowPhoneNumber}>{member.phoneNumber}</p>
+        </div>
       </TableCell>
-      <TableCell key={`department_${key}`} align="center">
+      <TableCell key={`department_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
           <p>{department}</p>
         </div>
       </TableCell>
-      <TableCell key={`role_${key}`} align="center">
+      <TableCell key={`role_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
-          <p>{department}</p>
+          <p>{role}</p>
         </div>
       </TableCell>
-      <TableCell key={`project_${key}`} align="center">
+      <TableCell key={`project_${key}`} align="center" style={cellStyle}>
         <div className={styles.orangeHighlight}>
           <p>{project}</p>
         </div>
       </TableCell>
-      <TableCell key={`status_${key}`} align="center">
+      <TableCell key={`status_${key}`} align="center" style={cellStyle}>
         <div className={status === "Active" ? styles.greenHighlight : styles.redHighlight}>
           <p>{status}</p>
         </div>
       </TableCell>
-      <TableCell key={`notes_${key}`} align="center">
-        <p>{notes}</p>
+      <TableCell key={`notes_${key}`} align="center" style={{...cellStyle, borderRight: "none"}}>
+        {notes ? <ChatBubbleOutlineRoundedIcon style={{color: "#657788"}} /> : null}
       </TableCell>
     </TableRow>
   );
 }
 
-function PaginationTable({rows, columns, currentSemester}: TableProps) {
+function PaginationTable({rows, columns, currentSemester, url}: TableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -79,23 +113,19 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
   };
 
   function headerStyle(column) {
+    let style = {
+      minWidth: column.minWidth,
+      borderBottom: "none",
+      backgroundColor: "#EEEEEE",
+      color: "#727474",
+      fontSize: "20px",
+      fontWeight: 400,
+    };
+
     if (column.label !== "Notes") {
-      return {
-        minWidth: column.minWidth,
-        border: "hidden",
-        borderRight: "solid",
-        borderWidth: "1px",
-        borderColor: "#DCDCDC",
-        backgroundColor: "#EEEEEE",
-        color: "#727474",
-      };
-    } else {
-      return {
-        minWidth: column.minWidth,
-        backgroundColor: "#EEEEEE",
-        color: "#727474",
-      };
+      style = {...style, ...cellStyle};
     }
+    return style;
   }
 
   const showModalHandler = (row) => {
@@ -104,7 +134,12 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
 
   return (
     <>
-      {selectedRow && <EditMemberModal setShowModal={() => setSelectedRow(null)} row={selectedRow} currentSemester={currentSemester} />}
+      <EditMemberModal
+        isVisible={!!selectedRow}
+        closeModal={() => setSelectedRow(null)}
+        row={selectedRow}
+        currentSemester={currentSemester}
+      />
       <Paper
         sx={{
           width: "100%",
@@ -118,14 +153,14 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
               <TableRow>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align || "center"} style={headerStyle(column)}>
-                    {column.label}
+                    {column.label.toUpperCase()}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                return <Row row={row} key={row.key} columns={columns} onClick={(event) => showModalHandler(row)} />;
+                return <Row row={row} key={row.key} columns={columns} url={url} onClick={(event) => showModalHandler(row)} />;
               })}
             </TableBody>
           </Table>
@@ -145,5 +180,5 @@ function PaginationTable({rows, columns, currentSemester}: TableProps) {
   );
 }
 
-export {PaginationTable};
+export default PaginationTable;
 export type {TRow, TColumn};
