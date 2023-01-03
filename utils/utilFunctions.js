@@ -61,4 +61,9 @@ const convertToBase64 = (file) => {
   });
 };
 
-export { sortTenures, getCurrSemesterYear, convertToBase64 };
+const splitSemesterString = (semesterString) => {
+  const [semester, year] = semesterString.split(" ");
+  return [semester, Number.parseInt(year)];
+};
+
+export { sortTenures, getCurrSemesterYear, convertToBase64, splitSemesterString };

@@ -24,6 +24,7 @@ export interface Tenure {
   project: string;
   role: string;
   status: string;
+  notes: string;
 }
 
 export interface DBUser extends UserData {

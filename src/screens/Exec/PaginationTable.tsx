@@ -21,12 +21,16 @@ function PaginationTable({ rows, currentSemester, url }: TableProps) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
+  useEffect(() => {
+    setPage(0);
+  }, [currentSemester]);
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(event.target.value);
     setPage(0);
   };
 

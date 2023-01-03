@@ -7,6 +7,7 @@ import sendRequest from "../../../../utils/sendToBackend";
 import TableContext from "../../../../utils/TableContext";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
+import { sortTenures, splitSemesterString } from "../../../../utils/utilFunctions";
 
 const Label = ({ label }) => {
   return (
@@ -28,13 +29,13 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const { userList, setUserList } = useContext(TableContext);
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
+  const [isNewTenure, setIsNewTenure] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [semester, setSemester] = useState("");
-  const [year, setYear] = useState(0);
+  const [semesterYear, setSemesterYear] = useState("");
   const [department, setDepartment] = useState("");
   const [role, setRole] = useState("");
   const [project, setProject] = useState("");
@@ -42,11 +43,6 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const [status, setStatus] = useState("");
   const [memberType, setMemberType] = useState("");
   const [notes, setNotes] = useState("");
-
-  const splitSemesterString = (semesterString) => {
-    const [semester, year] = semesterString.split(" ");
-    return [semester, Number.parseInt(year)];
-  };
 
   useEffect(() => {
     if (row) {
@@ -59,34 +55,40 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   }, [row]);
 
   useEffect(() => {
-    if (row && semester && year) {
-      const tenure = row.tenures[`${semester} ${year}`];
-      setDepartment(tenure.department);
-      setRole(tenure.role);
-      setProject(tenure.project);
-      setStatus(tenure.status);
-      setNotes(tenure.notes ?? "");
+    if (row && semesterYear) {
+      const tenure = row.tenures[semesterYear];
+      setDepartment(tenure ? tenure.department : "");
+      setRole(tenure ? tenure.role : "");
+      setProject(tenure ? tenure.project : "");
+      setStatus(tenure ? tenure.status : "");
+      setNotes(tenure ? tenure.notes : "");
     }
-  }, [row, semester, year]);
+  }, [row, semesterYear]);
 
   useEffect(() => {
     if (isVisible) {
+      setSemesterYear(currentSemester);
       scrollRef.current.scrollTop = 0;
-
-      const [semester, year] = splitSemesterString(currentSemester);
-      setSemester(semester);
-      setYear(year);
+      setIsNewTenure(false);
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    setSemesterYear(currentSemester);
+  }, [currentSemester]);
+
   const semesterHandler = (e) => {
-    const [semester, year] = splitSemesterString(e.target.value);
-    setSemester(semester);
-    setYear(year);
+    if (e.target.value === "New Tenure") {
+      setIsNewTenure(true);
+    } else {
+      setIsNewTenure(false);
+      setSemesterYear(e.target.value);
+    }
   };
 
   const updateHandler = async () => {
     closeModal();
+    const [semester, year] = splitSemesterString(semesterYear);
     const result = await sendRequest(urls.api.updateMember, "PUT", {
       memberId: row.id,
       firstName,
@@ -107,10 +109,9 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
     if (result.success) {
       const users: User[] = JSON.parse(JSON.stringify(userList));
       const index = users.findIndex((user) => user.id === row.id);
-      const semesterString = `${semester} ${year}`;
 
       const tenures = users[index].tenures;
-      tenures[semesterString] = { ...tenures[semesterString], semester, year, department, role, project, status, notes };
+      tenures[semesterYear] = { ...tenures[semesterYear], semester, year, department, role, project, status, notes };
       users[index] = { ...users[index], firstName, lastName, email, phoneNumber, preference, tenures };
       setUserList(users);
     }
@@ -127,7 +128,9 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
     },
   };
 
-  const { departments, roles, projects, preferences, statuses, memberTypes } = fields;
+  const [semester, year] = splitSemesterString(semesterYear);
+
+  const { semesters, departments, roles, projects, preferences, statuses, memberTypes } = fields;
   return (
     <div>
       <div className={style.background} style={animation[isVisible].background} onClick={() => closeModal()} />
@@ -139,8 +142,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           closeModal();
         }}
         userId={row?.id}
-        semester={semester}
-        year={year}
+        semesterYear={semesterYear}
       />
       <div className={style.editModalContainer} style={animation[isVisible].container} ref={scrollRef}>
         <div className={style.exitButton} onClick={() => closeModal()}>
@@ -151,17 +153,24 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           <Select
             className={style.subHeader}
             size="small"
-            value={semester && year ? `${semester} ${year}` : ""}
+            value={isNewTenure ? "New Tenure" : semesterYear}
             onChange={semesterHandler}
             sx={{ boxShadow: "none", ".MuiOutlinedInput-notchedOutline": { border: 0 } }}>
+            <MenuItem value="New Tenure" style={{ fontFamily: "Poppins", justifyContent: "center" }}>
+              New Tenure
+            </MenuItem>
             {row ? (
-              Object.keys(row.tenures).map((key) => (
-                <MenuItem key={`semester_${key}`} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))
+              Object.keys(row.tenures)
+                .sort(sortTenures(false))
+                .map((key) => (
+                  <MenuItem key={`semester_${key}`} value={key} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
+                    {key}
+                  </MenuItem>
+                ))
             ) : (
-              <MenuItem value={`${semester} ${year}`} style={{ fontFamily: "Poppins" }}>{`${semester} ${year}`}</MenuItem>
+              <MenuItem value={isNewTenure ? "New Tenure" : semesterYear} style={{ fontFamily: "Poppins" }}>
+                {isNewTenure ? "New Tenure" : semesterYear}
+              </MenuItem>
             )}
           </Select>
         </div>
@@ -181,7 +190,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             <Label label="LAST NAME" />
             <TextField
               size="small"
-              inputProps={{ style: { fontFamily: "Poppins" } }}
+              inputProps={{ style: { fontFamily: "Poppins", fontSize: 16 } }}
               style={{ width: "100%" }}
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -207,6 +216,35 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
+          {isNewTenure && (
+            <>
+              <div className={style.fieldContainer}>
+                <Label label="SEMESTER" />
+                <Select
+                  size="small"
+                  style={{ width: "100%", fontFamily: "Poppins" }}
+                  value={semester}
+                  onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)}>
+                  {semesters.map((key) => (
+                    <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
+                      {key}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+              <div className={style.fieldContainer}>
+                <Label label="YEAR" />
+                <TextField
+                  size="small"
+                  type="number"
+                  inputProps={{ style: { fontFamily: "Poppins" } }}
+                  style={{ width: "100%" }}
+                  value={year}
+                  onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)}
+                />
+              </div>
+            </>
+          )}
           <div className={style.fieldContainer}>
             <Label label="DEPARTMENT" />
             <Select

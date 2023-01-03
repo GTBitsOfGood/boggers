@@ -8,18 +8,20 @@ import DialogTitle from "@mui/material/DialogTitle";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 import TableContext from "../../../utils/TableContext";
+import { splitSemesterString } from "../../../utils/utilFunctions";
 
 interface IConfirmModal {
   isOpen: boolean;
   handleCancel: Function;
   handleConfirm: Function;
   userId: string;
-  semester: string;
-  year: int;
+  semesterYear: string;
 }
 
-export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, semester, year }: IConfirmModal) {
+export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, semesterYear }: IConfirmModal) {
   const { userList, setUserList } = useContext(TableContext);
+  const [semester, year] = splitSemesterString(semesterYear);
+  
   const mapping = {
     1: {
       lower: "tenure",
@@ -29,7 +31,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
       newUserList: (() => {
         const newUserList = JSON.parse(JSON.stringify(userList));
         const user = newUserList.find((user) => user.id === userId);
-        if (user) delete user.tenures[`${semester} ${year}`];
+        if (user) delete user.tenures[semesterYear];
         return newUserList;
       })(),
     },
