@@ -63,7 +63,7 @@ async function handler(req, res) {
   res.status(200).json({
     success: true,
     emailChanged,
-    user: await member.populate("tenures"),
+    id: member.id,
     message: "Updated record successfully",
   });
 }

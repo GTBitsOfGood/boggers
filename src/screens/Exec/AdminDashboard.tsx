@@ -7,7 +7,7 @@ import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
 import { sortTenures } from "../../../utils/utilFunctions";
-import DashboardContext from "../../../utils/DashboardContext";
+import DashboardContext from "../../../utils/contexts/DashboardContext";
 
 const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
@@ -172,7 +172,7 @@ function AdminDashboardPage({ url }) {
             </Box>
           </Box>
           <div style={{ height: "75vh", width: "90vw" }}>
-            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
+            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
               <UserTable
                 currentSemester={semester}
                 setSemester={setSemester}

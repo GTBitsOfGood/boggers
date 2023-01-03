@@ -4,7 +4,7 @@ import { RowProps } from "./types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import Avatar from "../../public/Avatar.png";
-import DashboardContext from "../../../utils/DashboardContext";
+import DashboardContext from "../../../utils/contexts/DashboardContext";
 
 const Image = React.memo(({ src }) => (
   <img
@@ -34,9 +34,9 @@ function Row({ row, currentSemester, onClick }: RowProps) {
   };
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} key={`${id}TR`} onClick={onClick}>
+    <TableRow hover role="checkbox" tabIndex={-1} key={`${id}${currentSemester}TR`} onClick={onClick}>
       <TableCell
-        key={`member_${id}`}
+        key={`member_${id}${currentSemester}`}
         align="left"
         style={{
           ...cellStyle,
@@ -44,7 +44,7 @@ function Row({ row, currentSemester, onClick }: RowProps) {
           alignItems: "center",
           columnGap: "1.5rem",
         }}>
-        <Image src={image ? url + id : Avatar.src} />
+        <Image key={`image_${id}${currentSemester}`} src={image ? url + id : Avatar.src} />
         <div>
           <p className={styles.rowMemberName}>{`${firstName} ${lastName}`}</p>
           <p className={styles.rowEmail}>{email}</p>

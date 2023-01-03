@@ -4,11 +4,11 @@ import { Typography, Select, MenuItem, TextField, Button } from "@mui/material";
 import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
 import sendRequest from "../../../../utils/sendToBackend";
-import TableContext from "../../../../utils/TableContext";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
 import { sortTenures, splitSemesterString } from "../../../../utils/utilFunctions";
-import DashboardContext from "../../../../utils/DashboardContext";
+import TableContext from "../../../../utils/contexts/TableContext";
+import DashboardContext from "../../../../utils/contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
 
 const Label = ({ label }) => {
@@ -29,10 +29,10 @@ const Label = ({ label }) => {
 
 export default function EditMemberModal({ row, isVisible, closeModal, currentSemester }: EditMemberModalProps) {
   const { userList, setUserList } = useContext(TableContext);
+  const { isAddUser, semesters, setSemesters } = useContext(DashboardContext);
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
-  const { isAddUser } = useContext(DashboardContext);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -124,12 +124,29 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
 
     if (result.success) {
       const users: User[] = JSON.parse(JSON.stringify(userList));
-      const index = users.findIndex((user) => user.id === row.id);
-
-      const tenures = users[index].tenures;
-      tenures[semesterYear] = { ...tenures[semesterYear], semester, year, department, role, project, status, notes };
-      users[index] = { ...users[index], firstName, lastName, email, phoneNumber, preference, tenures };
+      if (row) {
+        const index = users.findIndex((user) => user.id === row.id);
+        const tenures = users[index].tenures;
+        tenures[semesterYear] = { ...tenures[semesterYear], semester, year, department, role, project, status, notes };
+        users[index] = { ...users[index], firstName, lastName, email, phoneNumber, preference, tenures };
+      } else {
+        users.push({
+          id: result.id,
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          preference,
+          tenures: { [semesterYear]: { semester, year, department, role, project, status, notes } },
+        });
+      }
       setUserList(users);
+
+      if (!semesters.has(semesterYear)) {
+        const newSemesters = new Set(semesters);
+        newSemesters.add(semesterYear);
+        setSemesters(newSemesters);
+      }
     }
   };
 
@@ -146,7 +163,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
 
   const [semester, year] = splitSemesterString(semesterYear);
 
-  const { semesters, departments, roles, projects, preferences, statuses, memberTypes } = fields;
+  const { semesterOptions, departments, roles, projects, preferences, statuses, memberTypes } = fields;
   return (
     <div>
       <div className={style.background} style={animation[isVisible].background} onClick={() => closeModal()} />
@@ -200,7 +217,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
           {isNewTenure && (
             <>
-              <EditMemberField label="SEMESTER" type="select" state={semester} menu={semesters} onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)} />
+              <EditMemberField label="SEMESTER" type="select" state={semester} menu={semesterOptions} onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)} />
               <EditMemberField label="YEAR" type="number" state={year} onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)} />
             </>
           )}

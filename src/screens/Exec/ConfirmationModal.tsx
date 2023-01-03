@@ -7,7 +7,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
-import TableContext from "../../../utils/TableContext";
+import TableContext from "../../../utils/contexts/TableContext";
+import DashboardContext from "../../../utils/contexts/DashboardContext";
 import { splitSemesterString } from "../../../utils/utilFunctions";
 
 interface IConfirmModal {
@@ -20,6 +21,7 @@ interface IConfirmModal {
 
 export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, semesterYear }: IConfirmModal) {
   const { userList, setUserList } = useContext(TableContext);
+  const { setSemester, semesters, setSemesters } = useContext(DashboardContext);
   const [semester, year] = splitSemesterString(semesterYear);
   
   const mapping = {
@@ -49,6 +51,12 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
     const res = await sendRequest(mapping[confirmModal].route, "DELETE", mapping[confirmModal].data);
     if (res.success) {
       setUserList(mapping[confirmModal].newUserList);
+      if (mapping[confirmModal].newUserList.reduce((found, user) => found || !!user.tenures[semesterYear])) {
+        const newSemesters = new Set(semesters);
+        newSemesters.delete(semesterYear);
+        setSemesters(newSemesters);
+        setSemester(Array.from(newSemesters)[0]);
+      }
     }
   };
 

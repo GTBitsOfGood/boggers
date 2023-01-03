@@ -6,7 +6,7 @@ const memberTypes = {
   2: "Root Admin",
 };
 
-const semesters = ["Fall", "Spring", "Summer"];
+const semesterOptions = ["Fall", "Spring", "Summer"];
 
 const departments = ["Engineering"];
 
@@ -19,7 +19,7 @@ const statuses = ["Active", "Inactive"];
 const fields = {
   preferences,
   memberTypes,
-  semesters,
+  semesterOptions,
   departments,
   roles,
   projects,
