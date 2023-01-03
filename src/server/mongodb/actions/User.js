@@ -45,8 +45,8 @@ async function changeEmail(email, newEmail) {
   await User.updateOne({ email }, { email: newEmail });
 }
 
-async function upsertUser(name, email, phoneNumber, preference, role, status) {
-  const newUser = await User.findOneAndUpdate({ name }, { email, phoneNumber, preference, role, status }, { upsert: true, new: true });
+async function upsertUserEmail(firstName, lastName, email, phoneNumber, preference) {
+  const newUser = await User.findOneAndUpdate({ email }, { firstName, lastName, phoneNumber, preference }, { upsert: true, new: true });
   return newUser;
 }
 
@@ -87,11 +87,11 @@ export {
   createSeedUser,
   deleteUser,
   updateUser,
+  upsertUserEmail,
   upsertUserCsv,
   addTenure,
   updatePassword,
   addImage,
   setVerified,
   changeEmail,
-  upsertUser,
 };

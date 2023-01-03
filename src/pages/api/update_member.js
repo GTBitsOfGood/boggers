@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
-import { createUser, updateUser, addTenure, getUserById } from "../../server/mongodb/actions/User";
+import { upsertUserEmail, updateUser, addTenure, getUserById } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 import { createEmailChangeVerification } from "../../server/mongodb/actions/EmailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
@@ -45,7 +45,7 @@ async function handler(req, res) {
         await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
       }
     } else {
-      member = await createUser(firstName, lastName, email, phoneNumber, preference);
+      member = await upsertUserEmail(firstName, lastName, email, phoneNumber, preference);
     }
 
     if (!isMemberView) {
