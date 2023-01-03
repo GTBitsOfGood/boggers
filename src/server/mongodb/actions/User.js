@@ -69,7 +69,7 @@ async function upsertUserCsv(firstName, lastName, email, phoneNumber, preference
 }
 
 async function addTenure(userId, tenure) {
-  return await User.findOneAndUpdate({ _id: userId, tenures: { $ne: tenure._id } }, { $addToSet: { tenures: tenure._id } }, { new: true });
+  return await User.findOneAndUpdate({ _id: userId }, { $addToSet: { tenures: tenure._id } }, { new: true });
 }
 
 async function addImage(id) {

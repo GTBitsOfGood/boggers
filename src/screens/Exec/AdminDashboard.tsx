@@ -6,6 +6,7 @@ import Image from "next/image";
 import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
+import sendRequest from "../../../utils/sendToBackend";
 import { sortTenures } from "../../../utils/utilFunctions";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
 
@@ -91,6 +92,7 @@ function AdminDashboardPage({ url }) {
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
   const [isAddUser, setIsAddUser] = useState(false);
+  const [newMembers, setNewMembers] = useState(null);
 
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
@@ -98,14 +100,11 @@ function AdminDashboardPage({ url }) {
 
   const uploadAndCloseModal = async () => {
     console.log("fileBlob", fileBlob);
-    fetch(urls.base + urls.api.bulkUpload, {
-      method: "POST",
-      body: fileBlob,
-      headers: {
-        "Content-Type": "text/csv",
-      },
-    });
     setShowUploadModal(!showUploadModal);
+    const res = await sendRequest(urls.api.bulkUpload, "POST", fileBlob, { "Content-Type": "text/csv" }, false);
+    console.log(res);
+    setNewMembers(res.members);
+    setFileBlob(null);
   };
 
   return (
@@ -175,6 +174,9 @@ function AdminDashboardPage({ url }) {
             <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
               <UserTable
                 currentSemester={semester}
+                newMembers={newMembers}
+                clearNewMembers={() => setNewMembers(null)}
+                semesters={semesters}
                 setSemester={setSemester}
                 setSemesters={setSemesters}
                 filter={filter}

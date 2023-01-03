@@ -20,18 +20,42 @@ async function handler(req, res) {
   const csv = req.body;
   const parsed = csv.split(/\r?\n/);
   console.log(parsed);
+
+  const members = {};
   for (let i = 1; i < parsed.length; i++) {
     if (parsed[i] == "") continue;
     const record = parsed[i];
     const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record.split(",");
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phoneNumber ||
+      !preference ||
+      !role ||
+      !status ||
+      !project ||
+      !department ||
+      !semester ||
+      !year
+    ) {
+      continue;
+    }
 
     const member = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
     const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
-    await addTenure(member._id, tenure);
+    members[member._id.toString()] = await addTenure(member._id, tenure);
   }
+
+  const changedMembers = [];
+  for (const id in members) {
+    changedMembers.push(await members[id].populate("tenures"));
+  }
+
   res.status(200).json({
     success: true,
     message: "Upserted CSV records successfully",
+    members: changedMembers,
   });
 }
 

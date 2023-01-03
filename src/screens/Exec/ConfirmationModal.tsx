@@ -61,7 +61,9 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
         }
       });
       setSemesters(newSemesters);
-      setSemester(Array.from(newSemesters)[0]);
+      if (!newSemesters.has(semesterYear)) {
+        setSemester(Array.from(newSemesters)[0]);
+      }
     }
   };
 

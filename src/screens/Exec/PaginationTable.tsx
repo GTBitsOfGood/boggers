@@ -35,8 +35,8 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(event.target.value);
     setPage(0);
+    setRowsPerPage(event.target.value);
     tableRef.current.scrollTop = 0;
   };
 

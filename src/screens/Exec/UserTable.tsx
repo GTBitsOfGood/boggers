@@ -7,7 +7,7 @@ import { getCurrSemesterYear } from "../../../utils/utilFunctions";
 import { DBUser, User } from "./types";
 import sendRequest from "../../../utils/sendToBackend";
 
-function UserTable({ currentSemester, setSemester, setSemesters, filter }) {
+function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, semesters, setSemesters, filter }) {
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
@@ -18,16 +18,15 @@ function UserTable({ currentSemester, setSemester, setSemesters, filter }) {
       const semesters = new Set();
       let randomSemester = null;
       users.forEach((user: DBUser) => {
-        const tenures = {};
-        user.tenures.forEach((tenure) => {
+        user.tenures = user.tenures.reduce((tenures, tenure) => {
           const semesterYear = `${tenure.semester} ${tenure.year}`;
           semesters.add(semesterYear);
           tenures[semesterYear] = tenure;
           if (!randomSemester) {
             randomSemester = semesterYear;
           }
-        });
-        user.tenures = tenures;
+          return tenures;
+        }, {});
       });
       setUserList(users);
       setSemesters(semesters);
@@ -37,6 +36,32 @@ function UserTable({ currentSemester, setSemester, setSemesters, filter }) {
       setSemester(semesters.has(curr) ? curr : randomSemester);
     })();
   }, []);
+
+  useEffect(() => {
+    if (newMembers) {
+      const newUserList: User[] = JSON.parse(JSON.stringify(userList));
+
+      const newSemesters = new Set(semesters);
+      newMembers.forEach((user: DBUser) => {
+        user.tenures = user.tenures.reduce((tenures, tenure) => {
+          const semesterYear = `${tenure.semester} ${tenure.year}`;
+          tenures[semesterYear] = tenure;
+          newSemesters.add(semesterYear);
+          return tenures;
+        }, {});
+
+        const index = newUserList.findIndex((u) => user.id === u.id);
+        if (index === -1) {
+          newUserList.push(user);
+        } else {
+          newUserList[index] = user;
+        }
+      });
+      clearNewMembers();
+      setUserList(newUserList);
+      setSemesters(newSemesters);
+    }
+  }, [newMembers]);
 
   const regex = new RegExp(filter, "i");
   const users = useMemo(() => {
