@@ -88,7 +88,6 @@ function AdminDashboardPage({ url }) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
   const [isAddUser, setIsAddUser] = useState(false);
@@ -122,7 +121,7 @@ function AdminDashboardPage({ url }) {
           onClick={() => setShowUploadModal(false)}
         />
       ) : null}
-      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
+      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileBlob={setFileBlob} />
       <Grid container height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
         <Grid item>
           <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>

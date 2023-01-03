@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./UploadPhotoModal.module.css";
 
-export default function UploadCSVModal({ displayModal, closeModal, setFileUrl, setFileBlob }) {
+export default function UploadCSVModal({ displayModal, closeModal, setFileBlob }) {
   const [uploading, setUploading] = useState(false);
 
   const modalTransition = {
@@ -29,19 +29,15 @@ export default function UploadCSVModal({ displayModal, closeModal, setFileUrl, s
               <input
                 type="file"
                 style={{ display: "none" }}
-                accept="*.csv"
+                accept=".csv"
                 onChange={async (e) => {
                   setUploading(true);
                   const uploadedFile = e.target.files[0];
-                  console.log(uploadedFile);
-                  if (!uploadedFile) {
-                    setUploading(false);
-                    return;
+                  if (uploadedFile) {
+                    setFileBlob(uploadedFile);
                   }
-                  const imageUrl = URL.createObjectURL(uploadedFile);
-                  setFileBlob(uploadedFile);
-                  setFileUrl(imageUrl);
                   setUploading(false);
+                  e.target.value = null;
                 }}
               />
               Select File
