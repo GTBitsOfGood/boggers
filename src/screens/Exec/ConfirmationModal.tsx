@@ -36,6 +36,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
         if (user) delete user.tenures[semesterYear];
         return newUserList;
       })(),
+      semestersAffected: [semesterYear],
     },
     2: {
       lower: "user",
@@ -43,6 +44,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
       route: urls.api.deleteUser,
       data: { id: userId },
       newUserList: userList.filter((user) => user.id !== userId),
+      semestersAffected: Object.keys(userList.find((user) => user.id === userId)?.tenures || {}),
     },
   };
 
@@ -51,12 +53,15 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
     const res = await sendRequest(mapping[confirmModal].route, "DELETE", mapping[confirmModal].data);
     if (res.success) {
       setUserList(mapping[confirmModal].newUserList);
-      if (mapping[confirmModal].newUserList.reduce((found, user) => found || !!user.tenures[semesterYear])) {
-        const newSemesters = new Set(semesters);
-        newSemesters.delete(semesterYear);
-        setSemesters(newSemesters);
-        setSemester(Array.from(newSemesters)[0]);
-      }
+
+      const newSemesters = new Set(semesters);
+      mapping[confirmModal].semestersAffected.forEach((semesterYear) => {
+        if (!mapping[confirmModal].newUserList.reduce((found, user) => found || !!user.tenures[semesterYear], false)) {
+          newSemesters.delete(semesterYear);
+        }
+      });
+      setSemesters(newSemesters);
+      setSemester(Array.from(newSemesters)[0]);
     }
   };
 
