@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
 import { baseAwsUrl } from "../../../utils/awsConfig";
 import Row from "./Row";
 import { TColumn, TableProps } from "./types";
+import DashboardContext from "../../../utils/DashboardContext";
 
 const columns: TColumn[] = [
   { id: "member", label: "Member" },
@@ -15,11 +16,16 @@ const columns: TColumn[] = [
   { id: "notes", label: "Notes" },
 ];
 
-function PaginationTable({ rows, currentSemester, url }: TableProps) {
+function PaginationTable({ rows, currentSemester }: TableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const { isAddUser, setIsAddUser } = useContext(DashboardContext);
+
+  useEffect(() => {
+    setPage(0);
+  }, [currentSemester]);
 
   useEffect(() => {
     setPage(0);
@@ -57,8 +63,11 @@ function PaginationTable({ rows, currentSemester, url }: TableProps) {
   return (
     <>
       <EditMemberModal
-        isVisible={!!selectedRow}
-        closeModal={() => setSelectedRow(null)}
+        isVisible={!!selectedRow || isAddUser}
+        closeModal={() => {
+          if (isAddUser) setIsAddUser(false)
+          else setSelectedRow(null)
+        }}
         row={selectedRow}
         currentSemester={currentSemester}
       />
@@ -88,7 +97,6 @@ function PaginationTable({ rows, currentSemester, url }: TableProps) {
                     row={row}
                     key={row.id}
                     columns={columns}
-                    url={url}
                     onClick={(event) => showModalHandler(row)}
                   />
                 );

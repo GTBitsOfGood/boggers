@@ -1,9 +1,10 @@
 import styles from "./Row.module.css";
-import React from "react";
+import React, { useContext } from "react";
 import { RowProps } from "./types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import Avatar from "../../public/Avatar.png";
+import DashboardContext from "../../../utils/DashboardContext";
 
 const Image = React.memo(({ src }) => (
   <img
@@ -19,9 +20,10 @@ const Image = React.memo(({ src }) => (
   />
 ));
 
-function Row({ row, url, currentSemester, onClick }: RowProps) {
+function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image } = row;
   const { department, role, project, status, notes } = row.tenures[currentSemester];
+  const { url } = useContext(DashboardContext);
 
   const cellStyle = {
     border: "none",

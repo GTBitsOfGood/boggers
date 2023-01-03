@@ -47,13 +47,11 @@ export interface TColumn {
 export interface TableProps {
   rows: User[];
   currentSemester: string;
-  url: string;
 }
 
 export interface RowProps {
   row: User;
   onClick: function;
-  url: string;
 }
 
 export interface EditMemberModalProps {

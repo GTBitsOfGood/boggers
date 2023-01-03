@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import UserTable from "./UserTable";
@@ -7,6 +7,7 @@ import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
 import { sortTenures } from "../../../utils/utilFunctions";
+import DashboardContext from "../../../utils/DashboardContext";
 
 const truncateFilename = (filename) => {
   return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
@@ -58,7 +59,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: "400",
   height: "3rem",
-  width: "8rem",
+  width: theme.width,
   "&:hover": {
     backgroundColor: "#EAE6FF",
     borderColor: "#473F91",
@@ -89,6 +90,7 @@ function AdminDashboardPage({ url }) {
   const [fileUrl, setFileUrl] = useState("");
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
+  const [isAddUser, setIsAddUser] = useState(false);
 
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
@@ -150,7 +152,12 @@ function AdminDashboardPage({ url }) {
                   onChange={(e) => setFilter(e.target.value)}
                 />
               </Search>
-              <StyledButton onClick={() => setShowUploadModal(true)}>UPLOAD CSV</StyledButton>
+              <StyledButton theme={{ width: "7rem" }} onClick={() => setIsAddUser(true)}>
+                ADD USER
+              </StyledButton>
+              <StyledButton theme={{ width: "8rem" }} onClick={() => setShowUploadModal(true)}>
+                UPLOAD CSV
+              </StyledButton>
               <StyledSelect value={semester} MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }} onChange={changeSemesterHandler}>
                 {Array.from(semesters)
                   .sort(sortTenures(false))
@@ -165,7 +172,14 @@ function AdminDashboardPage({ url }) {
             </Box>
           </Box>
           <div style={{ height: "75vh", width: "90vw" }}>
-            <UserTable currentSemester={semester} setSemester={setSemester} setSemesters={setSemesters} url={url} filter={filter} />
+            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
+              <UserTable
+                currentSemester={semester}
+                setSemester={setSemester}
+                setSemesters={setSemesters}
+                filter={filter}
+              />
+            </DashboardContext.Provider>
           </div>
         </Grid>
       </Grid>

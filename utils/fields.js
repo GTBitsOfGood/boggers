@@ -6,7 +6,7 @@ const memberTypes = {
   2: "Root Admin",
 };
 
-const semesters = ["Spring", "Summer", "Fall"];
+const semesters = ["Fall", "Spring", "Summer"];
 
 const departments = ["Engineering"];
 

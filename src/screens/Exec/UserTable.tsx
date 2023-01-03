@@ -7,7 +7,7 @@ import { getCurrSemesterYear } from "../../../utils/utilFunctions";
 import { DBUser, User } from "./types";
 import sendRequest from "../../../utils/sendToBackend";
 
-function UserTable({ currentSemester, setSemester, setSemesters, url, filter }) {
+function UserTable({ currentSemester, setSemester, setSemesters, filter }) {
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ function UserTable({ currentSemester, setSemester, setSemesters, url, filter }) 
 
   return (
     <TableContext.Provider value={{ userList, setUserList }}>
-      <PaginationTable rows={rows} currentSemester={currentSemester} url={url} />
+      <PaginationTable rows={rows} currentSemester={currentSemester} />
     </TableContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import style from "./EditMemberModal.module.css";
-import { Typography, TextField, Button, MenuItem, Select } from "@mui/material";
+import { Typography, Select, MenuItem, TextField, Button } from "@mui/material";
 import fields from "../../../../utils/fields";
 import urls from "../../../../utils/urls";
 import sendRequest from "../../../../utils/sendToBackend";
@@ -8,6 +8,8 @@ import TableContext from "../../../../utils/TableContext";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
 import { sortTenures, splitSemesterString } from "../../../../utils/utilFunctions";
+import DashboardContext from "../../../../utils/DashboardContext";
+import EditMemberField from "./EditMemberField";
 
 const Label = ({ label }) => {
   return (
@@ -30,6 +32,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
+  const { isAddUser } = useContext(DashboardContext);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -69,7 +72,20 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
     if (isVisible) {
       setSemesterYear(currentSemester);
       scrollRef.current.scrollTop = 0;
-      setIsNewTenure(false);
+      setIsNewTenure(isAddUser);
+      setSemesterYear(currentSemester);
+      if (isAddUser) {
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhoneNumber("");
+        setPreference("");
+        setDepartment("");
+        setRole("");
+        setProject("");
+        setStatus("");
+        setNotes("");
+      }
     }
   }, [isVisible]);
 
@@ -78,7 +94,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   }, [currentSemester]);
 
   const semesterHandler = (e) => {
-    if (e.target.value === "New Tenure") {
+    if (e.target.value === "Add Tenure") {
       setIsNewTenure(true);
     } else {
       setIsNewTenure(false);
@@ -149,15 +165,15 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           X
         </div>
         <div className={style.editModalTitleContainer}>
-          <p className={style.header}>{`${firstName} ${lastName}`}</p>
+          <p className={style.header}>{firstName || lastName ? `${firstName} ${lastName}` : "Enter Name"}</p>
           <Select
             className={style.subHeader}
             size="small"
-            value={isNewTenure ? "New Tenure" : semesterYear}
+            value={isNewTenure || isAddUser ? "Add Tenure" : semesterYear}
             onChange={semesterHandler}
             sx={{ boxShadow: "none", ".MuiOutlinedInput-notchedOutline": { border: 0 } }}>
-            <MenuItem value="New Tenure" style={{ fontFamily: "Poppins", justifyContent: "center" }}>
-              New Tenure
+            <MenuItem value="Add Tenure" style={{ fontFamily: "Poppins", justifyContent: "center" }}>
+              Add Tenure
             </MenuItem>
             {row ? (
               Object.keys(row.tenures)
@@ -168,149 +184,31 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
                   </MenuItem>
                 ))
             ) : (
-              <MenuItem value={isNewTenure ? "New Tenure" : semesterYear} style={{ fontFamily: "Poppins" }}>
-                {isNewTenure ? "New Tenure" : semesterYear}
-              </MenuItem>
+              !isAddUser ? (
+                <MenuItem value={isNewTenure ? "Add Tenure" : semesterYear} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
+                  {isNewTenure ? "Add Tenure" : semesterYear}
+                </MenuItem>
+              ) : null
             )}
           </Select>
         </div>
 
         <div className={style.fieldListContainer}>
-          <div className={style.fieldContainer}>
-            <Label label="FIRST NAME" />
-            <TextField
-              size="small"
-              inputProps={{ style: { fontFamily: "Poppins" } }}
-              style={{ width: "100%" }}
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="LAST NAME" />
-            <TextField
-              size="small"
-              inputProps={{ style: { fontFamily: "Poppins", fontSize: 16 } }}
-              style={{ width: "100%" }}
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="EMAIL" />
-            <TextField
-              size="small"
-              inputProps={{ style: { fontFamily: "Poppins" } }}
-              style={{ width: "100%" }}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="PHONE NUMBER" />
-            <TextField
-              size="small"
-              inputProps={{ style: { fontFamily: "Poppins" } }}
-              style={{ width: "100%" }}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </div>
+          <EditMemberField label="FIRST NAME" type="text" state={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <EditMemberField label="Last NAME" type="text" state={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <EditMemberField label="EMAIL" type="text" state={email} onChange={(e) => setEmail(e.target.value)} />
+          <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
           {isNewTenure && (
             <>
-              <div className={style.fieldContainer}>
-                <Label label="SEMESTER" />
-                <Select
-                  size="small"
-                  style={{ width: "100%", fontFamily: "Poppins" }}
-                  value={semester}
-                  onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)}>
-                  {semesters.map((key) => (
-                    <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                      {key}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-              <div className={style.fieldContainer}>
-                <Label label="YEAR" />
-                <TextField
-                  size="small"
-                  type="number"
-                  inputProps={{ style: { fontFamily: "Poppins" } }}
-                  style={{ width: "100%" }}
-                  value={year}
-                  onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)}
-                />
-              </div>
+              <EditMemberField label="SEMESTER" type="select" state={semester} menu={semesters} onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)} />
+              <EditMemberField label="YEAR" type="number" state={year} onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)} />
             </>
           )}
-          <div className={style.fieldContainer}>
-            <Label label="DEPARTMENT" />
-            <Select
-              size="small"
-              style={{ width: "100%", fontFamily: "Poppins" }}
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}>
-              {departments.map((key) => (
-                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="ROLE" />
-            <Select size="small" style={{ width: "100%", fontFamily: "Poppins" }} value={role} onChange={(e) => setRole(e.target.value)}>
-              {roles.map((key) => (
-                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="PROJECT" />
-            <Select
-              size="small"
-              style={{ width: "100%", fontFamily: "Poppins" }}
-              value={project}
-              onChange={(e) => setProject(e.target.value)}>
-              {projects.map((key) => (
-                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="TECH PREFERENCE" />
-            <Select
-              size="small"
-              style={{ width: "100%", fontFamily: "Poppins" }}
-              value={preference}
-              onChange={(e) => setPreference(e.target.value)}>
-              {preferences.map((key) => (
-                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div className={style.fieldContainer}>
-            <Label label="STATUS" />
-            <Select
-              size="small"
-              style={{ width: "100%", fontFamily: "Poppins" }}
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}>
-              {statuses.map((key) => (
-                <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
+          <EditMemberField label="DEPARTMENT" type="select" state={department} menu={departments} onChange={(e) => setDepartment(e.target.value)} />
+          <EditMemberField label="ROLE" type="select" state={role} menu={roles} onChange={(e) => setRole(e.target.value)} />
+          <EditMemberField label="PROJECT" type="select" state={project} menu={projects} onChange={(e) => setProject(e.target.value)} />
+          <EditMemberField label="TECH PREFERENCE" type="select" state={preference} menu={preferences} onChange={(e) => setPreference(e.target.value)} />
+          <EditMemberField label="STATUS" type="select" state={status} menu={statuses} onChange={(e) => setStatus(e.target.value)} />
           <div className={style.fieldContainer}>
             <Label label="MEMBER TYPE" />
             <Select
@@ -337,12 +235,16 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           />
         </div>
         <div className={style.updateButtonGroup}>
-          <Button variant="contained" onClick={() => setConfirmModal(1)}>
-            REMOVE TENURE
-          </Button>
-          <Button variant="contained" onClick={() => setConfirmModal(2)}>
-            REMOVE MEMBER
-          </Button>
+          {!isNewTenure && !isAddUser && (
+            <Button variant="contained" onClick={() => setConfirmModal(1)}>
+              REMOVE TENURE
+            </Button>
+          )}
+          {!isAddUser && (
+            <Button variant="contained" onClick={() => setConfirmModal(2)}>
+              REMOVE MEMBER
+            </Button>
+          )}
           <Button variant="contained" onClick={updateHandler}>
             SAVE
           </Button>
