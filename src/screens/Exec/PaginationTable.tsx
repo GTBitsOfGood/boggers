@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
@@ -22,22 +22,22 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const { isAddUser, setIsAddUser } = useContext(DashboardContext);
+  const tableRef = useRef(null);
 
   useEffect(() => {
     setPage(0);
-  }, [currentSemester]);
-
-  useEffect(() => {
-    setPage(0);
+    tableRef.current.scrollTop = 0;
   }, [currentSemester]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    tableRef.current.scrollTop = 0;
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(event.target.value);
     setPage(0);
+    tableRef.current.scrollTop = 0;
   };
 
   function headerStyle(column) {
@@ -78,7 +78,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
           display: "flex",
           flexDirection: "column",
         }}>
-        <TableContainer className={styles.TableContainer} sx={{ flexGrow: 1, flexShrink: 1 }}>
+        <TableContainer className={styles.TableContainer} sx={{ flexGrow: 1, flexShrink: 1 }} ref={tableRef}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
