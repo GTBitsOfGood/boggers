@@ -15,8 +15,8 @@ async function getUsers() {
   return User.find({});
 }
 
-async function createUser(firstName, lastName, email, phoneNumber) {
-  return await User.create({ firstName, lastName, email, phoneNumber });
+async function createUser(firstName, lastName, email, phoneNumber, preference) {
+  return await User.create({ firstName, lastName, email, phoneNumber, preference });
 }
 
 async function deleteUser(id) {

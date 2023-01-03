@@ -106,7 +106,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
     closeModal();
     const [semester, year] = splitSemesterString(semesterYear);
     const result = await sendRequest(urls.api.updateMember, "PUT", {
-      memberId: row.id,
+      memberId: row?.id,
       firstName,
       lastName,
       email,
