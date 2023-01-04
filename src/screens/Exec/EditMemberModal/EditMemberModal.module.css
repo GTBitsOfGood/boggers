@@ -95,6 +95,28 @@
   column-gap: 10px;
 }
 
+.removeButton {
+  border: 2px solid #e20e00;
+  border-radius: 6px;
+  font-family: "Poppins-Bold";
+  font-size: 15px;
+  color: #e20e00;
+}
+
+.saveButton {
+  width: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #2d285c;
+  border-radius: 6px;
+  column-gap: 8px;
+  font-family: "Poppins";
+  font-size: 15px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
 .exitButton {
   top: 0;
   left: 0;

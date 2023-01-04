@@ -10,6 +10,7 @@ import { sortTenures, splitSemesterString } from "../../../../utils/utilFunction
 import TableContext from "../../../../utils/contexts/TableContext";
 import DashboardContext from "../../../../utils/contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
+import Save from "../../../public/Save.png";
 
 const Label = ({ label }) => {
   return (
@@ -307,18 +308,19 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         </div>
         <div className={style.updateButtonGroup}>
           {!isNewTenure && !isAddUser && (
-            <Button variant="contained" onClick={() => setConfirmModal(1)}>
+            <Button className={style.removeButton} onClick={() => setConfirmModal(1)}>
               REMOVE TENURE
             </Button>
           )}
           {!isAddUser && (
-            <Button variant="contained" onClick={() => setConfirmModal(2)}>
+            <Button className={style.removeButton} onClick={() => setConfirmModal(2)}>
               REMOVE MEMBER
             </Button>
           )}
-          <Button variant="contained" onClick={updateHandler}>
+          <div className={style.saveButton} onClick={updateHandler}>
+            <img src={Save.src} alt="Save Icon" />
             SAVE
-          </Button>
+          </div>
         </div>
       </div>
     </div>
