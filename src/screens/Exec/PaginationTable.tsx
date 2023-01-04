@@ -65,8 +65,8 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
       <EditMemberModal
         isVisible={!!selectedRow || isAddUser}
         closeModal={() => {
-          if (isAddUser) setIsAddUser(false)
-          else setSelectedRow(null)
+          if (isAddUser) setIsAddUser(false);
+          else setSelectedRow(null);
         }}
         row={selectedRow}
         currentSemester={currentSemester}

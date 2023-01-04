@@ -23,7 +23,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
   const { userList, setUserList } = useContext(TableContext);
   const { setSemester, semesters, setSemesters } = useContext(DashboardContext);
   const [semester, year] = splitSemesterString(semesterYear);
-  
+
   const mapping = {
     1: {
       lower: "tenure",

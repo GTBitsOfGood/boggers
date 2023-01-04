@@ -200,13 +200,11 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
                     {key}
                   </MenuItem>
                 ))
-            ) : (
-              !isAddUser ? (
-                <MenuItem value={isNewTenure ? "Add Tenure" : semesterYear} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
-                  {isNewTenure ? "Add Tenure" : semesterYear}
-                </MenuItem>
-              ) : null
-            )}
+            ) : !isAddUser ? (
+              <MenuItem value={isNewTenure ? "Add Tenure" : semesterYear} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
+                {isNewTenure ? "Add Tenure" : semesterYear}
+              </MenuItem>
+            ) : null}
           </Select>
         </div>
 
@@ -217,14 +215,32 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
           {isNewTenure && (
             <>
-              <EditMemberField label="SEMESTER" type="select" state={semester} menu={semesterOptions} onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)} />
+              <EditMemberField
+                label="SEMESTER"
+                type="select"
+                state={semester}
+                menu={semesterOptions}
+                onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)}
+              />
               <EditMemberField label="YEAR" type="number" state={year} onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)} />
             </>
           )}
-          <EditMemberField label="DEPARTMENT" type="select" state={department} menu={departments} onChange={(e) => setDepartment(e.target.value)} />
+          <EditMemberField
+            label="DEPARTMENT"
+            type="select"
+            state={department}
+            menu={departments}
+            onChange={(e) => setDepartment(e.target.value)}
+          />
           <EditMemberField label="ROLE" type="select" state={role} menu={roles} onChange={(e) => setRole(e.target.value)} />
           <EditMemberField label="PROJECT" type="select" state={project} menu={projects} onChange={(e) => setProject(e.target.value)} />
-          <EditMemberField label="TECH PREFERENCE" type="select" state={preference} menu={preferences} onChange={(e) => setPreference(e.target.value)} />
+          <EditMemberField
+            label="TECH PREFERENCE"
+            type="select"
+            state={preference}
+            menu={preferences}
+            onChange={(e) => setPreference(e.target.value)}
+          />
           <EditMemberField label="STATUS" type="select" state={status} menu={statuses} onChange={(e) => setStatus(e.target.value)} />
           <div className={style.fieldContainer}>
             <Label label="MEMBER TYPE" />
