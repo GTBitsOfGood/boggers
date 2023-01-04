@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
-import { upsertUserEmail, updateUser, addTenure, getUserById } from "../../server/mongodb/actions/User";
+import { updateUser, addTenure, getUserById, createUser } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 import { createEmailChangeVerification } from "../../server/mongodb/actions/EmailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
@@ -15,8 +15,23 @@ async function handler(req, res) {
     });
   }
 
-  const { isMemberView, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes } =
-    req.body;
+  const {
+    isMemberView,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    preference,
+    originalAccess,
+    access,
+    semester,
+    year,
+    department,
+    role,
+    project,
+    status,
+    notes,
+  } = req.body;
   let { memberId } = req.body;
 
   let emailChanged = false;
@@ -31,13 +46,18 @@ async function handler(req, res) {
       success: false,
       message: "User does not have the correct access level",
     });
+  } else if (!isMemberView && (user.access < access || (typeof originalAccess != "undefined" && user.access <= originalAccess))) {
+    return res.status(401).json({
+      success: false,
+      message: "User does not have correct access level to upgrade/downgrade member's access level",
+    });
   }
 
   let member, tenure;
   try {
     if (memberId) {
       const originalEntry = await getUserById(memberId);
-      member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference);
+      member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference, access);
       if (originalEntry.email !== email) {
         emailChanged = true;
         const accountRecovery = await createEmailChangeVerification(originalEntry.email, email);
@@ -45,7 +65,8 @@ async function handler(req, res) {
         await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
       }
     } else {
-      member = await upsertUserEmail(firstName, lastName, email, phoneNumber, preference);
+      console.log("hi");
+      member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
     }
 
     if (!isMemberView) {

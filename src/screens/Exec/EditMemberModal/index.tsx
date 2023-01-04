@@ -33,7 +33,9 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
+  const [user, setUser] = useState(null);
 
+  const [id, setId] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,27 +49,47 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const [memberType, setMemberType] = useState("");
   const [notes, setNotes] = useState("");
 
+  const resetFields = () => {
+    setId("");
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhoneNumber("");
+    setPreference("");
+    setDepartment("");
+    setRole("");
+    setProject("");
+    setStatus("");
+    setNotes("");
+    setMemberType("");
+  };
+
   useEffect(() => {
-    if (row) {
-      setFirstName(row.firstName);
-      setLastName(row.lastName);
-      setEmail(row.email);
-      setPhoneNumber(row.phoneNumber);
-      setPreference(row.preference);
-      setMemberType(row.access.toString());
-    }
+    setUser(row);
   }, [row]);
 
   useEffect(() => {
-    if (row && semesterYear) {
-      const tenure = row.tenures[semesterYear];
+    if (user) {
+      setId(user.id);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
+      setPhoneNumber(user.phoneNumber);
+      setPreference(user.preference);
+      setMemberType(user.access.toString());
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && semesterYear) {
+      const tenure = user.tenures[semesterYear];
       setDepartment(tenure ? tenure.department : "");
       setRole(tenure ? tenure.role : "");
       setProject(tenure ? tenure.project : "");
       setStatus(tenure ? tenure.status : "");
       setNotes(tenure ? tenure.notes : "");
     }
-  }, [row, semesterYear]);
+  }, [user, semesterYear]);
 
   useEffect(() => {
     if (isVisible) {
@@ -76,17 +98,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       setIsNewTenure(isAddUser);
       setSemesterYear(currentSemester);
       if (isAddUser) {
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPhoneNumber("");
-        setPreference("");
-        setDepartment("");
-        setRole("");
-        setProject("");
-        setStatus("");
-        setNotes("");
-        setMemberType("");
+        resetFields();
       }
     }
   }, [isVisible]);
@@ -98,6 +110,8 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const semesterHandler = (e) => {
     if (e.target.value === "Add Tenure") {
       setIsNewTenure(true);
+    } else if (isAddUser) {
+      setSemesterYear(e.target.value);
     } else {
       setIsNewTenure(false);
       setSemesterYear(e.target.value);
@@ -108,12 +122,13 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
     closeModal();
     const [semester, year] = splitSemesterString(semesterYear);
     const result = await sendRequest(urls.api.updateMember, "PUT", {
-      memberId: row?.id,
+      memberId: id,
       firstName,
       lastName,
       email,
       phoneNumber,
       preference,
+      originalAccess: user?.access,
       access: Number.parseInt(memberType),
       semester,
       year,
@@ -127,11 +142,20 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
 
     if (result.success) {
       const users: User[] = JSON.parse(JSON.stringify(userList));
-      if (row) {
-        const index = users.findIndex((user) => user.id === row.id);
+      if (user) {
+        const index = users.findIndex((u) => u.id === user.id);
         const tenures = users[index].tenures;
         tenures[semesterYear] = { ...tenures[semesterYear], semester, year, department, role, project, status, notes };
-        users[index] = { ...users[index], firstName, lastName, email, phoneNumber, preference, tenures };
+        users[index] = {
+          ...users[index],
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          preference,
+          tenures,
+          access: Number.parseInt(memberType),
+        };
       } else {
         users.push({
           id: result.id,
@@ -177,7 +201,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           setConfirmModal(0);
           closeModal();
         }}
-        userId={row?.id}
+        userId={id}
         semesterYear={semesterYear}
       />
       <div className={style.editModalContainer} style={animation[isVisible].container} ref={scrollRef}>
@@ -208,8 +232,8 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             <MenuItem value="Add Tenure" style={{ fontFamily: "Poppins", justifyContent: "center" }}>
               <div>Add Tenure</div>
             </MenuItem>
-            {row ? (
-              Object.keys(row.tenures)
+            {user ? (
+              Object.keys(user.tenures)
                 .sort(sortTenures(false))
                 .map((key) => (
                   <MenuItem key={`semester_${key}`} value={key} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
@@ -224,10 +248,25 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           </Select>
         </div>
 
-        <div className={style.fieldListContainer}>
+        <div className={`${style.fieldListContainer} ${isAddUser || isNewTenure ? style.fieldListContainerExtended : ""}`}>
           <EditMemberField label="FIRST NAME" type="text" state={firstName} setState={setFirstName} />
           <EditMemberField label="LAST NAME" type="text" state={lastName} setState={setLastName} />
-          <EditMemberField label="EMAIL" type="text" state={email} setState={setEmail} />
+          <EditMemberField
+            label="EMAIL"
+            type="text"
+            state={email}
+            onChange={(e) => {
+              const newEmail = e.target.value;
+              if (isAddUser) {
+                const foundUser = userList.find((u) => u.email === newEmail);
+                setUser(foundUser);
+                if (user && !foundUser) {
+                  resetFields();
+                }
+              }
+              setEmail(newEmail);
+            }}
+          />
           <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} setState={setPhoneNumber} />
           {isNewTenure && (
             <>

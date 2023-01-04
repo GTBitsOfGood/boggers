@@ -15,8 +15,8 @@ async function getUsers() {
   return User.find({});
 }
 
-async function createUser(firstName, lastName, email, phoneNumber, preference) {
-  return await User.create({ firstName, lastName, email, phoneNumber, preference });
+async function createUser(firstName, lastName, email, phoneNumber, preference, access) {
+  return await User.create({ firstName, lastName, email, phoneNumber, preference, access });
 }
 
 async function deleteUser(id) {
@@ -45,15 +45,19 @@ async function changeEmail(email, newEmail) {
   await User.updateOne({ email }, { email: newEmail });
 }
 
-async function upsertUserEmail(firstName, lastName, email, phoneNumber, preference) {
-  const newUser = await User.findOneAndUpdate({ email }, { firstName, lastName, phoneNumber, preference }, { upsert: true, new: true });
+async function upsertUserEmail(firstName, lastName, email, phoneNumber, preference, access) {
+  const newUser = await User.findOneAndUpdate(
+    { email },
+    { firstName, lastName, phoneNumber, preference, access },
+    { upsert: true, new: true },
+  );
   return newUser;
 }
 
-async function updateUser(userId, firstName, lastName, email, phoneNumber, preference) {
+async function updateUser(userId, firstName, lastName, email, phoneNumber, preference, access) {
   return await User.findByIdAndUpdate(
     userId,
-    { firstName, lastName, email, phoneNumber, preference },
+    { firstName, lastName, email, phoneNumber, preference, access },
     { new: true, runValidators: true, context: "query" },
   );
 }

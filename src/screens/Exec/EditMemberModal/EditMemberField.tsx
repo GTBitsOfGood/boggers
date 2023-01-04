@@ -18,6 +18,9 @@ const Label = ({ label }) => {
 };
 
 const StyledSelect = styled(Select)(({ theme }) => ({
+  "& .MuiSelect-select": {
+    height: "27px",
+  },
   "& .MuiSelect-outlined > div": {
     maxWidth: "17ch",
     overflow: "hidden",
@@ -29,7 +32,7 @@ export default function EditMemberField({ label, type, state, setState, onChange
   onChange = onChange || ((e) => setState(e.target.value));
 
   return (
-    <div style={{ margin: type === "select" ? "0px 10px" : "0px 8px" }}>
+    <div style={{ margin: "0px 10px" }}>
       <Label label={label} />
       {type === "select" ? (
         <StyledSelect
@@ -49,6 +52,7 @@ export default function EditMemberField({ label, type, state, setState, onChange
           type={type}
           inputProps={{ style: { fontFamily: "Poppins" } }}
           style={{ width: "100%" }}
+          sx={{ "& .MuiInputBase-input": { height: "27px" } }}
           value={state}
           onChange={onChange}
         />

@@ -53,6 +53,10 @@
   grid-template-rows: 100px 100px 100px 100px 100px;
 }
 
+.fieldListContainerExtended {
+  grid-template-rows: 100px 100px 100px 100px 100px 100px;
+}
+
 .fieldContainer {
   margin: 10px;
 }

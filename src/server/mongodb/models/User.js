@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   access: {
     type: Number,
     default: 0,
-    enum: Object.keys(fields.memberTypes),
+    enum: Object.keys(fields.memberTypes).map((key) => parseInt(key)),
   },
   tenures: [
     {
