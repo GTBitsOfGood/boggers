@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
-import { updateUser, addTenure, getUserById, createUser } from "../../server/mongodb/actions/User";
+import { updateUser, addTenure, createUser } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 import { createEmailChangeVerification } from "../../server/mongodb/actions/EmailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
@@ -19,6 +19,7 @@ async function handler(req, res) {
     isMemberView,
     firstName,
     lastName,
+    originalEmail,
     email,
     phoneNumber,
     preference,
@@ -34,8 +35,6 @@ async function handler(req, res) {
   } = req.body;
   let { memberId } = req.body;
 
-  let emailChanged = false;
-
   if (isMemberView && user.id !== memberId) {
     return res.status(401).json({
       success: false,
@@ -46,26 +45,27 @@ async function handler(req, res) {
       success: false,
       message: "User does not have the correct access level",
     });
-  } else if (!isMemberView && (user.access < access || (typeof originalAccess != "undefined" && user.access <= originalAccess))) {
+  } else if (
+    !isMemberView &&
+    (user.access < access || (typeof originalAccess != "undefined" && originalAccess !== access && user.access <= originalAccess))
+  ) {
     return res.status(401).json({
       success: false,
       message: "User does not have correct access level to upgrade/downgrade member's access level",
     });
   }
 
+  const emailChanged = !originalEmail || originalEmail !== email;
   let member, tenure;
   try {
     if (memberId) {
-      const originalEntry = await getUserById(memberId);
-      member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference, access);
-      if (originalEntry.email !== email) {
-        emailChanged = true;
-        const accountRecovery = await createEmailChangeVerification(originalEntry.email, email);
+      member = await updateUser(memberId, firstName, lastName, originalEmail, phoneNumber, preference, access);
+      if (emailChanged) {
+        const accountRecovery = await createEmailChangeVerification(originalEmail, email);
         const transporter = await connectMailer();
         await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
       }
     } else {
-      console.log("hi");
       member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
     }
 

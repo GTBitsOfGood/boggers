@@ -125,6 +125,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       memberId: id,
       firstName,
       lastName,
+      originalEmail: user?.email,
       email,
       phoneNumber,
       preference,
