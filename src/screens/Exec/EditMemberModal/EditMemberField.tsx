@@ -1,5 +1,5 @@
 import styles from "./EditMemberField.module.css";
-import { Typography, Select, MenuItem, TextField } from "@mui/material";
+import { styled, Typography, Select, MenuItem, TextField } from "@mui/material";
 
 const Label = ({ label }) => {
   return (
@@ -17,18 +17,32 @@ const Label = ({ label }) => {
   );
 };
 
-export default function EditMemberField({ label, state, type, onChange, menu }) {
+const StyledSelect = styled(Select)(({ theme }) => ({
+  "& .MuiSelect-outlined > div": {
+    maxWidth: "17ch",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+}));
+
+export default function EditMemberField({ label, type, state, setState, onChange, menu, keyFunc=(key)=>key }) {
+  onChange = onChange || ((e) => setState(e.target.value));
+
   return (
-    <div className={styles.fieldContainer}>
+    <div style={{ margin: type === "select" ? "0px 10px" : "0px 8px" }}>
       <Label label={label} />
       {type === "select" ? (
-        <Select size="small" style={{ width: "100%", fontFamily: "Poppins" }} value={state} onChange={onChange}>
+        <StyledSelect
+          className={styles.select}
+          size="small"
+          value={state}
+          onChange={onChange}>
           {menu.map((key) => (
-            <MenuItem key={key} value={key} style={{ fontFamily: "Poppins" }}>
-              {key}
+            <MenuItem className={styles.menuItem} key={keyFunc(key)} value={key}>
+              <div className={`${styles.menuItemText} ${state === key ? styles.selected : styles.unselected}`}>{keyFunc(key)}</div>
             </MenuItem>
           ))}
-        </Select>
+        </StyledSelect>
       ) : (
         <TextField
           size="small"

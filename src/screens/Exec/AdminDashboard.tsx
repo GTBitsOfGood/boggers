@@ -156,7 +156,23 @@ function AdminDashboardPage({ url }) {
               <StyledButton theme={{ width: "8rem" }} onClick={() => setShowUploadModal(true)}>
                 UPLOAD CSV
               </StyledButton>
-              <StyledSelect value={semester} MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }} onChange={changeSemesterHandler}>
+              <StyledSelect
+                value={semester}
+                MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }}
+                onChange={changeSemesterHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
                 {Array.from(semesters)
                   .sort(sortTenures(false))
                   .map((semester) => {

@@ -1,3 +1,26 @@
-.fieldContainer {
-  margin: 10px;
+.select {
+  font-family: "Poppins";
+  width: 100%;
+}
+
+.menuItem {
+  font-family: "Poppins";
+  white-space: unset;
+  word-break: break-all;
+}
+
+.menuItemText {
+  display: inline-block;
+  max-width: 21ch;
+  border-radius: 10px;
+  padding: 2px 12px;
+}
+
+.selected {
+  color: #e25702;
+  background-color: #febf98;
+}
+
+.unselected {
+  background-color: #bfbfbf;
 }

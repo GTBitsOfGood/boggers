@@ -47,11 +47,10 @@
 }
 
 .fieldListContainer {
-  margin-top: 10px;
+  margin-top: 20px;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 100px 100px 100px 100px 100px;
-  /* border: 1px solid red; */
 }
 
 .fieldContainer {

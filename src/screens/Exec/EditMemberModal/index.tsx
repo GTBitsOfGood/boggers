@@ -54,6 +54,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       setEmail(row.email);
       setPhoneNumber(row.phoneNumber);
       setPreference(row.preference);
+      setMemberType(row.access.toString());
     }
   }, [row]);
 
@@ -85,6 +86,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         setProject("");
         setStatus("");
         setNotes("");
+        setMemberType("");
       }
     }
   }, [isVisible]);
@@ -111,12 +113,13 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       lastName,
       email,
       phoneNumber,
+      preference,
+      access: Number.parseInt(memberType),
       semester,
       year,
       department,
       role,
       project,
-      preference,
       status,
       notes,
     });
@@ -188,31 +191,44 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             size="small"
             value={isNewTenure || isAddUser ? "Add Tenure" : semesterYear}
             onChange={semesterHandler}
-            sx={{ boxShadow: "none", ".MuiOutlinedInput-notchedOutline": { border: 0 } }}>
+            sx={{ boxShadow: "none", ".MuiOutlinedInput-notchedOutline": { border: 0 } }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  "& .MuiMenuItem-root.Mui-selected": {
+                    backgroundColor: "#0069ca1a",
+                    color: "#78adff",
+                  },
+                  "& .MuiMenuItem-root.Mui-selected:hover": {
+                    backgroundColor: "#0069ca23",
+                  },
+                },
+              },
+            }}>
             <MenuItem value="Add Tenure" style={{ fontFamily: "Poppins", justifyContent: "center" }}>
-              Add Tenure
+              <div>Add Tenure</div>
             </MenuItem>
             {row ? (
               Object.keys(row.tenures)
                 .sort(sortTenures(false))
                 .map((key) => (
                   <MenuItem key={`semester_${key}`} value={key} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
-                    {key}
+                    <div>{key}</div>
                   </MenuItem>
                 ))
             ) : !isAddUser ? (
               <MenuItem value={isNewTenure ? "Add Tenure" : semesterYear} style={{ fontFamily: "Poppins", justifyContent: "center" }}>
-                {isNewTenure ? "Add Tenure" : semesterYear}
+                <div>{isNewTenure ? "Add Tenure" : semesterYear}</div>
               </MenuItem>
             ) : null}
           </Select>
         </div>
 
         <div className={style.fieldListContainer}>
-          <EditMemberField label="FIRST NAME" type="text" state={firstName} onChange={(e) => setFirstName(e.target.value)} />
-          <EditMemberField label="Last NAME" type="text" state={lastName} onChange={(e) => setLastName(e.target.value)} />
-          <EditMemberField label="EMAIL" type="text" state={email} onChange={(e) => setEmail(e.target.value)} />
-          <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+          <EditMemberField label="FIRST NAME" type="text" state={firstName} setState={setFirstName} />
+          <EditMemberField label="LAST NAME" type="text" state={lastName} setState={setLastName} />
+          <EditMemberField label="EMAIL" type="text" state={email} setState={setEmail} />
+          <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} setState={setPhoneNumber} />
           {isNewTenure && (
             <>
               <EditMemberField
@@ -225,37 +241,19 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
               <EditMemberField label="YEAR" type="number" state={year} onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)} />
             </>
           )}
+          <EditMemberField label="DEPARTMENT" type="select" state={department} menu={departments} setState={setDepartment} />
+          <EditMemberField label="ROLE" type="select" state={role} menu={roles} setState={setRole} />
+          <EditMemberField label="PROJECT" type="select" state={project} menu={projects} setState={setProject} />
+          <EditMemberField label="TECH PREFERENCE" type="select" state={preference} menu={preferences} setState={setPreference} />
+          <EditMemberField label="STATUS" type="select" state={status} menu={statuses} setState={setStatus} />
           <EditMemberField
-            label="DEPARTMENT"
+            label="MEMBER TYPE"
             type="select"
-            state={department}
-            menu={departments}
-            onChange={(e) => setDepartment(e.target.value)}
+            state={memberType}
+            menu={Object.keys(memberTypes)}
+            setState={setMemberType}
+            keyFunc={(key) => memberTypes[key]}
           />
-          <EditMemberField label="ROLE" type="select" state={role} menu={roles} onChange={(e) => setRole(e.target.value)} />
-          <EditMemberField label="PROJECT" type="select" state={project} menu={projects} onChange={(e) => setProject(e.target.value)} />
-          <EditMemberField
-            label="TECH PREFERENCE"
-            type="select"
-            state={preference}
-            menu={preferences}
-            onChange={(e) => setPreference(e.target.value)}
-          />
-          <EditMemberField label="STATUS" type="select" state={status} menu={statuses} onChange={(e) => setStatus(e.target.value)} />
-          <div className={style.fieldContainer}>
-            <Label label="MEMBER TYPE" />
-            <Select
-              size="small"
-              style={{ width: "100%", fontFamily: "Poppins" }}
-              value={memberType}
-              onChange={(e) => setMemberType(e.target.value)}>
-              {Object.keys(memberTypes).map((key) => (
-                <MenuItem key={memberTypes[key]} value={key} style={{ fontFamily: "Poppins" }}>
-                  {memberTypes[key]}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
         </div>
         <div className={style.noteContainer}>
           <Label label="NOTES" />

@@ -5,11 +5,7 @@ export interface UserData {
   email: string;
   password: string;
   phoneNumber: string;
-  access: {
-    type: Number;
-    default: 0;
-    enum: [0, 1, 2];
-  };
+  access: Number;
   preference: string;
   image: boolean;
   emailVerified: boolean;
