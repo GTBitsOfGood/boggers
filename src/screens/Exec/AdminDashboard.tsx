@@ -150,8 +150,8 @@ function AdminDashboardPage({ url }) {
                   onChange={(e) => setFilter(e.target.value)}
                 />
               </Search>
-              <StyledButton theme={{ width: "7rem" }} onClick={() => setIsAddUser(true)}>
-                ADD USER
+              <StyledButton theme={{ width: "8rem" }} onClick={() => setIsAddUser(true)}>
+                ADD MEMBER
               </StyledButton>
               <StyledButton theme={{ width: "8rem" }} onClick={() => setShowUploadModal(true)}>
                 UPLOAD CSV
