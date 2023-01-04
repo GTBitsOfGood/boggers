@@ -9,7 +9,7 @@ import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 import TableContext from "../../../utils/contexts/TableContext";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
-import { splitSemesterString } from "../../../utils/utilFunctions";
+import { sortTenures, splitSemesterString } from "../../../utils/utilFunctions";
 
 interface IConfirmModal {
   isOpen: boolean;
@@ -62,7 +62,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
       });
       setSemesters(newSemesters);
       if (!newSemesters.has(semesterYear)) {
-        setSemester(Array.from(newSemesters)[0]);
+        setSemester(Array.from(newSemesters).sort(sortTenures(false))[0]);
       }
     }
   };

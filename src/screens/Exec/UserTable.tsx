@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable";
 import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/contexts/TableContext";
-import { getCurrSemesterYear } from "../../../utils/utilFunctions";
+import { getCurrSemesterYear, sortTenures } from "../../../utils/utilFunctions";
 import { DBUser, User } from "./types";
 import sendRequest from "../../../utils/sendToBackend";
 
@@ -16,15 +16,11 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
       const { users } = response;
 
       const semesters = new Set();
-      let randomSemester = null;
       users.forEach((user: DBUser) => {
         user.tenures = user.tenures.reduce((tenures, tenure) => {
           const semesterYear = `${tenure.semester} ${tenure.year}`;
           semesters.add(semesterYear);
           tenures[semesterYear] = tenure;
-          if (!randomSemester) {
-            randomSemester = semesterYear;
-          }
           return tenures;
         }, {});
       });
@@ -33,7 +29,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
 
       let curr = getCurrSemesterYear();
       curr = `${curr.semester} ${curr.year}`;
-      setSemester(semesters.has(curr) ? curr : randomSemester);
+      setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
     })();
   }, []);
 
