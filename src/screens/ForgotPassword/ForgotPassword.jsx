@@ -41,8 +41,8 @@ export function ForgotPassword() {
     } else {
       setMessage({
         success: false,
-        header: "INCORRECT EMAIL",
-        body: "The email you entered is not associated with a Boggers account.",
+        header: `${res.exists ? "UNVERIFIED" : "INCORRECT"} EMAIL`,
+        body: `The email you entered is not ${res.exists ? "verified" : "associated with a Boggers account"}.`,
       });
     }
   };

@@ -169,6 +169,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           phoneNumber,
           preference,
           tenures: { [semesterYear]: { semester, year, department, role, project, status, notes } },
+          access: Number.parseInt(memberType),
         });
       }
       setUserList(users);

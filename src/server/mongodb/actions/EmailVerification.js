@@ -8,4 +8,12 @@ async function getAndDeleteEmailVerification(token) {
   return EmailVerification.findOneAndDelete({ token });
 }
 
-export { createEmailVerification, getAndDeleteEmailVerification };
+async function deleteEmail(email) {
+  return EmailVerification.deleteMany({ email });
+}
+
+async function deleteNewEmail(newEmail) {
+  return EmailVerification.deleteMany({ newEmail });
+}
+
+export { createEmailVerification, getAndDeleteEmailVerification, deleteEmail, deleteNewEmail };
