@@ -11,14 +11,15 @@ async function handler(req, res) {
     });
   }
 
-  if (user.user.access < 1) {
+  const { id, access, semester, year } = req.body;
+
+  if (user.user.access < 1 || user.user.access < access) {
     return res.status(401).json({
       success: false,
       message: "User does not have correct access level",
     });
   }
 
-  const { id, semester, year } = req.body;
   try {
     await deleteTenure(id, semester, year);
     res.status(202).json({

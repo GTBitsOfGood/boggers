@@ -204,6 +204,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           closeModal();
         }}
         userId={id}
+        acccess={user?.access}
         semesterYear={semesterYear}
       />
       <div className={style.editModalContainer} style={animation[isVisible].container} ref={scrollRef}>
@@ -307,18 +308,18 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
           />
         </div>
         <div className={style.updateButtonGroup}>
-          {!isNewTenure && !isAddUser && (
+          {(!isNewTenure || (isAddUser && user?.tenures[semesterYear]?.department)) && (
             <Button className={style.removeButton} onClick={() => setConfirmModal(1)}>
               REMOVE TENURE
             </Button>
           )}
-          {!isAddUser && (
+          {(!isAddUser || user) && (
             <Button className={style.removeButton} onClick={() => setConfirmModal(2)}>
               REMOVE MEMBER
             </Button>
           )}
           <div className={style.saveButton} onClick={updateHandler}>
-            <img src={Save.src} alt="Save Icon" />
+            <img src={Save.src} height={20} width={20} alt="Save Icon" />
             SAVE
           </div>
         </div>

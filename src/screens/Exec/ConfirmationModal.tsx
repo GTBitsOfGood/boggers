@@ -16,10 +16,11 @@ interface IConfirmModal {
   handleCancel: Function;
   handleConfirm: Function;
   userId: string;
+  access: Number;
   semesterYear: string;
 }
 
-export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, semesterYear }: IConfirmModal) {
+export default function ConfirmationModal({ confirmModal, handleCancel, handleConfirm, userId, access, semesterYear }: IConfirmModal) {
   const { userList, setUserList } = useContext(TableContext);
   const { setSemester, semesters, setSemesters } = useContext(DashboardContext);
   const [semester, year] = splitSemesterString(semesterYear);
@@ -29,7 +30,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
       lower: "tenure",
       upper: "Tenure",
       route: urls.api.deleteTenure,
-      data: { id: userId, semester, year },
+      data: { id: userId, access, semester, year },
       newUserList: (() => {
         const newUserList = JSON.parse(JSON.stringify(userList));
         const user = newUserList.find((user) => user.id === userId);
@@ -42,7 +43,7 @@ export default function ConfirmationModal({ confirmModal, handleCancel, handleCo
       lower: "user",
       upper: "User",
       route: urls.api.deleteUser,
-      data: { id: userId },
+      data: { id: userId, access },
       newUserList: userList.filter((user) => user.id !== userId),
       semestersAffected: Object.keys(userList.find((user) => user.id === userId)?.tenures || {}),
     },

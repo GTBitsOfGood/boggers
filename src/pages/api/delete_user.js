@@ -12,14 +12,15 @@ async function handler(req, res) {
     });
   }
 
-  if (user.user.access < 1) {
+  const { id, access } = req.body;
+
+  if (user.user.access < 1 || user.user.access <= access) {
     return res.status(401).json({
       success: false,
       message: "User does not have correct access level",
     });
   }
 
-  const { id } = req.body;
   try {
     await deleteTenures(id);
     await deleteUser(id);

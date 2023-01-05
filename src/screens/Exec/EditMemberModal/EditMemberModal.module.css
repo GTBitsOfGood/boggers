@@ -92,7 +92,7 @@
   margin-top: auto;
   justify-self: flex-end;
   padding: 30px 10px 20px;
-  column-gap: 10px;
+  column-gap: 12px;
 }
 
 .removeButton {
@@ -104,7 +104,7 @@
 }
 
 .saveButton {
-  width: 110px;
+  padding: 10px 15px;
   display: flex;
   justify-content: center;
   align-items: center;
