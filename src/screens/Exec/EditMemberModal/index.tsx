@@ -66,7 +66,9 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   };
 
   useEffect(() => {
-    setUser(row);
+    if (row) {
+      setUser(row);
+    }
   }, [row]);
 
   useEffect(() => {
