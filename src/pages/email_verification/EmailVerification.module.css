@@ -1,0 +1,30 @@
+.body {
+  background: linear-gradient(to left, #fd8033, #fb3552);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+  font-family: "Poppins";
+  color: white;
+}
+
+.heading {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.subHeading {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.button {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 7px 16px;
+  border-radius: 5px;
+  background-color: #2d285c;
+}

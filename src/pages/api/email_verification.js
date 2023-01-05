@@ -7,6 +7,10 @@ async function handler(req, res) {
   const { token } = req.body;
   const emailVerification = await getAndDeleteEmailVerification(token);
 
+  if (!emailVerification) {
+    return res.status(200).json({ success: false });
+  }
+
   const isNewUser = emailVerification.email === emailVerification.newEmail;
   if (isNewUser) {
     await setVerified(emailVerification.email);
