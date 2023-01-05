@@ -12,7 +12,14 @@ async function handler(req, res) {
     return res.status(200).json({ success: true });
   } else {
     createEmailVerification(email)
-      .then((accountRecovery) => ({ accountRecovery, transporter: connectMailer() }))
+      .then(
+        (accountRecovery) =>
+          new Promise((resolve, reject) => {
+            connectMailer()
+              .then((transporter) => resolve({ accountRecovery, transporter }))
+              .catch((err) => reject(err));
+          }),
+      )
       .then(({ accountRecovery, transporter }) => sendEmailVerificationEmail(transporter, accountRecovery.email, accountRecovery.token))
       .catch((err) => {
         console.log(err);
