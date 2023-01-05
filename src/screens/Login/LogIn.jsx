@@ -26,7 +26,7 @@ export function LoginPage() {
     e.preventDefault();
     const res = await sendRequest(urls.api.checkVerified, "POST", { email });
     if (!res.success) {
-      if (res.isNewUser) {
+      if (res.isUnauthNewUser) {
         return setFailed({
           header: "EMAIL NOT VERIFIED",
           body: `You need to verify your email before logging in. An email was sent to ${email}`,
@@ -68,7 +68,7 @@ export function LoginPage() {
             onClick={() => {
               setFailed(null);
             }}>
-            x
+            &#10006;
           </div>
         </div>
       ) : (
@@ -109,7 +109,7 @@ export function LoginPage() {
                 </Link>
               </p>
 
-              <input className={classes.button} type="submit" value="Sign in" />
+              <input className={classes.button} type="submit" value="Sign In" />
             </div>
           </form>
         </div>

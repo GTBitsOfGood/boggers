@@ -1,38 +1,128 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
 import styles from "./ResetPassword.module.css";
 import { checkAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
 import connectMongo from "../../server/mongodb/connectMongo";
+import check from "../../public/check.png";
+import warning from "../../public/warning.png";
 
 export default function ResetPassword({ exists, token }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState(null);
 
   async function changePassword(e) {
     e.preventDefault();
     if (password !== confirmPassword) {
-      // empty
+      setMessage({
+        success: false,
+        header: "PASSWORDS DO NOT MATCH",
+        body: "Please try again",
+      });
     } else {
-      await sendRequest(urls.api.resetPassword, "POST", { password, token });
-      alert("Password changed successfully");
+      const res = await sendRequest(urls.api.resetPassword, "POST", { password, token });
+      if (res.success) {
+        setMessage({
+          success: true,
+          header: "PASSWORD CHANGED",
+          body: "You can now login with your new password",
+        });
+      } else {
+        setMessage({
+          success: false,
+          header: "YOUR TOKEN IS INVALID",
+          body: "Please try again later",
+        });
+      }
     }
   }
 
-  console.log(exists, token, useRouter, styles, setPassword, setConfirmPassword, changePassword);
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setMessage(null);
+      }, 7000);
+    }
+  }, [message]);
 
-  return <></>;
+  const router = useRouter();
+  if (exists) {
+    return (
+      <div className={styles.body}>
+        {message ? (
+          <div className={styles.messageContainer}>
+            <img alt="BOG logo" src={message.success ? check.src : warning.src} width="12px" height="12px" />
+            <div className={styles.messageTextContainer}>
+              <p className={styles.messageHeader} style={message.success ? { color: "#13B461" } : {}}>
+                {message.header}
+              </p>
+              <p className={styles.messageBody}>{message.body}</p>
+            </div>
+            <div
+              className={styles.messageClose}
+              style={message.success ? { color: "#13B461" } : {}}
+              onClick={() => {
+                setMessage(null);
+              }}>
+              &#10006;
+            </div>
+          </div>
+        ) : null}
+        <div className={styles.container}>
+          <div id={styles.mainHeading} className={styles.heading}>
+            Password Reset
+          </div>
+          <div className={styles.inputCountainer}>
+            <label className={styles.inputHeading}>PASSWORD</label>
+            <input
+              className={styles.inputBar}
+              value={password}
+              type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className={styles.inputCountainer}>
+            <label className={styles.inputHeading}>CONFIRM PASSWORD</label>
+            <input
+              className={styles.inputBar}
+              value={confirmPassword}
+              type="password"
+              name="confirmPassword"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <div className={styles.buttonGroup}>
+            <div className={styles.loginButton} onClick={() => router.push(urls.base + urls.pages.login)}>
+              Back to Login
+            </div>
+            <div className={styles.saveButton} onClick={changePassword}>
+              Save
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={`${styles.body} ${styles.invalidBody}`}>
+        <div className={styles.heading}>Token is Invalid or Expired</div>
+        <div className={styles.subHeading}>
+          Enter your email in the forgot password page and we&apos;ll send you a new verification email
+        </div>
+        <div className={styles.button} onClick={() => router.push(urls.base + urls.pages.login)}>
+          Back to Login
+        </div>
+      </div>
+    );
+  }
 }
 
 export const getServerSideProps = async (context) => {
   const { token } = context.params;
-  const mongoRes = await connectMongo();
-  if (!mongoRes.success) {
-    return {
-      props: { exists: false, token },
-    };
-  }
+  await connectMongo();
   return {
     props: { exists: await checkAccountRecovery(token), token },
   };

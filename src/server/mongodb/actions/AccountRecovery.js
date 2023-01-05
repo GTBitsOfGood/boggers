@@ -5,7 +5,7 @@ async function createAccountRecovery(email) {
 }
 
 async function checkAccountRecovery(token) {
-  return !!AccountRecovery.findOne({ token });
+  return !!(await AccountRecovery.findOne({ token }));
 }
 
 async function getAndDeleteAccountRecovery(token) {

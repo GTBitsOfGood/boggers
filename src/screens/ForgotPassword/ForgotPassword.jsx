@@ -61,7 +61,7 @@ export function ForgotPassword() {
             onClick={() => {
               setMessage(null);
             }}>
-            x
+            &#10006;
           </div>
         </div>
       ) : (
@@ -75,7 +75,7 @@ export function ForgotPassword() {
           <p className={classes.introduction}>{"Enter your email and we'll send you a new login"}</p>
           <form className={classes.form} onSubmit={handleSubmit}>
             <div className={classes.inputCountainer}>
-              <label className={classes.textStyle}>EMAIL:</label>
+              <label className={classes.textStyle}>EMAIL</label>
               <input
                 className={classes.inputBar}
                 value={email}

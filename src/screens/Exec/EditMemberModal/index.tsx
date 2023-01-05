@@ -208,7 +208,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       />
       <div className={style.editModalContainer} style={animation[isVisible].container} ref={scrollRef}>
         <div className={style.exitButton} onClick={() => closeModal()}>
-          X
+          &#10006;
         </div>
         <div className={style.editModalTitleContainer}>
           <p className={style.header}>{firstName || lastName ? `${firstName} ${lastName}` : "Enter Name"}</p>

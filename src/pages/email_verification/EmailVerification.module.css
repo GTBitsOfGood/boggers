@@ -9,6 +9,7 @@
   row-gap: 1rem;
   font-family: "Poppins";
   color: white;
+  text-align: center;
 }
 
 .heading {
@@ -19,6 +20,7 @@
 .subHeading {
   font-size: 24px;
   margin-bottom: 1rem;
+  max-width: 75%;
 }
 
 .button {
