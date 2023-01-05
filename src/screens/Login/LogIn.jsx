@@ -25,26 +25,33 @@ export function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await sendRequest(urls.api.checkVerified, "POST", { email });
-    if (!res.emailVerified) {
-      return setFailed({
-        header: "EMAIL NOT VERIFIED",
-        body: `You need to verify your email before logging in. An email was sent to ${email}`,
-      });
-    }
-    await signIn("credentials", {
-      email: email,
-      password: password,
-      redirect: false,
-    }).then(({ ok }) => {
-      if (ok) {
-        Router.push(urls.base + urls.pages.members);
+    if (!res.success) {
+      if (res.isNewUser) {
+        return setFailed({
+          header: "EMAIL NOT VERIFIED",
+          body: `You need to verify your email before logging in. An email was sent to ${email}`,
+        });
       } else {
-        setFailed({
+        return setFailed({
           header: "INCORRECT LOGIN",
           body: "Your credentials were incorrect.",
         });
       }
+    }
+
+    const authRes = await signIn("credentials", {
+      email: email,
+      password: password,
+      redirect: false,
     });
+    if (authRes.ok) {
+      Router.push(urls.base + urls.pages.members);
+    } else {
+      setFailed({
+        header: "INCORRECT LOGIN",
+        body: "Your credentials were incorrect.",
+      });
+    }
   };
 
   return (
@@ -71,14 +78,7 @@ export function LoginPage() {
       <div className={classes.bodyContainer}>
         <div className={classes.baseContainer}>
           <div className={classes.image}>
-            <Image
-              alt="BOG logo"
-              src={BOG}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+            <Image alt="BOG logo" src={BOG} />
           </div>
 
           <div>

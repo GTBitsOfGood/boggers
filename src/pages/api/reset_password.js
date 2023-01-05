@@ -1,11 +1,12 @@
-import { getAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
+import { getAndDeleteAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
 import { updatePassword } from "../../server/mongodb/actions/User";
+import requestWrapper from "../../../utils/middleware";
 
-export default async function handler(req, res) {
-  const body = JSON.parse(req.body);
-  if (req.method == "POST") {
-    const accountRecovery = await getAccountRecovery(body.token);
-    await updatePassword(accountRecovery.email, body.password);
-    res.status(200).send();
-  }
+async function handler(req, res) {
+  const { token, password } = req.body;
+  const accountRecovery = await getAndDeleteAccountRecovery(token);
+  await updatePassword(accountRecovery.email, password);
+  res.status(200).json({ success: true });
 }
+
+export default requestWrapper(handler, "POST");

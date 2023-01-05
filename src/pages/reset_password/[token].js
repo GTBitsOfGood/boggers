@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
 
 export default function ResetPassword() {
@@ -13,13 +14,7 @@ export default function ResetPassword() {
     if (password !== confirmPassword) {
       alert("passwords don't match");
     } else {
-      await fetch(urls.base + urls.api.resetPassword, {
-        method: "POST",
-        body: JSON.stringify({
-          password,
-          token,
-        }),
-      });
+      await sendRequest(urls.api.resetPassword, "POST", { password, token });
       alert("Password changed successfully");
     }
   }

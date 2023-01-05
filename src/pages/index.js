@@ -1,12 +1,14 @@
-import { signIn, signOut } from "next-auth/react";
+export async function getServerSideProps() {
+  return {
+    redirect: {
+      destination: "/login",
+      permanent: false,
+    },
+  };
+}
 
 const Index = () => {
-  return (
-    <div>
-      <button onClick={signIn}>sign in</button>
-      <button onClick={signOut}>sign out</button>
-    </div>
-  );
+  return <></>;
 };
 
 export default Index;

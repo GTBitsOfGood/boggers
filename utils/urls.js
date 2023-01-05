@@ -28,12 +28,13 @@ const urls = {
   api: {
     bulkUpload: "/api/bulk_upload",
     checkVerified: "/api/check_verified",
+    deleteUser: "/api/delete_user",
+    deleteTenure: "/api/delete_tenure",
+    emailVerification: "/api/email_verification",
     forgotPassword: "/api/forgot_password",
     getUser: "/api/get_user",
     imageUpload: "/api/image_upload",
     resetPassword: "/api/reset_password",
-    deleteUser: "/api/delete_user",
-    deleteTenure: "/api/delete_tenure",
     updateMember: "/api/update_member",
   },
 };

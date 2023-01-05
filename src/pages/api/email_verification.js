@@ -1,17 +1,20 @@
-import connectMongo from "../../server/mongodb/connectMongo";
 import { changeEmail, setVerified } from "../../server/mongodb/actions/User";
-import { getEmailVerification } from "../../server/mongodb/actions/EmailVerification";
+import { getAndDeleteEmailVerification } from "../../server/mongodb/actions/EmailVerification";
+import { accountRecovery } from "../../server/utils/emailFunctions";
+import requestWrapper from "../../../utils/middleware";
 
-export default async function handler(req, res) {
-  const body = JSON.parse(req.body);
-  if (req.method == "POST") {
-    await connectMongo();
-    const emailVerification = await getEmailVerification(body.token);
-    if (emailVerification.newEmail) {
-      await changeEmail(emailVerification.email, emailVerification.newEmail);
-    } else {
-      await setVerified(emailVerification.email);
-    }
-    res.status(200).send();
+async function handler(req, res) {
+  const { token } = req.body;
+  const emailVerification = await getAndDeleteEmailVerification(token);
+
+  const isNewUser = emailVerification.email === emailVerification.newEmail;
+  if (isNewUser) {
+    await setVerified(emailVerification.email);
+    accountRecovery(emailVerification.email);
+  } else {
+    await changeEmail(emailVerification.email, emailVerification.newEmail);
   }
+  res.status(200).json({ success: true, isNewUser });
 }
+
+export default requestWrapper(handler, "POST");

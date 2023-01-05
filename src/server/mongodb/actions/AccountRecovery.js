@@ -1,13 +1,11 @@
-import connectMongo from "../connectMongo.js";
 import AccountRecovery from "../models/AccountRecovery.js";
 
 async function createAccountRecovery(email) {
-  await connectMongo();
   return await AccountRecovery.findOneAndUpdate({ email }, { email }, { upsert: true, new: true });
 }
 
-async function getAccountRecovery(token) {
-  return AccountRecovery.findOne({ where: { token } });
+async function getAndDeleteAccountRecovery(token) {
+  return AccountRecovery.findOneAndDelete({ token });
 }
 
-export { createAccountRecovery, getAccountRecovery };
+export { createAccountRecovery, getAndDeleteAccountRecovery };

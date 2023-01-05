@@ -72,8 +72,12 @@ async function updatePassword(email, password) {
 
 async function upsertUserCsv(firstName, lastName, email, phoneNumber, preference) {
   await User.validate({ firstName, lastName, email, phoneNumber, preference });
-  const newUser = await User.findOneAndUpdate({ email }, { firstName, lastName, phoneNumber, preference }, { upsert: true, new: true });
-  return newUser;
+  const newUser = await User.findOneAndUpdate(
+    { email },
+    { firstName, lastName, phoneNumber, preference },
+    { upsert: true, new: true, rawResult: true },
+  );
+  return [newUser.value, !newUser.lastErrorObject.updatedExisting];
 }
 
 async function addTenure(userId, tenure) {
