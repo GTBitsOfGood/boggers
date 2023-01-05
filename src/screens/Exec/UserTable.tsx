@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable";
-import DeleteUserButton from "./DeleteUserButton";
 import TableContext from "../../../utils/contexts/TableContext";
 import { getCurrSemesterYear, sortTenures } from "../../../utils/utilFunctions";
 import { DBUser, User } from "./types";

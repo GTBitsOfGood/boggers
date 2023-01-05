@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
-import { baseAwsUrl } from "../../../utils/awsConfig";
 import Row from "./Row";
 import { TColumn, TableProps } from "./types";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
@@ -19,7 +18,6 @@ const columns: TColumn[] = [
 function PaginationTable({ rows, currentSemester }: TableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const { isAddUser, setIsAddUser } = useContext(DashboardContext);
   const tableRef = useRef(null);
@@ -92,13 +90,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
             <TableBody>
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
-                  <Row
-                    currentSemester={currentSemester}
-                    row={row}
-                    key={row.id}
-                    columns={columns}
-                    onClick={(event) => showModalHandler(row)}
-                  />
+                  <Row currentSemester={currentSemester} row={row} key={row.id} columns={columns} onClick={() => showModalHandler(row)} />
                 );
               })}
             </TableBody>

@@ -20,6 +20,8 @@ const Image = React.memo(({ src }) => (
   />
 ));
 
+Image.displayName = "Image";
+
 function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image } = row;
   const { department, role, project, status, notes } = row.tenures[currentSemester];

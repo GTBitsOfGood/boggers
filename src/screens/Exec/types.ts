@@ -15,7 +15,7 @@ export interface Tenure {
   id: string;
   semester: string;
   userId: string;
-  year: int;
+  year: Number;
   department: string;
   project: string;
   role: string;
@@ -47,12 +47,12 @@ export interface TableProps {
 
 export interface RowProps {
   row: User;
-  onClick: function;
+  onClick: Function;
 }
 
 export interface EditMemberModalProps {
   row: User;
   isVisible: boolean;
-  closeModal: function;
+  closeModal: Function;
   currentSemester: string;
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Grid, Stack, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import UserTable from "./UserTable";
 import Image from "next/image";
@@ -9,10 +9,6 @@ import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 import { sortTenures } from "../../../utils/utilFunctions";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
-
-const truncateFilename = (filename) => {
-  return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
-};
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,7 +63,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const StyledSelect = styled(Select)(({ theme }) => ({
+const StyledSelect = styled(Select)(() => ({
   color: "black",
   border: "1px solid #C4C4C4",
   fontFamily: "Poppins",
@@ -158,7 +154,6 @@ function AdminDashboardPage({ url }) {
               </StyledButton>
               <StyledSelect
                 value={semester}
-                MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }}
                 onChange={changeSemesterHandler}
                 MenuProps={{
                   PaperProps: {
