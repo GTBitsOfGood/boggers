@@ -5,15 +5,17 @@ import sendAccountRecoveryEmail from "../../server/nodemailer/actions/accountRec
 import connectMailer from "../../server/nodemailer/connectMailer";
 
 const forgotPasswordHandler = async function handler(req, res) {
-  const { body } = req;
-  const user = await getUser(body.email);
+  const { email } = req.body;
+  const user = await getUser(email);
   if (!user) {
-    return res.status(404).send("User not found");
+    return res.status(404).json({ success: false, message: "User not found" });
   }
-  const accountRecovery = await createAccountRecovery(req.body.email);
-  const transporter = await connectMailer();
-  await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
-  res.status(200).send();
+  createAccountRecovery(email)
+    .then((accountRecovery) => ({ accountRecovery, transporter: connectMailer() }))
+    .then(({ accountRecovery, transporter }) => sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token))
+    .catch((err) => console.log(err));
+
+  res.status(200).json({ success: true });
 };
 
 export default requestWrapper(forgotPasswordHandler, "POST");

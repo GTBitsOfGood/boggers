@@ -4,6 +4,10 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 
 async function getUser(email) {
+  return User.findOne({ email });
+}
+
+async function getUserVerificationStatus(email) {
   return User.findOne({ email }, { emailVerified: 1 });
 }
 
@@ -85,6 +89,7 @@ async function addImage(id) {
 
 export {
   getUser,
+  getUserVerificationStatus,
   getUserById,
   createUser,
   createRootUser,

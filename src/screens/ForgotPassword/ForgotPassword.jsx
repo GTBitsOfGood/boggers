@@ -1,95 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./ForgotPassword.module.css";
-import warnning from "../../public/warning.png";
+import warning from "../../public/warning.png";
 import check from "../../public/check.png";
-import Image from "next/image";
 import Link from "next/link";
+import urls from "../../../utils/urls";
+import sendRequest from "../../../utils/sendToBackend";
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [send, setSend] = useState(false);
-  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setMessage(null);
+      }, 7000);
+    }
+  }, [message]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!EMAIL_REGEX.test(email)) {
-      setError(true);
+      setMessage({
+        success: false,
+        header: "INCORRECT EMAIL",
+        body: "The email you entered is not associated with a Boggers account.",
+      });
       return;
     }
-    const res = await fetch("/api/forgot_password", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-      }),
-    });
-    if (res.status === 404) {
-      setError(true);
+    const res = await sendRequest(urls.api.forgotPassword, "POST", { email });
+    if (res.success) {
+      setMessage({
+        success: true,
+        header: "I'M A SUCCESS",
+        body: "Please refresh your email.",
+      });
     } else {
-      setSend(true);
-      setError(false);
+      setMessage({
+        success: false,
+        header: "INCORRECT EMAIL",
+        body: "The email you entered is not associated with a Boggers account.",
+      });
     }
   };
 
   return (
     <div className={classes.body}>
-      {error ? (
-        <div className={classes.errorContainer}>
-          <div className={classes.errorFirst}>
-            <Image
-              alt="Error"
-              src={warnning}
-              width={20}
-              height={10}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <div className={classes.errorTextContainer}>
-              <p className={classes.errorHead}>INCORRECT EMAIL</p>
-              <p>The email you entered is not associated with a Boggers account.</p>
-            </div>
-            <p
-              className={classes.errorClose}
-              onClick={() => {
-                setError(false);
-              }}>
-              x
-            </p>
+      {message ? (
+        <div className={classes.messageContainer}>
+          <img alt="BOG logo" src={message.success ? check.src : warning.src} width="12px" height="12px" />
+          <div className={classes.messageTextContainer}>
+            <p className={`${classes.messageHeader} ${classes[message.success]}`}>{message.header}</p>
+            <p className={classes.messageBody}>{message.body}</p>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
-      {send ? (
-        <div className={classes.sendContainer}>
-          <div className={classes.errorFirst}>
-            <Image
-              alt="Sucess"
-              src={check}
-              width={20}
-              height={10}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <div className={classes.errorTextContainer}>
-              <p className={classes.sendHead}>{"I'M A SUCCESS"}</p>
-              <p>Please refresh your email.</p>
-            </div>
-            <p
-              className={classes.sendClose}
-              onClick={() => {
-                setSend(false);
-              }}>
-              x
-            </p>
+          <div
+            className={`${classes.messageClose} ${classes[message.success]}`}
+            onClick={() => {
+              setMessage(null);
+            }}>
+            x
           </div>
         </div>
       ) : (
