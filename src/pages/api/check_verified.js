@@ -8,9 +8,7 @@ async function handler(req, res) {
   const { email } = req.body;
   const user = await getUserVerificationStatus(email);
   // If user does not exist, let next auth handle it
-  if (!user || user.emailVerified) {
-    return res.status(200).json({ success: true });
-  } else {
+  if (user && !user.emailVerified) {
     createEmailVerification(email)
       .then(
         (accountRecovery) =>
@@ -24,7 +22,7 @@ async function handler(req, res) {
       .catch((err) => {
         console.log(err);
       });
-    res.status(200).send({ success: false });
+    res.status(200).send({ emailVerified: user.emailVerified });
   }
 }
 

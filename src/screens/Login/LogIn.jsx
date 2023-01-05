@@ -25,7 +25,7 @@ export function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await sendRequest(urls.api.checkVerified, "POST", { email });
-    if (!res.success) {
+    if (!res.emailVerified) {
       return setFailed({
         header: "EMAIL NOT VERIFIED",
         body: `You need to verify your email before logging in. An email was sent to ${email}`,

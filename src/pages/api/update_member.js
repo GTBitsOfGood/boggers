@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
-import { updateUser, addTenure, createUser } from "../../server/mongodb/actions/User";
+import { updateUser, addTenure, createUser, getUser } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
 import { createEmailChangeVerification } from "../../server/mongodb/actions/EmailVerification";
 import connectMailer from "../../server/nodemailer/connectMailer";
@@ -55,15 +55,30 @@ async function handler(req, res) {
     });
   }
 
-  const emailChanged = !originalEmail || originalEmail !== email;
+  let emailChanged = !originalEmail || originalEmail !== email;
   let member, tenure;
   try {
     if (memberId) {
       member = await updateUser(memberId, firstName, lastName, originalEmail, phoneNumber, preference, access);
       if (emailChanged) {
-        const accountRecovery = await createEmailChangeVerification(originalEmail, email);
-        const transporter = await connectMailer();
-        sendEmailVerificationEmail(transporter, email, accountRecovery.token);
+        const emailExists = !!(await getUser(email));
+        if (emailExists) {
+          emailChanged = false;
+        } else {
+          createEmailChangeVerification(originalEmail, email)
+            .then(
+              (accountRecovery) =>
+                new Promise((resolve, reject) => {
+                  connectMailer()
+                    .then((transporter) => resolve({ accountRecovery, transporter }))
+                    .catch((err) => reject(err));
+                }),
+            )
+            .then(({ accountRecovery, transporter }) => sendEmailVerificationEmail(transporter, email, accountRecovery.token))
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       }
     } else {
       member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
