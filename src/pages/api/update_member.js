@@ -63,7 +63,7 @@ async function handler(req, res) {
       if (emailChanged) {
         const accountRecovery = await createEmailChangeVerification(originalEmail, email);
         const transporter = await connectMailer();
-        await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
+        sendEmailVerificationEmail(transporter, email, accountRecovery.token);
       }
     } else {
       member = await createUser(firstName, lastName, email, phoneNumber, preference, access);

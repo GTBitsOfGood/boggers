@@ -1,28 +1,35 @@
 import { signIn } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Login.module.css";
 import BOG from "../../public/BOG.svg";
-import warnning from "../../public/warning.png";
+import warning from "../../public/warning.png";
 import Image from "next/image";
 import Router from "next/router";
 import Link from "next/link";
 import urls from "../../../utils/urls";
+import sendRequest from "../../../utils/sendToBackend";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState(null);
+
+  useEffect(() => {
+    if (failed) {
+      setTimeout(() => {
+        setFailed(null);
+      }, 7000);
+    }
+  }, [failed]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-      }),
-    });
-    if (res.status === 401) {
-      alert(`You need to verify your email before logging in. An email was sent to ${email}`);
+    const res = await sendRequest(urls.api.checkVerified, "POST", { email });
+    if (!res.success) {
+      return setFailed({
+        header: "EMAIL NOT VERIFIED",
+        body: `You need to verify your email before logging in. An email was sent to ${email}`,
+      });
     }
     await signIn("credentials", {
       email: email,
@@ -32,7 +39,10 @@ export function LoginPage() {
       if (ok) {
         Router.push(urls.base + urls.pages.members);
       } else {
-        setFailed(true);
+        setFailed({
+          header: "INCORRECT LOGIN",
+          body: "Your credentials were incorrect.",
+        });
       }
     });
   };
@@ -41,29 +51,17 @@ export function LoginPage() {
     <div className={classes.body}>
       {failed ? (
         <div className={classes.errorContainer}>
-          <div className={classes.errorFirst}>
-            <Image
-              alt="BOG logo"
-              src={warnning}
-              width={20}
-              height={10}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <div className={classes.errorTextContainer}>
-              <p className={classes.errorHead}>INCORRECT LOGIN</p>
-              <p>Your Credentials were incorrect.</p>
-            </div>
-            <p
-              className={classes.errorClose}
-              onClick={() => {
-                setFailed(false);
-              }}>
-              x
-            </p>
+          <img alt="BOG logo" src={warning.src} width="12px" height="12px" />
+          <div className={classes.errorTextContainer}>
+            <p className={classes.errorHeader}>{failed.header}</p>
+            <p className={classes.errorBody}>{failed.body}</p>
+          </div>
+          <div
+            className={classes.errorClose}
+            onClick={() => {
+              setFailed(null);
+            }}>
+            x
           </div>
         </div>
       ) : (

@@ -4,7 +4,7 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 
 async function getUser(email) {
-  return User.findOne({ email });
+  return User.findOne({ email }, { emailVerified: 1 });
 }
 
 async function getUserById(id) {

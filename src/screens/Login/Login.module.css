@@ -1,25 +1,20 @@
 .body {
   background: linear-gradient(to left, #fd8033, #fb3552);
-
   width: 100vw;
   height: 100vh;
+  font-family: "Poppins"
 }
 
 .errorContainer {
+  display: flex;
+  align-items: baseline;
   position: absolute;
   right: 0;
   background-color: white;
-  width: 12rem;
-  height: 4rem;
   margin-top: 3rem;
   margin-right: 1rem;
-  padding: 0.2rem 0.5rem;
-}
-
-.errorFirst {
-  display: flex;
-  flex-direction: row;
-  height: 1rem;
+  padding: 0.3rem 0.5rem;
+  column-gap: 0.5rem;
 }
 
 .errorTextContainer {
@@ -29,10 +24,10 @@
   font-style: normal;
   font-size: 0.7rem;
   line-height: 1rem;
-  padding-left: 0.5rem;
+  width: 13rem;
 }
 
-.errorHead {
+.errorHeader {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 700;
@@ -44,11 +39,15 @@
   margin-top: 0.5rem;
 }
 
+.errorBody {
+  font-family: "Poppins";
+  font-size: 0.75rem;
+}
+
 .errorClose {
   color: red;
-  margin: 0;
-  line-height: 1rem;
   cursor: pointer;
+  margin: 0;
 }
 
 .bodyContainer {
@@ -99,7 +98,8 @@
 }
 
 .inputBar {
-  width: 25rem;
+  font-family: "Poppins";
+  width: 27rem;
   height: 2rem;
 }
 
@@ -110,7 +110,7 @@
 .submission {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 2rem;
 }
 
@@ -133,4 +133,8 @@
   color: white;
   height: 2.3rem;
   cursor: pointer;
+  font-family: "Poppins";
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.15rem;
 }
