@@ -31,6 +31,7 @@ export default function UploadCSVModal({ displayModal, closeModal, setFileBlob }
                 style={{ display: "none" }}
                 accept=".csv"
                 onChange={async (e) => {
+                  closeModal();
                   setUploading(true);
                   const uploadedFile = e.target.files[0];
                   if (uploadedFile) {

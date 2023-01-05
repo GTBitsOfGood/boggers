@@ -273,7 +273,16 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
               setEmail(newEmail);
             }}
           />
-          <EditMemberField label="PHONE NUMBER" type="text" state={phoneNumber} setState={setPhoneNumber} />
+          <EditMemberField
+            label="PHONE NUMBER"
+            type="text"
+            state={phoneNumber}
+            onChange={(e) => {
+              if (/^[0-9]{0,10}$/g.test(e.target.value)) {
+                setPhoneNumber(e.target.value);
+              }
+            }}
+          />
           {isNewTenure && (
             <>
               <EditMemberField

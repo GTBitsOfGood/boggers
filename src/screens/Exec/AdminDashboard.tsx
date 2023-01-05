@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import UserTable from "./UserTable";
@@ -93,14 +93,19 @@ function AdminDashboardPage({ url }) {
     setSemester(event.target.value);
   };
 
-  const uploadAndCloseModal = async () => {
+  const bulkUpload = async () => {
     console.log("fileBlob", fileBlob);
-    setShowUploadModal(!showUploadModal);
     const res = await sendRequest(urls.api.bulkUpload, "POST", fileBlob, { "Content-Type": "text/csv" }, false);
     console.log(res);
     setNewMembers(res.members);
     setFileBlob(null);
   };
+
+  useEffect(() => {
+    if (fileBlob) {
+      bulkUpload();
+    }
+  }, [fileBlob]);
 
   return (
     <>
@@ -117,7 +122,7 @@ function AdminDashboardPage({ url }) {
           onClick={() => setShowUploadModal(false)}
         />
       ) : null}
-      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndCloseModal} setFileBlob={setFileBlob} />
+      <UploadCSVModal displayModal={showUploadModal} closeModal={() => setShowUploadModal(false)} setFileBlob={setFileBlob} />
       <Grid container height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
         <Grid item>
           <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>
