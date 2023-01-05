@@ -1,5 +1,5 @@
 .body {
-  background: linear-gradient(to left, #fd8033, #fb3552);
+  background: linear-gradient(74.59deg, #fd8033 0%, #fb3552 100%);
   width: 100vw;
   height: 100vh;
   font-family: "Poppins";
@@ -95,12 +95,16 @@
   align-items: flex-start;
   margin: 0px;
   margin-bottom: 1rem;
+  row-gap: 0.2rem;
 }
 
 .inputBar {
   font-family: "Poppins";
   width: 27rem;
   height: 2rem;
+  border-radius: 4px;
+  border: none;
+  padding: 0.75rem;
 }
 
 .textStyle {

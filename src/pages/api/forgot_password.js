@@ -1,6 +1,6 @@
 import requestWrapper from "../../../utils/middleware";
 import { getUser } from "../../server/mongodb/actions/User";
-import { accountRecovery } from "../../server/utils/emailFunctions";
+import { sendAccountRecovery } from "../../server/utils/emailFunctions";
 
 const forgotPasswordHandler = async function handler(req, res) {
   const { email } = req.body;
@@ -8,7 +8,7 @@ const forgotPasswordHandler = async function handler(req, res) {
   if (!user) {
     return res.status(404).json({ success: false, message: "User not found" });
   }
-  accountRecovery(email);
+  sendAccountRecovery(email);
   res.status(200).json({ success: true });
 };
 

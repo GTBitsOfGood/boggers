@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
-import mongoose from "mongoose";
 import urls from "./urls";
 import User from "../src/server/mongodb/models/User";
 import Tenure from "../src/server/mongodb/models/Tenure";
+import AccountRecovery from "../src/server/mongodb/models/AccountRecovery";
+import EmailVerification from "../src/server/mongodb/models/EmailVerification";
+import connectMongo from "../src/server/mongodb/connectMongo";
 
 export default function requestWrapper(handler, method) {
   return async (req, res) => {
@@ -24,16 +26,9 @@ export default function requestWrapper(handler, method) {
       }
     }
 
-    if (!global.cache) {
-      try {
-        global.cache = await mongoose.connect(urls.dbUrl, { dbName: urls.dbName });
-      } catch (error) {
-        console.log(error);
-        return res.status(400).json({
-          success: false,
-          message: "Error connecting to MongoDB",
-        });
-      }
+    const mongoRes = await connectMongo();
+    if (!mongoRes.success) {
+      return mongoRes;
     }
 
     return handler(req, res);

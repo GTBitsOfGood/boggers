@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { getUser } from "../../../server/mongodb/actions/User";
 import urls from "../../../../utils/urls";
-import mongoose from "mongoose";
+import connectMongo from "../../../server/mongodb/connectMongo";
 
 export const authOptions = {
   providers: [
@@ -14,9 +14,7 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!global.cache) {
-          global.cache = await mongoose.connect(urls.dbUrl, { dbName: urls.dbName });
-        }
+        await connectMongo();
         const user = await getUser(credentials.email);
         if (user && user.emailVerified && (await bcrypt.compare(credentials.password, user.password))) {
           return user;

@@ -1,5 +1,5 @@
 import { getUserVerificationStatus } from "../../server/mongodb/actions/User";
-import { emailVerification } from "../../server/utils/emailFunctions";
+import { sendEmailVerification } from "../../server/utils/emailFunctions";
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
@@ -8,7 +8,7 @@ async function handler(req, res) {
   // If user does not exist, let next auth handle it
   const isUnauthNewUser = user && !user.emailVerified;
   if (isUnauthNewUser) {
-    emailVerification(email);
+    sendEmailVerification(email);
   }
   res.status(200).send({ success: user && user.emailVerified, isUnauthNewUser });
 }

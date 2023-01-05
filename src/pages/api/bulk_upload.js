@@ -1,7 +1,7 @@
 import { upsertUserCsv, addTenure } from "../../server/mongodb/actions/User";
 import { upsertTenureCsv } from "../../server/mongodb/actions/Tenure";
 import { getToken } from "next-auth/jwt";
-import { emailVerification } from "../../server/utils/emailFunctions";
+import { sendEmailVerification } from "../../server/utils/emailFunctions";
 import requestWrapper from "../../../utils/middleware";
 
 async function handler(req, res) {
@@ -45,7 +45,7 @@ async function handler(req, res) {
 
     const [member, isNew] = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
     if (isNew) {
-      emailVerification(email);
+      sendEmailVerification(email);
     }
     const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
     members[member._id.toString()] = await addTenure(member._id, tenure);

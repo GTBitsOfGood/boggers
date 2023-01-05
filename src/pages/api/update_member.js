@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
 import { updateUser, addTenure, createUser, getUser } from "../../server/mongodb/actions/User";
 import requestWrapper from "../../../utils/middleware";
-import { emailVerification } from "../../server/utils/emailFunctions";
+import { sendEmailVerification } from "../../server/utils/emailFunctions";
 
 async function handler(req, res) {
   const user = (await getToken({ req }))?.user;
@@ -64,7 +64,7 @@ async function handler(req, res) {
         if (await emailExists) {
           emailChanged = false;
         } else {
-          emailVerification(originalEmail, email);
+          sendEmailVerification(originalEmail, email);
         }
       }
     } else {
@@ -72,7 +72,7 @@ async function handler(req, res) {
         emailChanged = false;
       } else {
         member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
-        emailVerification(email);
+        sendEmailVerification(email);
       }
     }
 

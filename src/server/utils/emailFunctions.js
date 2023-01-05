@@ -1,10 +1,11 @@
-import { createEmailVerification } from "../mongodb/actions/EmailVerification";
+import { changeEmail, setVerified } from "../../server/mongodb/actions/User";
+import { createEmailVerification, getAndDeleteEmailVerification } from "../mongodb/actions/EmailVerification";
 import { createAccountRecovery } from "../mongodb/actions/AccountRecovery";
 import sendEmailVerificationEmail from "../nodemailer/actions/emailVerification";
 import sendAccountRecoveryEmail from "../nodemailer/actions/accountRecovery";
 import connectMailer from "../nodemailer/connectMailer";
 
-const emailVerification = (originalEmail, email = null) => {
+const sendEmailVerification = (originalEmail, email = null) => {
   email = email || originalEmail;
   createEmailVerification(originalEmail, email)
     .then(
@@ -21,7 +22,7 @@ const emailVerification = (originalEmail, email = null) => {
     });
 };
 
-const accountRecovery = (email) => {
+const sendAccountRecovery = (email) => {
   createAccountRecovery(email)
     .then(
       (accountRecovery) =>
@@ -35,4 +36,20 @@ const accountRecovery = (email) => {
     .catch((err) => console.log(err));
 };
 
-export { emailVerification, accountRecovery };
+const emailVerification = async (token) => {
+  const emailVerification = await getAndDeleteEmailVerification(token);
+  if (!emailVerification) {
+    return { success: false };
+  }
+
+  const isNewUser = emailVerification.email === emailVerification.newEmail;
+  if (isNewUser) {
+    await setVerified(emailVerification.email);
+    sendAccountRecovery(emailVerification.email);
+  } else {
+    await changeEmail(emailVerification.email, emailVerification.newEmail);
+  }
+  return { success: true, isNewUser };
+};
+
+export { sendEmailVerification, sendAccountRecovery, emailVerification };
