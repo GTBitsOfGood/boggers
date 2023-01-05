@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
-import { updateUser, addTenure, createUser, getUser } from "../../server/mongodb/actions/User";
+import { updateUser, addTenure, createUser, getUser, changeEmail } from "../../server/mongodb/actions/User";
 import { deleteEmail, deleteNewEmail } from "../../server/mongodb/actions/EmailVerification";
 import requestWrapper from "../../../utils/middleware";
 import { sendEmailVerification } from "../../server/utils/emailFunctions";
@@ -70,6 +70,7 @@ async function handler(req, res) {
             sendEmailVerification(originalEmail, email);
           } else {
             await deleteNewEmail(email);
+            changeEmail(originalEmail, email);
             sendEmailVerification(email);
           }
         }
