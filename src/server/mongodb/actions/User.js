@@ -42,11 +42,11 @@ async function createSeedUser(email, password, access) {
 }
 
 async function setVerified(email) {
-  await User.updateOne({ email }, { emailVerified: true });
+  return User.updateOne({ email }, { emailVerified: true });
 }
 
 async function changeEmail(email, newEmail) {
-  await User.updateOne({ email }, { email: newEmail });
+  return User.updateOne({ email }, { email: newEmail }, { new: true });
 }
 
 async function upsertUserEmail(firstName, lastName, email, phoneNumber, preference, access) {

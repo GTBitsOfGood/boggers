@@ -71,6 +71,7 @@ async function handler(req, res) {
           } else {
             await deleteNewEmail(email);
             changeEmail(originalEmail, email);
+            member.email = email;
             sendEmailVerification(email);
           }
         }
@@ -100,6 +101,7 @@ async function handler(req, res) {
     success: true,
     emailChanged,
     id: member.id,
+    email: member.email,
     message: "Updated record successfully",
   });
 }
