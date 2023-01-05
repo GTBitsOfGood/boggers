@@ -11,9 +11,9 @@ async function handler(req, res) {
     });
   }
 
-  const { id, access, semester, year } = req.body;
+  const { id, semester, year } = req.body;
 
-  if (user.user.access < 1 || user.user.access < access) {
+  if (user.user.access < 1) {
     return res.status(401).json({
       success: false,
       message: "User does not have correct access level",
