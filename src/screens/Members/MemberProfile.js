@@ -53,7 +53,7 @@ export default function MemberProfile({ session }) {
       setPhoneNumber(user.phoneNumber ?? "");
       setPreference(user.preference ?? "");
       setTenures(tenures);
-      setImageUrl(!user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : "/Avatar.png");
+      setImageUrl(user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : "/Avatar.png");
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
     };
 
