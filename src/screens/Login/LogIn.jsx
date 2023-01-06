@@ -1,15 +1,15 @@
 import { signIn } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import classes from "./Login.module.css";
-import BOG from "../../public/BOG.svg";
-import warning from "../../public/warning.png";
 import Image from "next/image";
 import Router from "next/router";
 import Link from "next/link";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 
-export function LoginPage() {
+LoginPage.title = "Login";
+
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [failed, setFailed] = useState(null);
@@ -62,7 +62,7 @@ export function LoginPage() {
     <div className={classes.body}>
       {failed ? (
         <div className={classes.errorContainer}>
-          <img alt="BOG logo" src={warning.src} width="12px" height="12px" />
+          <img alt="Warning Sign" src="/warning.png" width="12px" height="12px" />
           <div className={classes.errorTextContainer}>
             <p className={classes.errorHeader}>{failed.header}</p>
             <p className={classes.errorBody}>{failed.body}</p>
@@ -82,7 +82,7 @@ export function LoginPage() {
       <div className={classes.bodyContainer}>
         <div className={classes.baseContainer}>
           <div className={classes.image}>
-            <Image alt="BOG logo" src={BOG} />
+            <Image alt="BOG logo" src="/BOG.svg" width={125} height={125} />
           </div>
 
           <div>
@@ -115,7 +115,7 @@ export function LoginPage() {
 
               <input
                 className={classes.button}
-                style={{ backgroundColor: loading ? "#473f91" : "#2d285c" }}
+                style={{ backgroundColor: loading ? "#4524ff" : "#2d285c" }}
                 type="submit"
                 value="Sign In"
               />

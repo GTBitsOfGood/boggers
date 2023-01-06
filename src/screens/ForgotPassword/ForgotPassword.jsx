@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import classes from "./ForgotPassword.module.css";
-import warning from "../../public/warning.png";
-import check from "../../public/check.png";
 import Link from "next/link";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+ForgotPassword.title = "Forgot Password";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -51,7 +51,7 @@ export function ForgotPassword() {
     <div className={classes.body}>
       {message ? (
         <div className={classes.messageContainer}>
-          <img alt="BOG logo" src={message.success ? check.src : warning.src} width="12px" height="12px" />
+          <img alt="Status Icon" src={message.success ? "/Check.png" : "/Warning.png"} width="12px" height="12px" />
           <div className={classes.messageTextContainer}>
             <p className={`${classes.messageHeader} ${classes[message.success]}`}>{message.header}</p>
             <p className={classes.messageBody}>{message.body}</p>

@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 import { RowProps } from "./types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import Avatar from "../../public/Avatar.png";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
 
 const Image = React.memo(({ src }) => (
@@ -46,7 +45,7 @@ function Row({ row, currentSemester, onClick }: RowProps) {
           alignItems: "center",
           columnGap: "1.5rem",
         }}>
-        <Image key={`image_${id}${currentSemester}`} src={image ? url + id : Avatar.src} />
+        <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
         <div>
           <p className={styles.rowMemberName}>{`${firstName} ${lastName}`}</p>
           <p className={styles.rowEmail}>{email}</p>

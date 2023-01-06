@@ -10,7 +10,6 @@ import { sortTenures, splitSemesterString } from "../../../../utils/utilFunction
 import TableContext from "../../../../utils/contexts/TableContext";
 import DashboardContext from "../../../../utils/contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
-import Save from "../../../public/Save.png";
 
 const Label = ({ label }) => {
   return (
@@ -331,7 +330,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             </Button>
           )}
           <div className={style.saveButton} onClick={updateHandler}>
-            <img src={Save.src} height={20} width={20} alt="Save Icon" />
+            <img src="/Save.png" height={20} width={20} alt="Save Icon" />
             SAVE
           </div>
         </div>

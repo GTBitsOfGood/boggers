@@ -1,5 +1,3 @@
-import Check from "../../../public/check.png";
-import Warning from "../../../public/warning.png";
 import styles from "./SuccessBox.module.css";
 
 const SuccessBox = ({ success, closeBox }) => {
@@ -7,12 +5,12 @@ const SuccessBox = ({ success, closeBox }) => {
   if (success) {
     header = "CHANGES SAVED";
     message = "Your changes were saved successfully!";
-    icon = Check.src;
+    icon = "/Check.png";
     color = "#13b461";
   } else {
     header = "UNSAVED CHANGES";
     message = "Your changes could not be saved. Please try again or refresh your browser.";
-    icon = Warning.src;
+    icon = "/Warning.png";
     color = "#c63636";
   }
 

@@ -13,14 +13,13 @@ import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
 import SuccessBox from "./SuccessBox/SuccessBox";
 
-import Avatar from "../../public/Avatar.png";
-import Pencil from "../../public/Pencil.png";
-import Save from "../../public/Save.png";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-export const MemberProfile = ({ session }) => {
+MemberProfile.title = "Member Profile";
+
+export default function MemberProfile({ session }) {
   const [displayModal, setDisplayModal] = useState(false);
-  const [imageUrl, setImageUrl] = useState(Avatar.src);
+  const [imageUrl, setImageUrl] = useState("/Avatar.png");
   const [imageBlob, setImageBlob] = useState(null);
   const [success, setSuccess] = useState(0);
   const [saved, setSaved] = useState(0);
@@ -56,7 +55,7 @@ export const MemberProfile = ({ session }) => {
       setPhoneNumber(user.phoneNumber ?? "");
       setPreference(user.preference ?? "");
       setTenures(tenures);
-      setImageUrl(user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : Avatar.src);
+      setImageUrl(!user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : "/Avatar.png");
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
     };
 
@@ -140,7 +139,7 @@ export const MemberProfile = ({ session }) => {
           <img className={styles.MemberProfileImage} src={imageUrl} alt="User Picture" />
           <div className={styles.MemberProfileImageOverlay} />
           <div className={styles.MemberProfilePencilBackground}>
-            <img className={styles.MemberProfilePencil} src={Pencil.src} alt="Edit Pencil Icon" />
+            <img className={styles.MemberProfilePencil} src="/Pencil.png" alt="Edit Pencil Icon" />
           </div>
         </div>
         <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
@@ -164,7 +163,7 @@ export const MemberProfile = ({ session }) => {
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
             <div className={styles.MemberProfileSaveButton} style={buttonTransition[saved].styles} onClick={handleSave}>
-              <img src={Save.src} alt="Save Icon" />
+              <img src="/Save.png" alt="Save Icon" />
               {buttonTransition[saved].message}
             </div>
           </div>
@@ -191,4 +190,4 @@ export const MemberProfile = ({ session }) => {
       </div>
     </div>
   );
-};
+}

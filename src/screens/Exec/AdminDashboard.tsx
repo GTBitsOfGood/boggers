@@ -3,7 +3,6 @@ import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Sele
 import SearchIcon from "@mui/icons-material/Search";
 import UserTable from "./UserTable";
 import Image from "next/image";
-import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
@@ -80,6 +79,8 @@ const StyledSelect = styled(Select)(() => ({
   },
 }));
 
+AdminDashboardPage.title = "Admin Dashboard";
+
 function AdminDashboardPage({ url }) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
@@ -127,7 +128,7 @@ function AdminDashboardPage({ url }) {
         <Grid item>
           <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>
             <Box sx={{ display: "flex", alignItems: "center", columnGap: 1.5 }}>
-              <Image alt="BOG logo" src={BOG} width={70} height={70} />
+              <Image alt="BOG logo" src="/BOG.svg" width={70} height={70} />
               <Typography
                 variant="h2"
                 style={{

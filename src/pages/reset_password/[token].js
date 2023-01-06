@@ -5,8 +5,9 @@ import urls from "../../../utils/urls";
 import styles from "./ResetPassword.module.css";
 import { checkAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
 import connectMongo from "../../server/mongodb/connectMongo";
-import check from "../../public/check.png";
-import warning from "../../public/warning.png";
+import Head from "next/head";
+
+ResetPassword.title = "Reset Password";
 
 export default function ResetPassword({ exists, token }) {
   const [password, setPassword] = useState("");
@@ -51,9 +52,12 @@ export default function ResetPassword({ exists, token }) {
   if (exists) {
     return (
       <div className={styles.body}>
+        <Head>
+          <title>Reset Password</title>
+        </Head>
         {message ? (
           <div className={styles.messageContainer}>
-            <img alt="BOG logo" src={message.success ? check.src : warning.src} width="12px" height="12px" />
+            <img alt="Status Icon" src={message.success ? "/Check.png" : "/Warning.png"} width="12px" height="12px" />
             <div className={styles.messageTextContainer}>
               <p className={styles.messageHeader} style={message.success ? { color: "#13B461" } : {}}>
                 {message.header}

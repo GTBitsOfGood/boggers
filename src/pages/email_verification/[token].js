@@ -20,6 +20,8 @@ const mapping = {
   },
 };
 
+EmailVerification.title = "Email Verification";
+
 export default function EmailVerification({ display }) {
   const router = useRouter();
   return (

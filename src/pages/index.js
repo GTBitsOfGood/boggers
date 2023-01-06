@@ -7,6 +7,8 @@ export async function getServerSideProps() {
   };
 }
 
+Index.title = "Boggers";
+
 const Index = () => {
   return <></>;
 };
