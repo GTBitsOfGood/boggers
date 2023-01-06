@@ -13,6 +13,7 @@ export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [failed, setFailed] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (failed) {
@@ -24,8 +25,10 @@ export function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const res = await sendRequest(urls.api.checkVerified, "POST", { email });
     if (!res.success) {
+      setLoading(false);
       if (res.isUnauthNewUser) {
         return setFailed({
           header: "EMAIL NOT VERIFIED",
@@ -45,8 +48,9 @@ export function LoginPage() {
       redirect: false,
     });
     if (authRes.ok) {
-      Router.push(urls.base + urls.pages.members);
+      Router.replace(urls.base + urls.pages.members);
     } else {
+      setLoading(false);
       setFailed({
         header: "INCORRECT LOGIN",
         body: "Your credentials were incorrect.",
@@ -109,7 +113,12 @@ export function LoginPage() {
                 </Link>
               </p>
 
-              <input className={classes.button} type="submit" value="Sign In" />
+              <input
+                className={classes.button}
+                style={{ backgroundColor: loading ? "#473f91" : "#2d285c" }}
+                type="submit"
+                value="Sign In"
+              />
             </div>
           </form>
         </div>
