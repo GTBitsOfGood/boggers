@@ -10,6 +10,7 @@ import { sortTenures, splitSemesterString } from "../../../../utils/utilFunction
 import TableContext from "../../../../utils/contexts/TableContext";
 import DashboardContext from "../../../../utils/contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
+import { emailTester, phoneTester } from "../../../server/utils/regex";
 
 const Label = ({ label }) => {
   return (
@@ -34,6 +35,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
   const [user, setUser] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   const [id, setId] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -80,7 +82,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       setPreference(user.preference);
       setMemberType(user.access.toString());
     }
-  }, [user]);
+  }, [row, user]);
 
   useEffect(() => {
     if (user && semesterYear) {
@@ -96,6 +98,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   useEffect(() => {
     if (isVisible) {
       setSemesterYear(currentSemester);
+      setIsError(false);
       scrollRef.current.scrollTop = 0;
       setIsNewTenure(isAddUser);
       setSemesterYear(currentSemester);
@@ -121,8 +124,29 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   };
 
   const updateHandler = async () => {
-    closeModal();
+    if (!semesterYear) {
+      return setIsError(true);
+    }
+
     const [semester, year] = splitSemesterString(semesterYear);
+    if (
+      !firstName ||
+      !lastName ||
+      !emailTester(email) ||
+      !phoneTester(phoneNumber) ||
+      !preference ||
+      !memberType ||
+      !semester ||
+      !year ||
+      !department ||
+      !role ||
+      !project ||
+      !status
+    ) {
+      return setIsError(true);
+    }
+
+    closeModal();
     const result = await sendRequest(urls.api.updateMember, "PUT", {
       memberId: id,
       firstName,
@@ -254,8 +278,8 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         </div>
 
         <div className={`${style.fieldListContainer} ${isAddUser || isNewTenure ? style.fieldListContainerExtended : ""}`}>
-          <EditMemberField label="FIRST NAME" type="text" state={firstName} setState={setFirstName} />
-          <EditMemberField label="LAST NAME" type="text" state={lastName} setState={setLastName} />
+          <EditMemberField label="FIRST NAME" type="text" state={firstName} setState={setFirstName} isError={isError && !firstName} />
+          <EditMemberField label="LAST NAME" type="text" state={lastName} setState={setLastName} isError={isError && !lastName} />
           <EditMemberField
             label="EMAIL"
             type="text"
@@ -271,6 +295,8 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
               }
               setEmail(newEmail);
             }}
+            isError={isError && !emailTester(email)}
+            errorMessage="Invalid email format"
           />
           <EditMemberField
             label="PHONE NUMBER"
@@ -281,6 +307,8 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
                 setPhoneNumber(e.target.value);
               }
             }}
+            isError={isError && !phoneTester(phoneNumber)}
+            errorMessage="Must be 10 digits long"
           />
           {isNewTenure && (
             <>
@@ -290,15 +318,43 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
                 state={semester}
                 menu={semesterOptions}
                 onChange={(e) => setSemesterYear(`${e.target.value} ${year}`)}
+                isError={isError && !semester}
               />
-              <EditMemberField label="YEAR" type="number" state={year} onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)} />
+              <EditMemberField
+                label="YEAR"
+                type="number"
+                state={year}
+                onChange={(e) => setSemesterYear(`${semester} ${e.target.value}`)}
+                isError={isError && !year}
+              />
             </>
           )}
-          <EditMemberField label="DEPARTMENT" type="select" state={department} menu={departments} setState={setDepartment} />
-          <EditMemberField label="ROLE" type="select" state={role} menu={roles} setState={setRole} />
-          <EditMemberField label="PROJECT" type="select" state={project} menu={projects} setState={setProject} />
-          <EditMemberField label="TECH PREFERENCE" type="select" state={preference} menu={preferences} setState={setPreference} />
-          <EditMemberField label="STATUS" type="select" state={status} menu={statuses} setState={setStatus} />
+          <EditMemberField
+            label="DEPARTMENT"
+            type="select"
+            state={department}
+            menu={departments}
+            setState={setDepartment}
+            isError={isError && !department}
+          />
+          <EditMemberField label="ROLE" type="select" state={role} menu={roles} setState={setRole} isError={isError && !role} />
+          <EditMemberField
+            label="PROJECT"
+            type="select"
+            state={project}
+            menu={projects}
+            setState={setProject}
+            isError={isError && !project}
+          />
+          <EditMemberField
+            label="TECH PREFERENCE"
+            type="select"
+            state={preference}
+            menu={preferences}
+            setState={setPreference}
+            isError={isError && !preference}
+          />
+          <EditMemberField label="STATUS" type="select" state={status} menu={statuses} setState={setStatus} isError={isError && !status} />
           <EditMemberField
             label="MEMBER TYPE"
             type="select"
@@ -306,6 +362,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             menu={Object.keys(memberTypes)}
             setState={setMemberType}
             keyFunc={(key) => memberTypes[key]}
+            isError={isError && !memberType}
           />
         </div>
         <div className={style.noteContainer}>

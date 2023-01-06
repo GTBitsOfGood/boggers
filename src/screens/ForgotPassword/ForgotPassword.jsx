@@ -3,9 +3,7 @@ import classes from "./ForgotPassword.module.css";
 import Link from "next/link";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
-
-// eslint-disable-next-line no-useless-escape
-const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+import { emailTester } from "../../server/utils/regex";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -21,7 +19,7 @@ export function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!EMAIL_REGEX.test(email)) {
+    if (!emailTester(email)) {
       setMessage({
         success: false,
         header: "INCORRECT EMAIL",
