@@ -15,8 +15,6 @@ import SuccessBox from "./SuccessBox/SuccessBox";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 
-MemberProfile.title = "Member Profile";
-
 export default function MemberProfile({ session }) {
   const [displayModal, setDisplayModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("/Avatar.png");
@@ -191,3 +189,5 @@ export default function MemberProfile({ session }) {
     </div>
   );
 }
+
+MemberProfile.title = "Member Profile | Boggers";

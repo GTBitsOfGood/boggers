@@ -7,8 +7,6 @@ import Link from "next/link";
 import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 
-LoginPage.title = "Login";
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -126,3 +124,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+LoginPage.title = "Login | Boggers";

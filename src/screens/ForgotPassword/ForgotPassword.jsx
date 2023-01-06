@@ -7,8 +7,6 @@ import sendRequest from "../../../utils/sendToBackend";
 // eslint-disable-next-line no-useless-escape
 const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-ForgotPassword.title = "Forgot Password";
-
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
@@ -99,3 +97,5 @@ export function ForgotPassword() {
     </div>
   );
 }
+
+ForgotPassword.title = "Forgot Password | Boggers";

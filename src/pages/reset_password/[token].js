@@ -7,8 +7,6 @@ import { checkAccountRecovery } from "../../server/mongodb/actions/AccountRecove
 import connectMongo from "../../server/mongodb/connectMongo";
 import Head from "next/head";
 
-ResetPassword.title = "Reset Password";
-
 export default function ResetPassword({ exists, token }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -123,6 +121,8 @@ export default function ResetPassword({ exists, token }) {
     );
   }
 }
+
+ResetPassword.title = "Reset Password | Boggers";
 
 export const getServerSideProps = async (context) => {
   const { token } = context.params;

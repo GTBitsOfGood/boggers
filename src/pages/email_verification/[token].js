@@ -20,8 +20,6 @@ const mapping = {
   },
 };
 
-EmailVerification.title = "Email Verification";
-
 export default function EmailVerification({ display }) {
   const router = useRouter();
   return (
@@ -34,6 +32,8 @@ export default function EmailVerification({ display }) {
     </div>
   );
 }
+
+EmailVerification.title = "Email Verification | Boggers";
 
 export const getServerSideProps = async (context) => {
   const { token } = context.params;

@@ -79,8 +79,6 @@ const StyledSelect = styled(Select)(() => ({
   },
 }));
 
-AdminDashboardPage.title = "Admin Dashboard";
-
 function AdminDashboardPage({ url }) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
@@ -204,5 +202,7 @@ function AdminDashboardPage({ url }) {
     </>
   );
 }
+
+AdminDashboardPage.title = "Admin Dashboard | Boggers";
 
 export default AdminDashboardPage;
