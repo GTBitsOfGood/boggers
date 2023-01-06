@@ -1,19 +1,19 @@
 import styles from "./MemberProfile.module.css";
 import React, { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
 import axios from "axios";
+import { signOut } from "next-auth/react";
+import Router from "next/router";
 
 import sendRequest from "../../../utils/sendToBackend";
 import urls from "../../../utils/urls";
 import { sortTenures, getCurrSemesterYear, convertToBase64 } from "../../../utils/utilFunctions";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";
 import InputField from "./InputField/InputField";
 import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
 import SuccessBox from "./SuccessBox/SuccessBox";
-
-import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function MemberProfile({ session }) {
   const [displayModal, setDisplayModal] = useState(false);
@@ -24,6 +24,7 @@ export default function MemberProfile({ session }) {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [originalEmail, setOriginalEmail] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [preference, setPreference] = useState("");
@@ -49,6 +50,7 @@ export default function MemberProfile({ session }) {
 
       setFirstName(user.firstName ?? "");
       setLastName(user.lastName ?? "");
+      setOriginalEmail(user.email ?? "");
       setEmail(user.email ?? "");
       setPhoneNumber(user.phoneNumber ?? "");
       setPreference(user.preference ?? "");
@@ -67,6 +69,7 @@ export default function MemberProfile({ session }) {
       isMemberView: true,
       firstName,
       lastName,
+      originalEmail,
       email,
       phoneNumber,
       preference,
@@ -76,6 +79,7 @@ export default function MemberProfile({ session }) {
     if (result.success) {
       if (result.emailChanged) {
         setEmailVerified(false);
+        setInterval(() => setEmailVerified(true), 5000);
       }
     } else {
       return requestStatus(false);
@@ -131,7 +135,14 @@ export default function MemberProfile({ session }) {
         setImageUrl={setImageUrl}
         setImageBlob={setImageBlob}
       />
-      <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
+      <div className={styles.MemberProfileButtons}>
+        {session.user.access >= 1 ? (
+          <div className={styles.MemberProfileAdminButton} onClick={() => Router.push(urls.base + urls.pages.exec)}>
+            Exec View
+          </div>
+        ) : null}
+        <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
+      </div>
       <div className={styles.MemberProfileHeader}>
         <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
           <img className={styles.MemberProfileImage} src={imageUrl} alt="User Picture" />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import LogoutIcon from "@mui/icons-material/Logout";
 import UserTable from "./UserTable";
 import Image from "next/image";
 import UploadCSVModal from "./UploadCSVModal";
@@ -8,6 +9,8 @@ import urls from "../../../utils/urls";
 import sendRequest from "../../../utils/sendToBackend";
 import { sortTenures } from "../../../utils/utilFunctions";
 import DashboardContext from "../../../utils/contexts/DashboardContext";
+import Router from "next/router";
+import { signOut } from "next-auth/react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,7 +67,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const StyledSelect = styled(Select)(() => ({
   color: "black",
-  border: "1px solid #C4C4C4",
   fontFamily: "Poppins",
   fontSize: "16px",
   fontWeight: "400",
@@ -75,7 +77,14 @@ const StyledSelect = styled(Select)(() => ({
   textAlign: "center",
   "&:hover": {
     backgroundColor: "#EAE6FF",
-    borderColor: "#473F91",
+  },
+  "&.MuiOutlinedInput-root": {
+    "& fieldset": {
+      border: "2px solid #c4c4c4",
+    },
+    "&:hover fieldset": {
+      borderColor: "#473F91",
+    },
   },
 }));
 
@@ -126,7 +135,14 @@ function AdminDashboardPage({ url }) {
         <Grid item>
           <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>
             <Box sx={{ display: "flex", alignItems: "center", columnGap: 1.5 }}>
-              <Image alt="BOG logo" src="/BOG.svg" width={70} height={70} />
+              <Image
+                alt="BOG logo"
+                src="/BOG.svg"
+                width={70}
+                height={70}
+                style={{ cursor: "pointer" }}
+                onClick={() => Router.push(urls.base + urls.pages.members)}
+              />
               <Typography
                 variant="h2"
                 style={{
@@ -138,7 +154,7 @@ function AdminDashboardPage({ url }) {
                 Members
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", justifySelf: "flex-end", marginLeft: "auto", columnGap: 2 }}>
+            <Box sx={{ display: "flex", justifySelf: "flex-end", alignItems: "center", marginLeft: "auto", columnGap: 2 }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -182,9 +198,10 @@ function AdminDashboardPage({ url }) {
                     );
                   })}
               </StyledSelect>
+              <LogoutIcon style={{ width: "2rem", height: "2rem", cursor: "pointer" }} onClick={() => signOut()} />
             </Box>
           </Box>
-          <div style={{ height: "75vh", width: "90vw" }}>
+          <div style={{ height: "78vh", width: "90vw" }}>
             <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
               <UserTable
                 currentSemester={semester}
