@@ -1,15 +1,15 @@
 import styles from "./SuccessBox.module.css";
 
-const SuccessBox = ({ success, closeBox }) => {
-  let header, message, icon, color;
+const SuccessBox = ({ success, closeBox, message }) => {
+  let header, messageText, icon, color;
   if (success) {
     header = "CHANGES SAVED";
-    message = "Your changes were saved successfully!";
+    messageText = message ?? "Your changes were saved successfully!";
     icon = "/Check.png";
     color = "#13b461";
   } else {
     header = "UNSAVED CHANGES";
-    message = "Your changes could not be saved. Please try again or refresh your browser.";
+    messageText = message ?? "Your changes could not be saved. Please try again or refresh your browser.";
     icon = "/Warning.png";
     color = "#c63636";
   }
@@ -21,7 +21,7 @@ const SuccessBox = ({ success, closeBox }) => {
         <div className={styles.SuccessBoxCenterHeader} style={{ color }}>
           {header}
         </div>
-        <div className={styles.SuccessBoxCenterMessage}>{message}</div>
+        <div className={styles.SuccessBoxCenterMessage}>{messageText}</div>
       </div>
       <div className={styles.SuccessBoxCross} style={{ color }} onClick={closeBox}>
         &#10006;

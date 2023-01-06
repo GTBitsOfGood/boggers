@@ -14,6 +14,7 @@ import InputField from "./InputField/InputField";
 import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
 import SuccessBox from "./SuccessBox/SuccessBox";
+import { emailTester, phoneTester } from "../../server/utils/regex";
 
 export default function MemberProfile({ session }) {
   const [displayModal, setDisplayModal] = useState(false);
@@ -31,12 +32,17 @@ export default function MemberProfile({ session }) {
   const [emailVerified, setEmailVerified] = useState(true);
   const [tenures, setTenures] = useState([]);
   const [currIndex, setCurrIndex] = useState(-1);
+  const [message, setMessage] = useState("");
 
-  const requestStatus = (success) => {
+  const requestStatus = (success, message = "") => {
     setSuccess(success ? 1 : 2);
+    setMessage(message);
     setSaved(success ? 2 : 3);
     setTimeout(() => setSaved(0), 2000);
-    setTimeout(() => setSuccess(0), 5000);
+    setTimeout(() => {
+      setSuccess(0);
+      setMessage("");
+    }, 5000);
   };
 
   useEffect(() => {
@@ -53,7 +59,7 @@ export default function MemberProfile({ session }) {
       setOriginalEmail(user.email ?? "");
       setEmail(user.email ?? "");
       setPhoneNumber(user.phoneNumber ?? "");
-      setPreference(user.preference ?? "");
+      setPreference(preference ?? "");
       setTenures(tenures);
       setImageUrl(user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : "/Avatar.png");
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
@@ -64,6 +70,19 @@ export default function MemberProfile({ session }) {
 
   const handleSave = async () => {
     setSaved(1);
+
+    if (!firstName) {
+      return requestStatus(false, "First name cannot be empty.");
+    } else if (!lastName) {
+      return requestStatus(false, "Last name cannot be empty.");
+    } else if (!emailTester(email)) {
+      return requestStatus(false, "Email is of invalid format.");
+    } else if (!phoneTester(phoneNumber)) {
+      return requestStatus(false, "Phone number must contain only 10 digits.");
+    } else if (!preference) {
+      return requestStatus(false, "Please select a preference.");
+    }
+
     const result = await sendRequest(urls.api.updateMember, "PUT", {
       memberId: session.user.id,
       isMemberView: true,
@@ -152,7 +171,7 @@ export default function MemberProfile({ session }) {
           </div>
         </div>
         <div className={styles.MemberProfileName}>{`${firstName} ${lastName}`}</div>
-        {success === 0 ? null : <SuccessBox success={success === 1} closeBox={() => setSuccess(0)} />}
+        {success === 0 ? null : <SuccessBox success={success === 1} closeBox={() => setSuccess(0)} message={message} />}
       </div>
       <div className={styles.MemberProfileFields}>
         <InputField fieldName="FIRST NAME" fieldState={firstName} setFieldState={setFirstName} />
@@ -167,7 +186,16 @@ export default function MemberProfile({ session }) {
             </p>
           )}
         </div>
-        <InputField fieldName="PHONE NUMBER" fieldState={phoneNumber} setFieldState={setPhoneNumber} isOptional={true} />
+        <InputField
+          fieldName="PHONE NUMBER"
+          fieldState={phoneNumber}
+          onChange={(e) => {
+            if (/^[0-9]{0,10}$/g.test(e.target.value)) {
+              setPhoneNumber(e.target.value);
+            }
+          }}
+          isOptional={true}
+        />
         <div className={styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
           <div className={styles.MemberProfileSave}>
