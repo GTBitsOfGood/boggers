@@ -7,7 +7,7 @@ import sendRequest from "../../../server/utils/sendToBackend";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
 import { sortTenures, splitSemesterString } from "../../../server/utils/memberFunctions";
-import TableContext from "../../../../utils/contexts/TableContext";
+import TableContext from "../../../contexts/TableContext";
 import DashboardContext from "../../../contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
 import { emailTester, phoneTester } from "../../../server/utils/regex";

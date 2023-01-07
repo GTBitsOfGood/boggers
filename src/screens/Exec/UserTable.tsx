@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable";
-import TableContext from "../../../utils/contexts/TableContext";
+import TableContext from "../../contexts/TableContext";
 import { getCurrSemesterYear, sortTenures } from "../../server/utils/memberFunctions";
 import { DBUser, User } from "./types";
 import sendRequest from "../../server/utils/sendToBackend";
