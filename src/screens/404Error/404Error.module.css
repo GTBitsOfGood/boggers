@@ -1,0 +1,26 @@
+.container {
+  background: linear-gradient(74.59deg, #fd8033 0%, #fb3552 100%);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins";
+  color: white;
+  row-gap: 2rem;
+}
+
+.heading {
+  font-size: 42px;
+  font-weight: 600;
+}
+
+.button {
+  width: max-content;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  background-color: #2d285c;
+}
