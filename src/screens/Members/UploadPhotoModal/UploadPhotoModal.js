@@ -1,6 +1,6 @@
 import {useState} from "react";
 import styles from "./UploadPhotoModal.module.css";
-import Avatar from "src/public/Avatar.png";
+import Avatar from "../../../public/Avatar.png";
 
 export default function UploadPhotoModal({displayModal, closeModal, setImageUrl, setImageBlob}) {
   const [uploading, setUploading] = useState(false);
