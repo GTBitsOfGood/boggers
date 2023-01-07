@@ -1,16 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import style from "./EditMemberModal.module.css";
 import { Typography, Select, MenuItem, TextField, Button } from "@mui/material";
-import fields from "../../../server/utils/fields";
-import urls from "../../../server/utils/urls";
-import sendRequest from "../../../server/utils/sendToBackend";
-import ConfirmationModal from "../ConfirmationModal";
-import { EditMemberModalProps, User } from "../types";
-import { sortTenures, splitSemesterString } from "../../../server/utils/memberFunctions";
-import DashboardContext from "../../../contexts/DashboardContext";
-import TableContext from "../../../contexts/TableContext";
-import EditMemberField from "./EditMemberField";
-import { emailTester, phoneTester } from "../../../server/utils/regex";
+import fields from "../../../../../server/utils/fields";
+import urls from "../../../../../server/utils/urls";
+import sendRequest from "../../../../../server/utils/sendToBackend";
+import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
+import { EditMemberModalProps, User } from "../../../types";
+import { sortTenures, splitSemesterString } from "../../../../../server/utils/memberFunctions";
+import DashboardContext from "../../../../../contexts/DashboardContext";
+import TableContext from "../../../../../contexts/TableContext";
+import EditMemberField from "./EditMemberField/EditMemberField";
+import { emailTester, phoneTester } from "../../../../../server/utils/regex";
 
 const Label = ({ label }) => {
   return (

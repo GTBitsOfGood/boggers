@@ -27,7 +27,7 @@ export const authOptions = {
   secret: urls.nextAuthSecret,
   callbacks: {
     async redirect() {
-      return urls.base + urls.pages.members;
+      return urls.base + urls.pages.member;
     },
     async jwt({ token, user }) {
       if (user) token.user = user;

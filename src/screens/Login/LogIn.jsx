@@ -46,7 +46,7 @@ export default function LoginPage() {
       redirect: false,
     });
     if (authRes.ok) {
-      Router.replace(urls.base + urls.pages.members);
+      Router.replace(urls.base + urls.pages.member);
     } else {
       setLoading(false);
       setFailed({

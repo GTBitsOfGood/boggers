@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import PaginationTable from "./PaginationTable";
-import TableContext from "../../contexts/TableContext";
-import { getCurrSemesterYear, sortTenures } from "../../server/utils/memberFunctions";
-import { DBUser, User } from "./types";
-import sendRequest from "../../server/utils/sendToBackend";
+import PaginationTable from "./PaginationTable/PaginationTable";
+import TableContext from "../../../contexts/TableContext";
+import { getCurrSemesterYear, sortTenures } from "../../../server/utils/memberFunctions";
+import { DBUser, User } from "../types";
+import sendRequest from "../../../server/utils/sendToBackend";
 
 function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, semesters, setSemesters, filter }) {
   const [userList, setUserList] = useState<User[]>([]);

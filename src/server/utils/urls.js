@@ -20,9 +20,10 @@ const urls = {
   pages: {
     index: "/",
     login: "/login",
-    members: "/members",
-    forgotPassword: "/ForgotPassword",
-    exec: "/exec",
+    admin: "/admin",
+    member: "/member",
+    emailVerification: "/email_verification",
+    forgotPassword: "/forgot_password",
     resetPassword: "/reset_password",
   },
   api: {

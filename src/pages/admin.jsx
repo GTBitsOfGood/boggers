@@ -1,6 +1,7 @@
-import Exec from "../screens/Exec";
+import Admin from "../screens/AdminDashboard";
 import { getSession } from "next-auth/react";
 import { baseAwsUrl } from "../server/utils/awsConfig";
+import urls from "../server/utils/urls";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -8,14 +9,14 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: urls.pages.login,
         permanent: false,
       },
     };
   } else if (session.user.access < 1) {
     return {
       redirect: {
-        destination: "/members",
+        destination: urls.pages.member,
         permanent: false,
       },
     };
@@ -26,4 +27,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Exec;
+export default Admin;

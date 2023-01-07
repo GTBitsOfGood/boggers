@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-import UserTable from "./UserTable";
+import UserTable from "./UserTable/UserTable";
 import Image from "next/image";
 import UploadCSVModal from "./UploadCSVModal";
 import urls from "../../server/utils/urls";
@@ -139,7 +139,7 @@ function AdminDashboardPage({ url }) {
                 width={70}
                 height={70}
                 style={{ cursor: "pointer" }}
-                onClick={() => Router.push(urls.base + urls.pages.members)}
+                onClick={() => Router.push(urls.base + urls.pages.member)}
               />
               <Typography
                 variant="h2"

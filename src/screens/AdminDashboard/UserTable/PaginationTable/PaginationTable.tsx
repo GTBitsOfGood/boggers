@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
-import EditMemberModal from "./EditMemberModal";
+import EditMemberModal from "./EditMemberModal/EditMemberModal";
 import styles from "./PaginationTable.module.css";
-import Row from "./Row";
-import { TColumn, TableProps } from "./types";
-import DashboardContext from "../../contexts/DashboardContext";
+import Row from "./Row/Row";
+import { TColumn, TableProps } from "../../types";
+import DashboardContext from "../../../../contexts/DashboardContext";
 
 const columns: TColumn[] = [
   { id: "member", label: "Member" },

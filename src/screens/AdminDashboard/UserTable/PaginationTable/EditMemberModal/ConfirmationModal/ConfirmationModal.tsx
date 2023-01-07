@@ -5,11 +5,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import urls from "../../server/utils/urls";
-import sendRequest from "../../server/utils/sendToBackend";
-import TableContext from "../../contexts/TableContext";
-import DashboardContext from "../../contexts/DashboardContext";
-import { sortTenures, splitSemesterString } from "../../server/utils/memberFunctions";
+import urls from "../../../../../../server/utils/urls";
+import sendRequest from "../../../../../../server/utils/sendToBackend";
+import TableContext from "../../../../../../contexts/TableContext";
+import DashboardContext from "../../../../../../contexts/DashboardContext";
+import { sortTenures, splitSemesterString } from "../../../../../../server/utils/memberFunctions";
 
 interface IConfirmModal {
   isOpen: boolean;

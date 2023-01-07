@@ -156,14 +156,12 @@ export default function MemberProfile({ session }) {
         setImageUrl={setImageUrl}
         setImageBlob={setImageBlob}
       />
-      <div className={styles.MemberProfileButtons}>
-        {session.user.access >= 1 ? (
-          <div className={styles.MemberProfileAdminButton} onClick={() => Router.push(urls.base + urls.pages.exec)}>
-            Exec View
-          </div>
-        ) : null}
-        <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
-      </div>
+      {session.user.access >= 1 ? (
+        <div className={styles.MemberProfileAdminButton} onClick={() => Router.push(urls.base + urls.pages.admin)}>
+          Admin View
+        </div>
+      ) : null}
+      <LogoutIcon className={styles.MemberProfileLogout} onClick={() => signOut()} />
       <div className={styles.MemberProfileHeader}>
         <div className={styles.MemberProfileImageContainer} onClick={() => setDisplayModal(true)}>
           <img className={styles.MemberProfileImage} src={imageUrl} alt="User Picture" />
