@@ -16,11 +16,26 @@
   z-index: 1;
 }
 
-.MemberProfileLogout {
+.MemberProfileButtons {
   position: absolute;
-  top: 3%;
-  right: 3%;
-  color: #000000;
+  top: 2%;
+  right: 2%;
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.MemberProfileAdminButton {
+  padding: 7px 10px;
+  background-color: #2d285c;
+  color: white;
+  border-radius: 10px;
+  font-family: "Poppins";
+  cursor: pointer;
+}
+
+.MemberProfileLogout {
+  color: #2d285c;
   width: 35px;
   height: 35px;
   cursor: pointer;
@@ -102,7 +117,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-grow: 2;
-  row-gap: 3vh;
+  row-gap: 2vh;
 }
 
 .MemberProfileRadioSave {
@@ -166,6 +181,6 @@
 .MemberProfileFooterBottom {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
   column-gap: 7%;
 }

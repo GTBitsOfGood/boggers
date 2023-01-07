@@ -1,152 +1,223 @@
-import React, {useMemo, useEffect, useState} from "react";
-import {Typography, Grid, Stack, styled, alpha, InputBase, Button, MenuItem, Select} from "@mui/material";
-import {makeStyles} from "@mui/styles";
+import React, { useState, useEffect } from "react";
+import { Typography, Grid, Box, styled, alpha, InputBase, Button, MenuItem, Select } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ScreenGrid from "./ScreenGrid";
+import LogoutIcon from "@mui/icons-material/Logout";
 import UserTable from "./UserTable";
 import Image from "next/image";
-import BOG from "../../public/BOG.svg";
 import UploadCSVModal from "./UploadCSVModal";
-import urls from "../../../utils/urls";
+import urls from "../../server/utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
+import { sortTenures } from "../../server/utils/memberFunctions";
+import DashboardContext from "../../contexts/DashboardContext";
+import Router from "next/router";
+import { signOut } from "next-auth/react";
 
-const truncateFilename = (filename) => {
-  return filename.length > 15 ? `${filename.slice(0, 12)}...csv` : filename;
-};
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  border: "solid",
+  borderColor: "#C4C4C4",
+  borderWidth: "2px",
+  height: "3rem",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+}));
 
-function AdminDashboardPage() {
-  const [semester, setSemester] = useState("FALL 2022");
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
-  const [fileBlob, setFileBlob] = useState(null);
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
-  const Search = styled("div")(({theme}) => ({
-    position: "relative",
-    border: "solid",
-    borderColor: "#C4C4C4",
-    borderWidth: "1px",
-    height: "3rem",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(10),
-    marginLeft: 0,
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    fontFamily: "Poppins",
+    padding: theme.spacing(1.35, 1, 1.5, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
+    [theme.breakpoints.up("md")]: {
+      width: "21ch",
     },
-  }));
+  },
+}));
 
-  const SearchIconWrapper = styled("div")(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: "black",
+  border: "solid",
+  borderColor: "#C4C4C4",
+  borderWidth: "2px",
+  fontFamily: "Poppins",
+  fontSize: "16px",
+  fontWeight: "400",
+  height: "3rem",
+  width: theme.width,
+  "&:hover": {
+    backgroundColor: "#EAE6FF",
+    borderColor: "#473F91",
+  },
+}));
 
-  const StyledInputBase = styled(InputBase)(({theme}) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: "20ch",
-      },
+const StyledSelect = styled(Select)(() => ({
+  color: "black",
+  fontFamily: "Poppins",
+  fontSize: "16px",
+  fontWeight: "400",
+  height: "3rem",
+  transition: "0.2s ease-out",
+  width: "10rem",
+  outline: "none",
+  textAlign: "center",
+  "&:hover": {
+    backgroundColor: "#EAE6FF",
+  },
+  "&.MuiOutlinedInput-root": {
+    "& fieldset": {
+      border: "2px solid #c4c4c4",
     },
-  }));
+    "&:hover fieldset": {
+      borderColor: "#473F91",
+    },
+  },
+}));
+
+function AdminDashboardPage({ url }) {
+  const [semesters, setSemesters] = useState([]);
+  const [semester, setSemester] = useState("");
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [fileBlob, setFileBlob] = useState(null);
+  const [filter, setFilter] = useState("");
+  const [isAddUser, setIsAddUser] = useState(false);
+  const [newMembers, setNewMembers] = useState(null);
 
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
   };
 
-  const uploadAndClostModal = async () => {
-    console.log("fileBlob", fileBlob);
-    fetch(urls.base + urls.api.bulkUpload, {
-      method: "POST",
-      body: fileBlob,
-      headers: {
-        "Content-Type": "text/csv",
-      },
-    });
-    setShowUploadModal(!showUploadModal);
+  const bulkUpload = async () => {
+    const res = await sendRequest(urls.api.bulkUpload, "POST", fileBlob, { "Content-Type": "text/csv" }, false);
+    setNewMembers(res.members);
+    setFileBlob(null);
   };
+
+  useEffect(() => {
+    if (fileBlob) {
+      bulkUpload();
+    }
+  }, [fileBlob]);
 
   return (
     <>
-      <UploadCSVModal displayModal={showUploadModal} closeModal={uploadAndClostModal} setFileUrl={setFileUrl} setFileBlob={setFileBlob} />
-      <ScreenGrid>
-        <Grid item direction="column" justifyContent="flex-start" alignItems="stretch">
-          <Stack
-            direction="row"
-            spacing={2}
-            style={{
-              marginBottom: "1rem",
-            }}>
-            <Image
-              alt="BOG logo"
-              src={BOG}
-              width={40}
-              height={20}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <Typography
-              variant="h2"
-              style={{
-                fontFamily: "Poppins",
-                color: "#333333",
-                fontSize: "2.2rem",
-                fontWeight: "500",
-                marginRight: "0.8rem",
-              }}>
-              Members
-            </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{"aria-label": "search"}} />
-            </Search>
-            <Button
-              variant="outlined"
-              style={{
-                color: "black",
-                fontWeight: "400",
-                height: "3rem",
-                backgroundColor: fileBlob ? "#EAE6FF" : "none",
-              }}
-              onClick={() => setShowUploadModal(true)}>
-              UPLOAD CSV
-            </Button>
-            <Select
-              value={semester}
-              style={{
-                height: "3rem",
-              }}
-              onChange={changeSemesterHandler}>
-              <MenuItem value={"FALL 2022"}>FALL 2022</MenuItem>
-              <MenuItem value={"SPRING 2022"}>SPRING 2022</MenuItem>
-              <MenuItem value={"FALL 2021"}>FALL 2021</MenuItem>
-              // TODO: un-hardcode this
-            </Select>
-          </Stack>
-          <div style={{height: "60vh", width: "60vw"}}>
-            <UserTable currentSemester={semester} />
+      {showUploadModal ? (
+        <div
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "black",
+            opacity: "30%",
+            zIndex: 3,
+          }}
+          onClick={() => setShowUploadModal(false)}
+        />
+      ) : null}
+      <UploadCSVModal displayModal={showUploadModal} closeModal={() => setShowUploadModal(false)} setFileBlob={setFileBlob} />
+      <Grid container height="100vh" justifyContent="center" alignItems="center" flexDirection="column">
+        <Grid item>
+          <Box sx={{ display: "flex", alignItems: "center" }} style={{ marginBottom: "1.5rem" }}>
+            <Box sx={{ display: "flex", alignItems: "center", columnGap: 1.5 }}>
+              <Image
+                alt="BOG logo"
+                src="/BOG.svg"
+                width={70}
+                height={70}
+                style={{ cursor: "pointer" }}
+                onClick={() => Router.push(urls.base + urls.pages.members)}
+              />
+              <Typography
+                variant="h2"
+                style={{
+                  fontFamily: "Poppins",
+                  color: "#333333",
+                  fontSize: "2.2rem",
+                  fontWeight: "500",
+                }}>
+                Members
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", justifySelf: "flex-end", alignItems: "center", marginLeft: "auto", columnGap: 2 }}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  value={filter}
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={(e) => setFilter(e.target.value)}
+                />
+              </Search>
+              <StyledButton theme={{ width: "8rem" }} onClick={() => setIsAddUser(true)}>
+                ADD MEMBER
+              </StyledButton>
+              <StyledButton theme={{ width: "8rem" }} onClick={() => setShowUploadModal(true)}>
+                UPLOAD CSV
+              </StyledButton>
+              <StyledSelect
+                value={semester}
+                onChange={changeSemesterHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
+                {Array.from(semesters)
+                  .sort(sortTenures(false))
+                  .map((semester) => {
+                    return (
+                      <MenuItem key={semester} value={semester} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
+                        {semester.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </StyledSelect>
+              <LogoutIcon style={{ width: "2rem", height: "2rem", cursor: "pointer" }} onClick={() => signOut()} />
+            </Box>
+          </Box>
+          <div style={{ height: "78vh", width: "90vw" }}>
+            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
+              <UserTable
+                currentSemester={semester}
+                newMembers={newMembers}
+                clearNewMembers={() => setNewMembers(null)}
+                semesters={semesters}
+                setSemester={setSemester}
+                setSemesters={setSemesters}
+                filter={filter}
+              />
+            </DashboardContext.Provider>
           </div>
         </Grid>
-      </ScreenGrid>
+      </Grid>
     </>
   );
 }
+
+AdminDashboardPage.title = "Admin Dashboard | Boggers";
 
 export default AdminDashboardPage;

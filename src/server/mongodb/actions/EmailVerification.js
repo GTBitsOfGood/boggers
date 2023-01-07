@@ -1,19 +1,19 @@
-import connectMongo from "../connectMongo.js";
 import EmailVerification from "../models/EmailVerification";
 
-async function createEmailVerification(email) {
-  await connectMongo();
-  return EmailVerification.findOneAndUpdate({email}, {email, newEmail: null}, {upsert: true, new: true});
+async function createEmailVerification(email, newEmail) {
+  return EmailVerification.findOneAndUpdate({ email }, { email, newEmail }, { upsert: true, new: true });
 }
 
-async function createEmailChangeVerification(email, newEmail) {
-  await connectMongo();
-  return EmailVerification.findOneAndUpdate({email}, {email, newEmail}, {upsert: true, new: true});
+async function getAndDeleteEmailVerification(token) {
+  return EmailVerification.findOneAndDelete({ token });
 }
 
-async function getEmailVerification(token) {
-  await connectMongo();
-  return EmailVerification.findOne({token});
+async function deleteEmail(email) {
+  return EmailVerification.deleteMany({ email });
 }
 
-export {createEmailVerification, createEmailChangeVerification, getEmailVerification};
+async function deleteNewEmail(newEmail) {
+  return EmailVerification.deleteMany({ newEmail });
+}
+
+export { createEmailVerification, getAndDeleteEmailVerification, deleteEmail, deleteNewEmail };

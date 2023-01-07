@@ -1,34 +1,20 @@
 import mongoose from "mongoose";
-import urls from "../../../utils/urls";
-let cached = global.mongoose;
+import urls from "../../server/utils/urls";
 
-if (!cached) {
-  cached = global.mongoose = {db: null, promise: null};
-}
-
-async function connectMongo() {
-  if (cached.db) {
-    return cached.db;
+const connectMongo = async () => {
+  if (!global.cache) {
+    try {
+      global.cache = await mongoose.connect(urls.dbUrl, { dbName: urls.dbName });
+      return { success: true };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        message: "Error connecting to MongoDB",
+      };
+    }
   }
-
-  if (!cached.promise) {
-    const opts = {
-      dbName: urls.dbName,
-    };
-
-    cached.promise = mongoose.connect(urls.dbUrl, opts).then((mongoose) => {
-      return mongoose;
-    });
-  }
-
-  try {
-    cached.db = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
-  return cached.db;
-}
+  return { success: true };
+};
 
 export default connectMongo;

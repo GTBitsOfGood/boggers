@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import fields from "../../../server/utils/fields";
 
 const tenureSchema = new mongoose.Schema({
   userId: {
@@ -8,7 +9,7 @@ const tenureSchema = new mongoose.Schema({
   },
   semester: {
     type: String,
-    enum: ["Spring", "Summer", "Fall"],
+    enum: fields.semesters,
     required: true,
   },
   year: {
@@ -17,16 +18,19 @@ const tenureSchema = new mongoose.Schema({
   },
   department: {
     type: String,
+    enum: fields.departments,
   },
   role: {
     type: String,
+    enum: fields.roles,
   },
   project: {
     type: String,
+    enum: fields.projects,
   },
   status: {
     type: String,
-    enum: ["Active", "Inactive"],
+    enum: fields.statuses,
     default: "Active",
   },
   notes: String,

@@ -1,88 +1,86 @@
-import {signIn} from "next-auth/react";
-import React, {useState} from "react";
+import { signIn } from "next-auth/react";
+import React, { useState, useEffect } from "react";
 import classes from "./Login.module.css";
-import BOG from "../../public/BOG.svg";
-import warnning from "../../public/warning.png";
 import Image from "next/image";
 import Router from "next/router";
 import Link from "next/link";
-import urls from "../../../utils/urls";
+import urls from "../../server/utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
 
-export function LoginPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (failed) {
+      setTimeout(() => {
+        setFailed(null);
+      }, 7000);
+    }
+  }, [failed]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-      }),
-    });
-    if (res.status === 401) {
-      alert(`You need to verify your email before logging in. An email was sent to ${email}`);
+    setLoading(true);
+    const res = await sendRequest(urls.api.checkVerified, "POST", { email });
+    if (!res.success) {
+      setLoading(false);
+      if (res.isUnauthNewUser) {
+        return setFailed({
+          header: "EMAIL NOT VERIFIED",
+          body: `You need to verify your email before logging in. An email was sent to ${email}`,
+        });
+      } else {
+        return setFailed({
+          header: "INCORRECT LOGIN",
+          body: "Your credentials were incorrect.",
+        });
+      }
     }
-    await signIn("credentials", {
+
+    const authRes = await signIn("credentials", {
       email: email,
       password: password,
       redirect: false,
-    }).then(({ok}) => {
-      if (ok) {
-        Router.push(urls.base + urls.pages.members);
-      } else {
-        setFailed(true);
-      }
     });
+    if (authRes.ok) {
+      Router.replace(urls.base + urls.pages.members);
+    } else {
+      setLoading(false);
+      setFailed({
+        header: "INCORRECT LOGIN",
+        body: "Your credentials were incorrect.",
+      });
+    }
   };
 
   return (
     <div className={classes.body}>
       {failed ? (
         <div className={classes.errorContainer}>
-          <div className={classes.errorFirst}>
-            <Image
-              alt="BOG logo"
-              src={warnning}
-              width={20}
-              height={10}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                marginTop: "0.1rem",
-              }}
-            />
-            <div className={classes.errorTextContainer}>
-              <p className={classes.errorHead}>INCORRECT LOGIN</p>
-              <p>Your Credentials were incorrect.</p>
-            </div>
-            <p
-              className={classes.errorClose}
-              onClick={() => {
-                setFailed(false);
-              }}>
-              x
-            </p>
+          <img alt="Warning Sign" src="/warning.png" width="12px" height="12px" />
+          <div className={classes.errorTextContainer}>
+            <p className={classes.errorHeader}>{failed.header}</p>
+            <p className={classes.errorBody}>{failed.body}</p>
+          </div>
+          <div
+            className={classes.errorClose}
+            onClick={() => {
+              setFailed(null);
+            }}>
+            &#10006;
           </div>
         </div>
       ) : (
         <div></div>
       )}
-      <h1 style={{display: "none"}}>Hi</h1>
+      <h1 style={{ display: "none" }}>Hi</h1>
       <div className={classes.bodyContainer}>
         <div className={classes.baseContainer}>
           <div className={classes.image}>
-            <Image
-              alt="BOG logo"
-              src={BOG}
-              width={100}
-              height={100}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+            <Image alt="BOG logo" src="/BOG.svg" width={125} height={125} />
           </div>
 
           <div>
@@ -113,7 +111,12 @@ export function LoginPage() {
                 </Link>
               </p>
 
-              <input className={classes.button} type="submit" value="Sign in" />
+              <input
+                className={classes.button}
+                style={{ backgroundColor: loading ? "#4524ff" : "#2d285c" }}
+                type="submit"
+                value="Sign In"
+              />
             </div>
           </form>
         </div>
@@ -121,3 +124,5 @@ export function LoginPage() {
     </div>
   );
 }
+
+LoginPage.title = "Login | Boggers";

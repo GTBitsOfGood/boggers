@@ -1,104 +1,94 @@
-import React, {useEffect, useState, useMemo} from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import {PaginationTable, TColumn} from "./PaginationTable";
-import DeleteUserButton from "./DeleteUserButton";
-import {bool} from "aws-sdk/clients/redshiftdata";
+import PaginationTable from "./PaginationTable";
+import TableContext from "../../contexts/TableContext";
+import { getCurrSemesterYear, sortTenures } from "../../server/utils/memberFunctions";
+import { DBUser, User } from "./types";
+import sendRequest from "../../server/utils/sendToBackend";
 
-interface AdminDashboardRow {
-  key: string;
-  member: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-  };
-  department: string;
-  role: string;
-  preference: string;
-  project: string;
-  notes: any;
-  status: string;
-}
-
-interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phoneNumber: string;
-  access: {
-    type: Number;
-    default: 0;
-    enum: [0, 1, 2];
-  };
-  tenures: any;
-  preference: string;
-  status: string;
-}
-
-function UserTable({currentSemester}) {
-  const [userList, setUserList] = useState<IUser[]>([]);
+function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, semesters, setSemesters, filter }) {
+  const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch("/api/get_users")
-      .then((response) => {
-        return response.json();
+    (async () => {
+      const response = await sendRequest("/api/get_users", "GET");
+      const { users } = response;
+
+      const semesters = new Set();
+      users.forEach((user: DBUser) => {
+        user.tenures = user.tenures.reduce((tenures, tenure) => {
+          const semesterYear = `${tenure.semester} ${tenure.year}`;
+          semesters.add(semesterYear);
+          tenures[semesterYear] = tenure;
+          return tenures;
+        }, {});
+      });
+      setUserList(users);
+      setSemesters(semesters);
+
+      if (semesters.size !== 0) {
+        let curr = getCurrSemesterYear();
+        curr = `${curr.semester} ${curr.year}`;
+        setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (newMembers) {
+      const newUserList: User[] = JSON.parse(JSON.stringify(userList));
+
+      const newSemesters = new Set(semesters);
+      newMembers.forEach((user: DBUser) => {
+        user.tenures = user.tenures.reduce((tenures, tenure) => {
+          const semesterYear = `${tenure.semester} ${tenure.year}`;
+          tenures[semesterYear] = tenure;
+          newSemesters.add(semesterYear);
+          return tenures;
+        }, {});
+
+        const index = newUserList.findIndex((u) => user.id === u.id);
+        if (index === -1) {
+          newUserList.push(user);
+        } else {
+          newUserList[index] = user;
+        }
+      });
+      clearNewMembers();
+      setUserList(newUserList);
+      setSemesters(newSemesters);
+      if (!currentSemester) {
+        setSemester(Array.from(newSemesters).sort(sortTenures(false))[0]);
+      }
+    }
+  }, [newMembers]);
+
+  const regex = new RegExp(filter, "i");
+  const users = useMemo(() => {
+    return userList
+      .filter((user) => {
+        return regex.test(`${user.firstName} ${user.lastName}`);
       })
-      .then((response) => {
-        const {users} = response;
-        setUserList(users);
+      .sort((a, b) => {
+        return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
       });
-  }, [currentSemester]);
+  }, [userList, filter]);
 
-  const rowData = useMemo(() => {
-    const memberRowData: AdminDashboardRow[] = [];
-    userList.forEach((member, index) => {
-      const {tenures, firstName, lastName, email, phoneNumber, preference} = member;
-
-      const currentTenure = tenures.find((tenure) => currentSemester.toLowerCase() === `${tenure.semester} ${tenure.year}`.toLowerCase());
-      if (!currentTenure) return;
-      const {role, notes, department, project, status} = currentTenure;
-      memberRowData.push({
-        key: `${index}`,
-        member: {
-          firstName,
-          lastName,
-          phoneNumber,
-          email,
-        },
-        preference,
-        notes,
-        department,
-        role,
-        project,
-        status,
-      });
-    });
-    return memberRowData;
-  }, [userList]);
-
-  const columns: TColumn[] = [
-    {id: "member", label: "Member"},
-    {id: "department", label: "Department"},
-    {id: "role", label: "Role"},
-    {id: "project", label: "Project"},
-    {id: "status", label: "Status"},
-    {id: "notes", label: "Notes"},
-  ];
-
-  const removeUser = (user: IUser) => {
-    setUserList(userList.filter((entry: IUser) => entry && entry.email && entry.email !== user.email));
-  };
+  const rows = users.filter((user) => !!user.tenures[currentSemester]);
 
   if (!userList) {
     return (
-      <div style={{width: "0", margin: "auto"}}>
+      <div style={{ width: "0", margin: "auto" }}>
         <CircularProgress size={80} />
       </div>
     );
   }
-  // return <PaginationTable rows={userList.map((user: IUser, index) => createAdminDashboardRow(user, index))} columns={columns} />;
-  return <PaginationTable rows={rowData} columns={columns} currentSemester={currentSemester} />;
+
+  return (
+    <TableContext.Provider value={{ userList, setUserList }}>
+      <PaginationTable rows={rows} currentSemester={currentSemester} />
+    </TableContext.Provider>
+  );
 }
 
 export default UserTable;

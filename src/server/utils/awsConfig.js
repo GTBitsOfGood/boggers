@@ -1,4 +1,4 @@
-import {S3} from "aws-sdk";
+import { S3 } from "aws-sdk";
 
 const config = {
   region: process.env.BUCKET_REGION,

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import fields from "../../../server/utils/fields";
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -18,12 +19,12 @@ const userSchema = new mongoose.Schema({
   phoneNumber: String,
   preference: {
     type: String,
-    enum: ["Front-end", "Full-stack", "Back-end", "-"],
+    enum: fields.preferences,
   },
   access: {
     type: Number,
     default: 0,
-    enum: [0, 1, 2],
+    enum: Object.keys(fields.memberTypes).map((key) => parseInt(key)),
   },
   tenures: [
     {
@@ -31,7 +32,10 @@ const userSchema = new mongoose.Schema({
       ref: "Tenure",
     },
   ],
-  image: Boolean,
+  image: {
+    type: Boolean,
+    default: false,
+  },
   emailVerified: {
     type: Boolean,
     default: false,
