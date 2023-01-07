@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import fields from "../../../../utils/fields";
+import fields from "../../../server/utils/fields";
 
 const tenureSchema = new mongoose.Schema({
   userId: {

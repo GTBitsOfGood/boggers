@@ -1,10 +1,10 @@
-import {getToken} from "next-auth/jwt";
-import {s3, Bucket} from "../../../utils/awsConfig";
-import requestWrapper from "../../../utils/middleware";
-import {addImage} from "../../server/mongodb/actions/User";
+import { getToken } from "next-auth/jwt";
+import { s3, Bucket } from "../../server/utils/awsConfig";
+import requestWrapper from "../../server/utils/middleware";
+import { addImage } from "../../server/mongodb/actions/User";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = await getToken({ req });
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -12,7 +12,7 @@ async function handler(req, res) {
     });
   }
 
-  const {image, type} = req.body;
+  const { image, type } = req.body;
 
   try {
     const result = await s3
@@ -27,7 +27,7 @@ async function handler(req, res) {
     await addImage(user.user.id);
     res.status(200).json({
       success: true,
-      payload: {url: result.Location},
+      payload: { url: result.Location },
     });
   } catch (err) {
     console.log(err);

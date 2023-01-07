@@ -1,15 +1,17 @@
-import {getToken} from "next-auth/jwt";
-import requestWrapper from "../../../utils/middleware";
-import {deleteTenure} from "../../server/mongodb/actions/Tenure";
+import { getToken } from "next-auth/jwt";
+import requestWrapper from "../../server/utils/middleware";
+import { deleteTenure } from "../../server/mongodb/actions/Tenure";
 
 async function handler(req, res) {
-  const user = await getToken({req});
+  const user = await getToken({ req });
   if (!user) {
     return res.status(401).json({
       success: false,
       message: "User not authenticated",
     });
   }
+
+  const { id, semester, year } = req.body;
 
   if (user.user.access < 1) {
     return res.status(401).json({
@@ -18,7 +20,6 @@ async function handler(req, res) {
     });
   }
 
-  const {id, semester, year} = req.body;
   try {
     await deleteTenure(id, semester, year);
     res.status(202).json({

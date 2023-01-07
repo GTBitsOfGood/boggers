@@ -1,19 +1,18 @@
-import requestWrapper from "../../../utils/middleware";
-import {createAccountRecovery} from "../../server/mongodb/actions/AccountRecovery";
-import {getUser} from "../../server/mongodb/actions/User";
-import sendAccountRecoveryEmail from "../../server/nodemailer/actions/accountRecovery";
-import connectMailer from "../../server/nodemailer/connectMailer";
+import requestWrapper from "../../server/utils/middleware";
+import { getUser } from "../../server/mongodb/actions/User";
+import { sendAccountRecovery } from "../../server/utils/emailFunctions";
 
 const forgotPasswordHandler = async function handler(req, res) {
-  const {body} = req;
-  const user = await getUser(body.email);
+  const { email } = req.body;
+  const user = await getUser(email);
   if (!user) {
-    return res.status(404).send("User not found");
+    return res.status(404).json({ success: false, exists: false, message: "User not found" });
   }
-  const accountRecovery = await createAccountRecovery(req.body.email);
-  const transporter = await connectMailer();
-  await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
-  res.status(200).send();
+  if (!user.emailVerified) {
+    return res.status(401).json({ success: false, exists: true, message: "User not verified" });
+  }
+  sendAccountRecovery(email);
+  res.status(200).json({ success: true });
 };
 
 export default requestWrapper(forgotPasswordHandler, "POST");

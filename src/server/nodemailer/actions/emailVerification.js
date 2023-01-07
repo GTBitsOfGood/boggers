@@ -1,4 +1,4 @@
-import urls from "../../../../utils/urls";
+import urls from "../../../server/utils/urls";
 
 async function sendEmailVerificationEmail(transporter, email, token) {
   return transporter.sendMail({

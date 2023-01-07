@@ -1,13 +1,12 @@
-import {getToken} from "next-auth/jwt";
-import {upsertTenure} from "../../server/mongodb/actions/Tenure";
-import {createUser, updateUser, addTenure, getUserById} from "../../server/mongodb/actions/User";
-import requestWrapper from "../../../utils/middleware";
-import {createEmailChangeVerification} from "../../server/mongodb/actions/EmailVerification";
-import connectMailer from "../../server/nodemailer/connectMailer";
-import sendEmailVerificationEmail from "../../server/nodemailer/actions/emailVerification";
+import { getToken } from "next-auth/jwt";
+import { upsertTenure } from "../../server/mongodb/actions/Tenure";
+import { updateUser, addTenure, createUser, getUser, changeEmail } from "../../server/mongodb/actions/User";
+import { deleteEmail, deleteNewEmail } from "../../server/mongodb/actions/EmailVerification";
+import requestWrapper from "../../server/utils/middleware";
+import { sendEmailVerification } from "../../server/utils/emailFunctions";
 
 async function handler(req, res) {
-  const user = (await getToken({req}))?.user;
+  const user = (await getToken({ req }))?.user;
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -15,11 +14,25 @@ async function handler(req, res) {
     });
   }
 
-  const {isMemberView, firstName, lastName, email, phoneNumber, preference, semester, year, department, role, project, status, notes} =
-    req.body;
-  let {memberId} = req.body;
-
-  let emailChanged = false;
+  const {
+    isMemberView,
+    firstName,
+    lastName,
+    originalEmail,
+    email,
+    phoneNumber,
+    preference,
+    originalAccess,
+    access,
+    semester,
+    year,
+    department,
+    role,
+    project,
+    status,
+    notes,
+  } = req.body;
+  let { memberId } = req.body;
 
   if (isMemberView && user.id !== memberId) {
     return res.status(401).json({
@@ -31,21 +44,45 @@ async function handler(req, res) {
       success: false,
       message: "User does not have the correct access level",
     });
+  } else if (
+    !isMemberView &&
+    (user.access < access || (typeof originalAccess != "undefined" && originalAccess !== access && user.access <= originalAccess))
+  ) {
+    return res.status(401).json({
+      success: false,
+      message: "User does not have correct access level to upgrade/downgrade member's access level",
+    });
   }
+
+  let emailChanged = !originalEmail || originalEmail !== email;
+  const emailExists = new Promise((resolve) => getUser().then((user) => resolve(!!user)));
 
   let member, tenure;
   try {
     if (memberId) {
-      const originalEntry = await getUserById(memberId);
-      member = await updateUser(memberId, firstName, lastName, originalEntry.email, phoneNumber, preference);
-      if (originalEntry.email !== email) {
-        emailChanged = true;
-        const accountRecovery = await createEmailChangeVerification(originalEntry.email, email);
-        const transporter = await connectMailer();
-        await sendEmailVerificationEmail(transporter, email, accountRecovery.token);
+      member = await updateUser(memberId, firstName, lastName, originalEmail, phoneNumber, preference, access);
+      if (emailChanged) {
+        if (await emailExists) {
+          emailChanged = false;
+        } else {
+          await deleteEmail(originalEmail);
+          if (member.emailVerified) {
+            sendEmailVerification(originalEmail, email);
+          } else {
+            await deleteNewEmail(email);
+            changeEmail(originalEmail, email);
+            member.email = email;
+            sendEmailVerification(email);
+          }
+        }
       }
     } else {
-      member = await createUser(firstName, lastName, email, phoneNumber, preference);
+      if (await emailExists) {
+        emailChanged = false;
+      } else {
+        member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
+        sendEmailVerification(email);
+      }
     }
 
     if (!isMemberView) {
@@ -63,7 +100,8 @@ async function handler(req, res) {
   res.status(200).json({
     success: true,
     emailChanged,
-    user: await member.populate("tenures"),
+    id: member.id,
+    email: member.email,
     message: "Updated record successfully",
   });
 }
