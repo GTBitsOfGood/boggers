@@ -33,6 +33,7 @@ export default function MemberProfile({ session }) {
   const [tenures, setTenures] = useState([]);
   const [currIndex, setCurrIndex] = useState(-1);
   const [message, setMessage] = useState("");
+  const [deleteImage, setDeleteImage] = useState(false);
 
   const requestStatus = (success, message = "") => {
     setSuccess(success ? 1 : 2);
@@ -59,7 +60,7 @@ export default function MemberProfile({ session }) {
       setOriginalEmail(user.email ?? "");
       setEmail(user.email ?? "");
       setPhoneNumber(user.phoneNumber ?? "");
-      setPreference(preference ?? "");
+      setPreference(user.preference ?? "");
       setTenures(tenures);
       setImageUrl(user.image ? imageUrl + "?random=" + Math.floor(Math.random() * 1000000) : "/Avatar.png");
       setCurrIndex(tenures.length > 0 ? tenures.length - 1 : -1);
@@ -103,22 +104,23 @@ export default function MemberProfile({ session }) {
       return requestStatus(false);
     }
 
-    let imageResult;
-    if (imageBlob) {
+    if (deleteImage) {
+      const imageResult = await sendRequest(urls.api.imageDelete, "DELETE");
+      requestStatus(imageResult.success);
+    } else if (imageBlob) {
       const convertedFile = await convertToBase64(imageBlob);
-      imageResult = await axios.put(urls.api.imageUpload, {
+      const imageResult = await axios.put(urls.api.imageUpload, {
         image: convertedFile,
         name: imageBlob.name,
         type: imageBlob.type,
       });
+      if (imageResult.data.success) {
+        setImageBlob(null);
+      }
+      requestStatus(imageResult.data.success);
     } else {
       return requestStatus(true);
     }
-
-    if (imageResult.data.success) {
-      setImageBlob(null);
-    }
-    requestStatus(imageResult.data.success);
   };
 
   const handleArrowClick = (isLeft) => {
@@ -150,6 +152,7 @@ export default function MemberProfile({ session }) {
       <UploadPhotoModal
         closeModal={() => setDisplayModal(false)}
         displayModal={displayModal}
+        setDeleteImage={setDeleteImage}
         setImageUrl={setImageUrl}
         setImageBlob={setImageBlob}
       />

@@ -85,10 +85,11 @@ async function addTenure(userId, tenure) {
 }
 
 async function addImage(id) {
-  const user = await User.findById(id).select("image");
-  if (!user.image) {
-    await User.findByIdAndUpdate(id, { image: true });
-  }
+  return await User.findByIdAndUpdate(id, { image: true });
+}
+
+async function deleteImage(id) {
+  return await User.findByIdAndUpdate(id, { image: false });
 }
 
 export {
@@ -105,6 +106,7 @@ export {
   addTenure,
   updatePassword,
   addImage,
+  deleteImage,
   setVerified,
   changeEmail,
 };
