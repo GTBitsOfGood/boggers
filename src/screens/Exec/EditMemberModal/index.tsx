@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import style from "./EditMemberModal.module.css";
 import { Typography, Select, MenuItem, TextField, Button } from "@mui/material";
-import fields from "../../../../utils/fields";
-import urls from "../../../../utils/urls";
-import sendRequest from "../../../../utils/sendToBackend";
+import fields from "../../../server/utils/fields";
+import urls from "../../../server/utils/urls";
+import sendRequest from "../../../server/utils/sendToBackend";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
-import { sortTenures, splitSemesterString } from "../../../../utils/utilFunctions";
+import { sortTenures, splitSemesterString } from "../../../server/utils/memberFunctions";
 import TableContext from "../../../../utils/contexts/TableContext";
-import DashboardContext from "../../../../utils/contexts/DashboardContext";
+import DashboardContext from "../../../contexts/DashboardContext";
 import EditMemberField from "./EditMemberField";
 import { emailTester, phoneTester } from "../../../server/utils/regex";
 

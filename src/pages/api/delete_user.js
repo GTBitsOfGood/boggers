@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 import { deleteUser } from "../../server/mongodb/actions/User";
 import { deleteTenures } from "../../server/mongodb/actions/Tenure";
 

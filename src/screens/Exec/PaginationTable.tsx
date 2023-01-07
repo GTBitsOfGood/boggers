@@ -4,7 +4,7 @@ import EditMemberModal from "./EditMemberModal";
 import styles from "./PaginationTable.module.css";
 import Row from "./Row";
 import { TColumn, TableProps } from "./types";
-import DashboardContext from "../../../utils/contexts/DashboardContext";
+import DashboardContext from "../../contexts/DashboardContext";
 
 const columns: TColumn[] = [
   { id: "member", label: "Member" },

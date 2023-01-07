@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
-import { s3, Bucket } from "../../../utils/awsConfig";
-import requestWrapper from "../../../utils/middleware";
+import { s3, Bucket } from "../../server/utils/awsConfig";
+import requestWrapper from "../../server/utils/middleware";
 import { addImage } from "../../server/mongodb/actions/User";
 
 async function handler(req, res) {

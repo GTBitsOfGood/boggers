@@ -1,5 +1,5 @@
 import { emailVerification } from "../../server/utils/emailFunctions";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const { token } = req.body;

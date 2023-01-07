@@ -4,9 +4,9 @@ import axios from "axios";
 import { signOut } from "next-auth/react";
 import Router from "next/router";
 
-import sendRequest from "../../../utils/sendToBackend";
-import urls from "../../../utils/urls";
-import { sortTenures, getCurrSemesterYear, convertToBase64 } from "../../../utils/utilFunctions";
+import sendRequest from "../../server/utils/sendToBackend";
+import urls from "../../server/utils/urls";
+import { sortTenures, getCurrSemesterYear, convertToBase64 } from "../../server/utils/memberFunctions";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import UploadPhotoModal from "./UploadPhotoModal/UploadPhotoModal";

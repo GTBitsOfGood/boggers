@@ -1,4 +1,4 @@
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 import { getUser } from "../../server/mongodb/actions/User";
 import { sendAccountRecovery } from "../../server/utils/emailFunctions";
 

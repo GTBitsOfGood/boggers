@@ -1,6 +1,6 @@
 import { getAndDeleteAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
 import { updatePassword } from "../../server/mongodb/actions/User";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const { token, password } = req.body;

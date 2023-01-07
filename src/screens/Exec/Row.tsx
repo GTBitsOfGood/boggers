@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { RowProps } from "./types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import DashboardContext from "../../../utils/contexts/DashboardContext";
+import DashboardContext from "../../contexts/DashboardContext";
 
 const Image = React.memo(({ src }) => (
   <img

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import sendRequest from "../../../utils/sendToBackend";
-import urls from "../../../utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
+import urls from "../../server/utils/urls";
 import styles from "./ResetPassword.module.css";
 import { checkAccountRecovery } from "../../server/mongodb/actions/AccountRecovery";
 import connectMongo from "../../server/mongodb/connectMongo";

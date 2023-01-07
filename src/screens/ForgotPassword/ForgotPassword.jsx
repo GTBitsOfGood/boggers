@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import classes from "./ForgotPassword.module.css";
 import Link from "next/link";
-import urls from "../../../utils/urls";
-import sendRequest from "../../../utils/sendToBackend";
+import urls from "../../server/utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
 import { emailTester } from "../../server/utils/regex";
 
 export function ForgotPassword() {

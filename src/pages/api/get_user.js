@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { getUserById } from "../../server/mongodb/actions/User";
-import { baseAwsUrl } from "../../../utils/awsConfig";
-import requestWrapper from "../../../utils/middleware";
+import { baseAwsUrl } from "../../server/utils/awsConfig";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({ req });

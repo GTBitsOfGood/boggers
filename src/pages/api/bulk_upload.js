@@ -2,7 +2,7 @@ import { upsertUserCsv, addTenure } from "../../server/mongodb/actions/User";
 import { upsertTenureCsv } from "../../server/mongodb/actions/Tenure";
 import { getToken } from "next-auth/jwt";
 import { sendEmailVerification } from "../../server/utils/emailFunctions";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({ req });

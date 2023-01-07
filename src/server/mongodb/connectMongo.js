@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import urls from "../../../utils/urls";
+import urls from "../../server/utils/urls";
 
 const connectMongo = async () => {
   if (!global.cache) {

@@ -5,10 +5,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import UserTable from "./UserTable";
 import Image from "next/image";
 import UploadCSVModal from "./UploadCSVModal";
-import urls from "../../../utils/urls";
-import sendRequest from "../../../utils/sendToBackend";
-import { sortTenures } from "../../../utils/utilFunctions";
-import DashboardContext from "../../../utils/contexts/DashboardContext";
+import urls from "../../server/utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
+import { sortTenures } from "../../server/utils/memberFunctions";
+import DashboardContext from "../../contexts/DashboardContext";
 import Router from "next/router";
 import { signOut } from "next-auth/react";
 

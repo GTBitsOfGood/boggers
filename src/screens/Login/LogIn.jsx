@@ -4,8 +4,8 @@ import classes from "./Login.module.css";
 import Image from "next/image";
 import Router from "next/router";
 import Link from "next/link";
-import urls from "../../../utils/urls";
-import sendRequest from "../../../utils/sendToBackend";
+import urls from "../../server/utils/urls";
+import sendRequest from "../../server/utils/sendToBackend";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

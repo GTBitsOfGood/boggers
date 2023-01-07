@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import urls from "./urls";
-import User from "../src/server/mongodb/models/User";
-import Tenure from "../src/server/mongodb/models/Tenure";
-import AccountRecovery from "../src/server/mongodb/models/AccountRecovery";
-import EmailVerification from "../src/server/mongodb/models/EmailVerification";
-import connectMongo from "../src/server/mongodb/connectMongo";
+import User from "../mongodb/models/User";
+import Tenure from "../mongodb/models/Tenure";
+import AccountRecovery from "../mongodb/models/AccountRecovery";
+import EmailVerification from "../mongodb/models/EmailVerification";
+import connectMongo from "../mongodb/connectMongo";
 
 export default function requestWrapper(handler, method) {
   return async (req, res) => {

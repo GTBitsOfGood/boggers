@@ -1,7 +1,7 @@
 import User from "../../server/mongodb/models/User";
 import Tenure from "../../server/mongodb/models/Tenure";
 import { createRootUser, createSeedUser } from "../../server/mongodb/actions/User";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   if (process.env.NODE_ENV === "production") return res.status(404).end();

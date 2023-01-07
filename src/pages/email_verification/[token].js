@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import urls from "../../../utils/urls";
+import urls from "../../server/utils/urls";
 import styles from "./EmailVerification.module.css";
 import connectMongo from "../../server/mongodb/connectMongo";
 import { emailVerification } from "../../server/utils/emailFunctions";

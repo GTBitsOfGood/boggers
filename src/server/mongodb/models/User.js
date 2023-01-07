@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import fields from "../../../../utils/fields";
+import fields from "../../../server/utils/fields";
 
 const userSchema = new mongoose.Schema({
   email: {

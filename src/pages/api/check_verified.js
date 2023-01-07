@@ -1,6 +1,6 @@
 import { getUserVerificationStatus } from "../../server/mongodb/actions/User";
 import { sendEmailVerification } from "../../server/utils/emailFunctions";
-import requestWrapper from "../../../utils/middleware";
+import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const { email } = req.body;
