@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
 import UserTable from "./UserTable/UserTable";
 import Image from "next/image";
-import UploadCSVModal from "./UploadCSVModal";
+import UploadCSVModal from "./UploadCSVModal/UploadCSVModal";
 import urls from "../../server/utils/urls";
 import sendRequest from "../../server/utils/sendToBackend";
 import { sortTenures } from "../../server/utils/memberFunctions";

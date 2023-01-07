@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./UploadPhotoModal.module.css";
+import styles from "./UploadCSVModal.module.css";
 
 export default function UploadCSVModal({ displayModal, closeModal, setFileBlob }) {
   const [uploading, setUploading] = useState(false);

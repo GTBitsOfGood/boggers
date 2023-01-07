@@ -16,8 +16,8 @@ const columns: TColumn[] = [
 ];
 
 function PaginationTable({ rows, currentSemester }: TableProps) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedRow, setSelectedRow] = useState(null);
   const { isAddUser, setIsAddUser } = useContext(DashboardContext);
   const tableRef = useRef(null);

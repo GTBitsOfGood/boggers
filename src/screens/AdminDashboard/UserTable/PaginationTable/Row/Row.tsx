@@ -1,6 +1,6 @@
 import styles from "./Row.module.css";
 import React, { useContext } from "react";
-import { RowProps } from "./types";
+import { RowProps } from "../../../types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import DashboardContext from "../../../../../contexts/DashboardContext";
