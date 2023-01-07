@@ -38,10 +38,10 @@ const sendAccountRecovery = (email) => {
 
 const emailVerification = async (token) => {
   const emailVerification = await getAndDeleteEmailVerification(token);
-  deleteNewEmail(emailVerification.newEmail);
   if (!emailVerification) {
     return { success: false };
   }
+  deleteNewEmail(emailVerification.newEmail);
 
   const isNewUser = emailVerification.email === emailVerification.newEmail;
   if (isNewUser) {

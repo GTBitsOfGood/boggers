@@ -26,9 +26,11 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
       setUserList(users);
       setSemesters(semesters);
 
-      let curr = getCurrSemesterYear();
-      curr = `${curr.semester} ${curr.year}`;
-      setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
+      if (semesters.size !== 0) {
+        let curr = getCurrSemesterYear();
+        curr = `${curr.semester} ${curr.year}`;
+        setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
+      }
     })();
   }, []);
 
@@ -55,6 +57,9 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
       clearNewMembers();
       setUserList(newUserList);
       setSemesters(newSemesters);
+      if (!currentSemester) {
+        setSemester(Array.from(newSemesters).sort(sortTenures(false))[0]);
+      }
     }
   }, [newMembers]);
 
