@@ -62,6 +62,7 @@ const convertToBase64 = (file) => {
 };
 
 const splitSemesterString = (semesterString) => {
+  if (!semesterString) return ["", 0];
   const [semester, year] = semesterString.split(" ");
   return [semester, Number.parseInt(year)];
 };

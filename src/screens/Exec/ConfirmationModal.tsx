@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import urls from "../../server/utils/urls";
 import sendRequest from "../../server/utils/sendToBackend";
-import TableContext from "../../../utils/contexts/TableContext";
+import TableContext from "../../contexts/TableContext";
 import DashboardContext from "../../contexts/DashboardContext";
 import { sortTenures, splitSemesterString } from "../../server/utils/memberFunctions";
 

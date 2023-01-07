@@ -93,7 +93,6 @@ export default function MemberProfile({ session }) {
       phoneNumber,
       preference,
     });
-    console.log(result);
 
     if (result.success) {
       if (result.emailChanged) {

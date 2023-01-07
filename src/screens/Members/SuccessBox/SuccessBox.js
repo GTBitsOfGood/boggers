@@ -4,12 +4,12 @@ const SuccessBox = ({ success, closeBox, message }) => {
   let header, messageText, icon, color;
   if (success) {
     header = "CHANGES SAVED";
-    messageText = message ?? "Your changes were saved successfully!";
+    messageText = message ? message : "Your changes were saved successfully!";
     icon = "/Check.png";
     color = "#13b461";
   } else {
     header = "UNSAVED CHANGES";
-    messageText = message ?? "Your changes could not be saved. Please try again or refresh your browser.";
+    messageText = message ? message : "Your changes could not be saved. Please try again or refresh your browser.";
     icon = "/Warning.png";
     color = "#c63636";
   }

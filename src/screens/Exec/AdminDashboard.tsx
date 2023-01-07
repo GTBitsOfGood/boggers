@@ -102,9 +102,7 @@ function AdminDashboardPage({ url }) {
   };
 
   const bulkUpload = async () => {
-    console.log("fileBlob", fileBlob);
     const res = await sendRequest(urls.api.bulkUpload, "POST", fileBlob, { "Content-Type": "text/csv" }, false);
-    console.log(res);
     setNewMembers(res.members);
     setFileBlob(null);
   };

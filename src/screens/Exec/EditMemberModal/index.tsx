@@ -7,8 +7,8 @@ import sendRequest from "../../../server/utils/sendToBackend";
 import ConfirmationModal from "../ConfirmationModal";
 import { EditMemberModalProps, User } from "../types";
 import { sortTenures, splitSemesterString } from "../../../server/utils/memberFunctions";
-import TableContext from "../../../contexts/TableContext";
 import DashboardContext from "../../../contexts/DashboardContext";
+import TableContext from "../../../contexts/TableContext";
 import EditMemberField from "./EditMemberField";
 import { emailTester, phoneTester } from "../../../server/utils/regex";
 
@@ -165,7 +165,6 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       status,
       notes,
     });
-    console.log(result);
 
     if (result.success) {
       const users: User[] = JSON.parse(JSON.stringify(userList));

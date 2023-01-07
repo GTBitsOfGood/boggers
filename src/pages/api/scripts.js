@@ -41,6 +41,7 @@ async function handler(req, res) {
       } catch (error) {
         // empty
       }
+      return res.status(201).json({ success: true });
     }
   }
 }
