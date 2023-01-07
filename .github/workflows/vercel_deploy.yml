@@ -66,7 +66,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Preview' || 'Production' }}
         run: |
-          if [ $ENVIRONMENT -eq "Production" ]
+          if [ "$ENVIRONMENT" = "Production" ]
           then
             npx vercel --prod --confirm --token $VERCEL_TOKEN >> out.log
           else
