@@ -64,8 +64,14 @@ jobs:
         id: vercel_deployment
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Preview' || 'Production' }}
         run: |
-          npx vercel --confirm --token $VERCEL_TOKEN >> out.log
+          if [ $ENVIRONMENT -eq "Production" ]
+          then
+            npx vercel --prod --confirm --token $VERCEL_TOKEN >> out.log
+          else
+            npx vercel --confirm --token $VERCEL_TOKEN >> out.log
+          fi
           deploy_link=$(egrep -o 'https:\/\/boggers-.+-bitsofgood.vercel.app' out.log)
           echo "link: $deploy_link"
           echo "DEPLOY_LINK=$deploy_link" >> $GITHUB_OUTPUT
