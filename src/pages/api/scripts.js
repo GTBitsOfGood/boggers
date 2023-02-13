@@ -7,7 +7,7 @@ import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   if (process.env.NODE_ENV === "production") {
-    if (req.query.scriptsPassword !== process.env.SCRIPTS_PASSWORD || req.query.task === "deleteAll") {
+    if (req.query.scriptsPassword !== process.env.SCRIPTS_PASSWORD) {
       return res.status(404).end();
     }
   }
