@@ -15,10 +15,14 @@ export const authOptions = {
       },
       async authorize(credentials) {
         await connectMongo();
+        console.log("starting authorization");
         const user = await getUser(credentials.email);
+        console.log("got authorized user", user);
         if (user && user.emailVerified && (await bcrypt.compare(credentials.password, user.password))) {
+          console.log("user authorized");
           return user;
         } else {
+          console.log("user not authorized");
           return null;
         }
       },
@@ -30,11 +34,15 @@ export const authOptions = {
       return urls.base + urls.pages.member;
     },
     async jwt({ token, user }) {
+      console.log("jwt", token, user);
       if (user) token.user = user;
+      console.log("after jwt", token);
       return token;
     },
     async session({ session, token }) {
+      console.log("session", session, token);
       session.user = token.user;
+      console.log("after session", session);
       return session;
     },
   },

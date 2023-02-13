@@ -55,7 +55,7 @@ export default function ResetPassword({ exists, token }) {
         </Head>
         {message ? (
           <div className={styles.messageContainer}>
-            <img alt="Status Icon" src={message.success ? "/Check.png" : "/Warning.png"} width="12px" height="12px" />
+            <img alt="Status Icon" src={message.success ? "/Check.png" : "/warning.png"} width="12px" height="12px" />
             <div className={styles.messageTextContainer}>
               <p className={styles.messageHeader} style={message.success ? { color: "#13B461" } : {}}>
                 {message.header}

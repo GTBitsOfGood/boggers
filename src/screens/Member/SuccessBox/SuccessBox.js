@@ -10,7 +10,7 @@ const SuccessBox = ({ success, closeBox, message }) => {
   } else {
     header = "UNSAVED CHANGES";
     messageText = message ? message : "Your changes could not be saved. Please try again or refresh your browser.";
-    icon = "/Warning.png";
+    icon = "/warning.png";
     color = "#c63636";
   }
 

@@ -5,7 +5,9 @@ import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({ req });
+  console.log("user", user);
   if (!user) {
+    console.error("User not authenticated");
     return res.status(401).json({
       success: false,
       message: "User not authenticated",
@@ -21,13 +23,14 @@ async function handler(req, res) {
         payload: { user: userData, imageUrl: userData.image ? baseAwsUrl + id : null },
       });
     } else {
+      console.error("User does not exist in the database");
       res.status(400).json({
         success: false,
         message: "User does not exist in the database",
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({
       success: false,
       message: "User does not exist in the database",

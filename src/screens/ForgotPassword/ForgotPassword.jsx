@@ -47,7 +47,7 @@ export function ForgotPassword() {
     <div className={classes.body}>
       {message ? (
         <div className={classes.messageContainer}>
-          <img alt="Status Icon" src={message.success ? "/Check.png" : "/Warning.png"} width="12px" height="12px" />
+          <img alt="Status Icon" src={message.success ? "/Check.png" : "/warning.png"} width="12px" height="12px" />
           <div className={classes.messageTextContainer}>
             <p className={`${classes.messageHeader} ${classes[message.success]}`}>{message.header}</p>
             <p className={classes.messageBody}>{message.body}</p>

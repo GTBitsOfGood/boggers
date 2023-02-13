@@ -10,6 +10,7 @@ async function handler(req, res) {
   console.log("checked");
   // If user does not exist, let next auth handle it
   const isUnauthNewUser = user && !user.emailVerified;
+  console.log(user, !user.emailVerified);
   if (isUnauthNewUser) {
     console.log("started");
     await sendEmailVerification(email);
