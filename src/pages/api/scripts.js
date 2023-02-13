@@ -48,6 +48,7 @@ async function handler(req, res) {
       return res.status(201).json({ success: true });
     }
   }
+  return res.status(404).end();
 }
 
 export default requestWrapper(handler, "GET");
