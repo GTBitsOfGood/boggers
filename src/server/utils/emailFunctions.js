@@ -5,7 +5,7 @@ import sendEmailVerificationEmail from "../nodemailer/actions/emailVerification"
 import sendAccountRecoveryEmail from "../nodemailer/actions/accountRecovery";
 import connectMailer from "../nodemailer/connectMailer";
 
-const sendEmailVerification = (originalEmail, email = null) => {
+const sendEmailVerification = async (originalEmail, email = null) => {
   email = email || originalEmail;
   createEmailVerification(originalEmail, email)
     .then(
@@ -17,7 +17,11 @@ const sendEmailVerification = (originalEmail, email = null) => {
         }),
     )
     .then(({ emailVerification, transporter }) => {
-      sendEmailVerificationEmail(transporter, email, emailVerification.token);
+      new Promise((resolve, reject) => {
+        sendEmailVerificationEmail(transporter, email, emailVerification.token)
+          .then(() => resolve())
+          .catch(() => reject());
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -34,7 +38,13 @@ const sendAccountRecovery = (email) => {
             .catch((err) => reject(err));
         }),
     )
-    .then(({ accountRecovery, transporter }) => sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token))
+    .then(({ accountRecovery, transporter }) => {
+      new Promise((resolve, reject) => {
+        sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token)
+          .then(() => resolve())
+          .catch(() => reject());
+      });
+    })
     .catch((err) => console.log(err));
 };
 
