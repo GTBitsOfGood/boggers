@@ -68,12 +68,12 @@ async function handler(req, res) {
         } else {
           await deleteEmailVerification(originalEmail);
           if (member.emailVerified) {
-            sendEmailVerification(originalEmail, email);
+            await sendEmailVerification(originalEmail, email);
           } else {
             await deleteNewEmailVerification(email);
-            changeEmail(originalEmail, email);
+            await changeEmail(originalEmail, email);
             member.email = email;
-            sendEmailVerification(email);
+            await sendEmailVerification(email);
           }
         }
       }
@@ -82,7 +82,7 @@ async function handler(req, res) {
         emailChanged = false;
       } else {
         member = await createUser(firstName, lastName, email, phoneNumber, preference, access);
-        sendEmailVerification(email);
+        await sendEmailVerification(email);
       }
     }
 

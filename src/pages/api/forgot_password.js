@@ -12,7 +12,7 @@ const forgotPasswordHandler = async function handler(req, res) {
   if (!user.emailVerified) {
     return res.status(401).json({ success: false, exists: true, message: "User not verified" });
   }
-  sendAccountRecovery(email);
+  await sendAccountRecovery(email);
   res.status(200).json({ success: true });
 };
 

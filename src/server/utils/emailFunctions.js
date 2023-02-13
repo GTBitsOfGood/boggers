@@ -15,29 +15,26 @@ const sendEmailVerification = async (originalEmail, email = null) => {
     console.log("transporter connected");
     const emailSent = await sendEmailVerificationEmail(transporter, email, emailVerification.token);
     console.log("email sent", emailSent);
+    return true;
   } catch (err) {
     console.log("error", err);
+    return false;
   }
 };
 
-const sendAccountRecovery = (email) => {
-  createAccountRecovery(email)
-    .then(
-      (accountRecovery) =>
-        new Promise((resolve, reject) => {
-          connectMailer()
-            .then((transporter) => resolve({ accountRecovery, transporter }))
-            .catch((err) => reject(err));
-        }),
-    )
-    .then(({ accountRecovery, transporter }) => {
-      new Promise((resolve, reject) => {
-        sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token)
-          .then(() => resolve())
-          .catch(() => reject());
-      });
-    })
-    .catch((err) => console.log(err));
+const sendAccountRecovery = async (email) => {
+  try {
+    console.log("starting account recovery");
+    const accountRecovery = await createAccountRecovery(email);
+    console.log("account recovery created");
+    const transporter = await connectMailer();
+    console.log("transporter connected");
+    const emailSent = await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
+    console.log("email sent", emailSent);
+    return true;
+  } catch (err) {
+    return false;
+  }
 };
 
 const emailVerification = async (token) => {
@@ -45,12 +42,15 @@ const emailVerification = async (token) => {
   if (!emailVerification) {
     return { success: false };
   }
-  deleteNewEmailVerification(emailVerification.newEmail);
+  await deleteNewEmailVerification(emailVerification.newEmail);
 
   const isNewUser = emailVerification.email === emailVerification.newEmail;
   if (isNewUser) {
     await setVerified(emailVerification.email);
-    sendAccountRecovery(emailVerification.email);
+    const res = await sendAccountRecovery(emailVerification.email);
+    if (!res) {
+      return { success: false };
+    }
   } else {
     await changeEmail(emailVerification.email, emailVerification.newEmail);
   }
