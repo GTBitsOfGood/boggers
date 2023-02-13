@@ -24,32 +24,36 @@ async function handler(req, res) {
 
   const members = {};
   for (let i = 1; i < parsed.length; i++) {
-    if (parsed[i] == "") continue;
-    const record = parsed[i];
-    const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record.split(",");
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !phoneNumber ||
-      !preference ||
-      !role ||
-      !status ||
-      !project ||
-      !department ||
-      !semester ||
-      !year
-    ) {
-      continue;
-    }
+    try {
+      if (parsed[i] == "") continue;
+      const record = parsed[i];
+      const [firstName, lastName, email, phoneNumber, preference, role, status, project, department, semester, year] = record.split(",");
+      if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !phoneNumber ||
+        !preference ||
+        !role ||
+        !status ||
+        !project ||
+        !department ||
+        !semester ||
+        !year
+      ) {
+        continue;
+      }
 
-    let email_ = email?.toLowerCase();
-    const [member, isNew] = await upsertUserCsv(firstName, lastName, email_, phoneNumber, preference);
-    if (isNew) {
-      await sendEmailVerification(email_);
+      let email_ = email?.toLowerCase();
+      const [member, isNew] = await upsertUserCsv(firstName, lastName, email_, phoneNumber, preference);
+      if (isNew) {
+        await sendEmailVerification(email_);
+      }
+      const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
+      members[member._id.toString()] = await addTenure(member._id, tenure);
+    } catch (err) {
+      console.error(`Error in Record ${i}: ${err}`);
     }
-    const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
-    members[member._id.toString()] = await addTenure(member._id, tenure);
   }
 
   const changedMembers = [];

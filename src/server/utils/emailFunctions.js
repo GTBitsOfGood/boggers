@@ -8,31 +8,26 @@ import connectMailer from "../nodemailer/connectMailer";
 const sendEmailVerification = async (originalEmail, email = null) => {
   email = email || originalEmail;
   try {
-    console.log("starting email verification");
     const emailVerification = await createEmailVerification(originalEmail, email);
-    console.log("email verification created");
     const transporter = await connectMailer();
-    console.log("transporter connected");
     const emailSent = await sendEmailVerificationEmail(transporter, email, emailVerification.token);
     console.log("email sent", emailSent);
     return true;
   } catch (err) {
-    console.log("error", err);
+    console.error("error", err);
     return false;
   }
 };
 
 const sendAccountRecovery = async (email) => {
   try {
-    console.log("starting account recovery");
     const accountRecovery = await createAccountRecovery(email);
-    console.log("account recovery created");
     const transporter = await connectMailer();
-    console.log("transporter connected");
     const emailSent = await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
     console.log("email sent", emailSent);
     return true;
   } catch (err) {
+    console.error("error", err);
     return false;
   }
 };

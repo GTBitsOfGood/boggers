@@ -5,7 +5,6 @@ import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const user = await getToken({ req });
-  console.log("user", user);
   if (!user) {
     console.error("User not authenticated");
     return res.status(401).json({
