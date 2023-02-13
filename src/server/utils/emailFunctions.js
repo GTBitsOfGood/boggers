@@ -7,31 +7,17 @@ import connectMailer from "../nodemailer/connectMailer";
 
 const sendEmailVerification = async (originalEmail, email = null) => {
   email = email || originalEmail;
-  createEmailVerification(originalEmail, email)
-    .then(
-      (emailVerification) =>
-        new Promise((resolve, reject) => {
-          connectMailer()
-            .then((transporter) => resolve({ emailVerification, transporter }))
-            .catch((err) => reject(err));
-        }),
-    )
-    .then(({ emailVerification, transporter }) => {
-      new Promise((resolve, reject) => {
-        sendEmailVerificationEmail(transporter, email, emailVerification.token)
-          .then(() => {
-            console.log("Email sent");
-            resolve();
-          })
-          .catch((err) => {
-            console.log("Email not sent", err);
-            reject();
-          });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    console.log("starting email verification");
+    const emailVerification = await createEmailVerification(originalEmail, email);
+    console.log("email verification created");
+    const transporter = await connectMailer();
+    console.log("transporter connected");
+    const emailSent = await sendEmailVerificationEmail(transporter, email, emailVerification.token);
+    console.log("email sent", emailSent);
+  } catch (err) {
+    console.log("error", err);
+  }
 };
 
 const sendAccountRecovery = (email) => {
