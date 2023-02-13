@@ -1,4 +1,4 @@
-const preferences = ["Front-end", "Back-end", "Full-stack"];
+const preferences = ["Front-end", "Back-end", "Full-stack", "Not a Developer"];
 
 const memberTypes = {
   0: "Member",
@@ -8,11 +8,64 @@ const memberTypes = {
 
 const semesterOptions = ["Fall", "Spring", "Summer"];
 
-const departments = ["Engineering"];
+const departments = ["Engineering", "Product", "Operations", "Design", "Nonprofit Partnerships", "Brand", "Marketing", "Alumni"];
 
-const roles = ["Developer", "Senior Developer", "Associate Director", "Director", "Alumni"];
+const roles = [
+  "Developer",
+  "Senior Developer",
+  "Product Designer",
+  "Brand Designer",
+  "Engineering Manager",
+  "Product Manager",
+  "Engineering Ops",
+  "Design Ops",
+  "Operations",
+  "Marketing",
+  "Nonprofit Partnerships",
+  "Dev Bootcamper",
+  "Design Bootcamper",
+  "Dev Bootcamp Instructor",
+  "Design Bootcamp Instructor",
+  "Associate Director of Engineering",
+  "Director of Engineering",
+  "Associate Director of Product",
+  "Director of Product",
+  "Associate Director of Design",
+  "Director of Design",
+  "Director of Brand",
+  "Director of Marketing",
+  "Director of Nonprofit Partnerships",
+  "Director of Operations",
+  "Associate Executive Director",
+  "Executive Director",
+  "Alumni",
+];
 
-const projects = ["Helping Mamas", "GT Scheduler", "Product Maintenance", "Exec"];
+const projects = [
+  "Exec",
+  "Dev Bootcamp",
+  "Design Bootcamp",
+  "Committee Member",
+  "Operations Member",
+  "Alumni",
+  "Helping Mamas",
+  "GT Scheduler",
+  "Product Maintenance",
+  "Healing4Heroes",
+  "Angels Among Us",
+  "Southface",
+  "Motherhood Beyond Bars",
+  "Georgia CORE",
+  "Boggers",
+  "Fair Districts Georgia",
+  "BoG Design System + Library",
+  "AccessH2O",
+  "National Nonprofit Portal",
+  "Pencils for Success",
+  "Umi Feeds",
+  "BGC Safety",
+  "Mapscout",
+];
 
 const statuses = ["Active", "Inactive"];
 

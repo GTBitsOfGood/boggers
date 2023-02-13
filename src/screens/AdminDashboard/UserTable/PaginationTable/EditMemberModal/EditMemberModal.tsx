@@ -52,6 +52,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
   const [notes, setNotes] = useState("");
 
   const resetFields = () => {
+    setUser(null);
     setId("");
     setFirstName("");
     setLastName("");
@@ -106,7 +107,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         resetFields();
       }
     }
-  }, [isVisible]);
+  }, [isVisible, currentSemester, isAddUser]);
 
   useEffect(() => {
     setSemesterYear(currentSemester);

@@ -7,12 +7,12 @@ import { TColumn, TableProps } from "../../types";
 import DashboardContext from "../../../../contexts/DashboardContext";
 
 const columns: TColumn[] = [
-  { id: "member", label: "Member" },
-  { id: "department", label: "Department" },
-  { id: "role", label: "Role" },
-  { id: "project", label: "Project" },
-  { id: "status", label: "Status" },
-  { id: "notes", label: "Notes" },
+  { id: "member", label: "Member", width: "28%" },
+  { id: "department", label: "Department", width: "15%" },
+  { id: "role", label: "Role", width: "20%" },
+  { id: "project", label: "Project", width: "19%" },
+  { id: "status", label: "Status", width: "10%" },
+  { id: "notes", label: "Notes", width: "8%" },
 ];
 
 function PaginationTable({ rows, currentSemester }: TableProps) {
@@ -41,6 +41,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
   function headerStyle(column) {
     let style = {
       minWidth: column.minWidth,
+      width: column.width,
       borderBottom: "none",
       backgroundColor: "#EEEEEE",
       color: "#727474",

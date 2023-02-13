@@ -1,7 +1,11 @@
-export async function getServerSideProps() {
+import { getSession } from "next-auth/react";
+import urls from "../server/utils/urls";
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
   return {
     redirect: {
-      destination: "/login",
+      destination: session ? urls.pages.member : urls.pages.login,
       permanent: false,
     },
   };

@@ -121,10 +121,12 @@
 .MemberProfileRadioSave {
   width: 100%;
   display: flex;
+  column-gap: 2%;
 }
 
 .MemberProfileSave {
-  width: 37.5%;
+  margin-right: 16.5%;
+  flex-grow: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;

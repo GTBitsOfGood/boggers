@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { upsertTenure } from "../../server/mongodb/actions/Tenure";
 import { updateUser, addTenure, createUser, getUser, changeEmail } from "../../server/mongodb/actions/User";
-import { deleteEmail, deleteNewEmail } from "../../server/mongodb/actions/EmailVerification";
+import { deleteEmailVerification, deleteNewEmailVerification } from "../../server/mongodb/actions/EmailVerification";
 import requestWrapper from "../../server/utils/middleware";
 import { sendEmailVerification } from "../../server/utils/emailFunctions";
 
@@ -18,8 +18,6 @@ async function handler(req, res) {
     isMemberView,
     firstName,
     lastName,
-    originalEmail,
-    email,
     phoneNumber,
     preference,
     originalAccess,
@@ -32,7 +30,7 @@ async function handler(req, res) {
     status,
     notes,
   } = req.body;
-  let { memberId } = req.body;
+  let { originalEmail, email, memberId } = req.body;
 
   if (isMemberView && user.id !== memberId) {
     return res.status(401).json({
@@ -54,8 +52,11 @@ async function handler(req, res) {
     });
   }
 
+  originalEmail = originalEmail?.toLowerCase();
+  email = email?.toLowerCase();
+
   let emailChanged = !originalEmail || originalEmail !== email;
-  const emailExists = new Promise((resolve) => getUser().then((user) => resolve(!!user)));
+  const emailExists = new Promise((resolve) => getUser(email).then((user) => resolve(!!user)));
 
   let member, tenure;
   try {
@@ -65,11 +66,11 @@ async function handler(req, res) {
         if (await emailExists) {
           emailChanged = false;
         } else {
-          await deleteEmail(originalEmail);
+          await deleteEmailVerification(originalEmail);
           if (member.emailVerified) {
             sendEmailVerification(originalEmail, email);
           } else {
-            await deleteNewEmail(email);
+            await deleteNewEmailVerification(email);
             changeEmail(originalEmail, email);
             member.email = email;
             sendEmailVerification(email);

@@ -1,5 +1,5 @@
 import { changeEmail, setVerified } from "../../server/mongodb/actions/User";
-import { createEmailVerification, getAndDeleteEmailVerification, deleteNewEmail } from "../mongodb/actions/EmailVerification";
+import { createEmailVerification, getAndDeleteEmailVerification, deleteNewEmailVerification } from "../mongodb/actions/EmailVerification";
 import { createAccountRecovery } from "../mongodb/actions/AccountRecovery";
 import sendEmailVerificationEmail from "../nodemailer/actions/emailVerification";
 import sendAccountRecoveryEmail from "../nodemailer/actions/accountRecovery";
@@ -16,7 +16,9 @@ const sendEmailVerification = (originalEmail, email = null) => {
             .catch((err) => reject(err));
         }),
     )
-    .then(({ emailVerification, transporter }) => sendEmailVerificationEmail(transporter, email, emailVerification.token))
+    .then(({ emailVerification, transporter }) => {
+      sendEmailVerificationEmail(transporter, email, emailVerification.token);
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -41,7 +43,7 @@ const emailVerification = async (token) => {
   if (!emailVerification) {
     return { success: false };
   }
-  deleteNewEmail(emailVerification.newEmail);
+  deleteNewEmailVerification(emailVerification.newEmail);
 
   const isNewUser = emailVerification.email === emailVerification.newEmail;
   if (isNewUser) {

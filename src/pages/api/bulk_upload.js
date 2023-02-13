@@ -43,9 +43,10 @@ async function handler(req, res) {
       continue;
     }
 
-    const [member, isNew] = await upsertUserCsv(firstName, lastName, email, phoneNumber, preference);
+    let email_ = email?.toLowerCase();
+    const [member, isNew] = await upsertUserCsv(firstName, lastName, email_, phoneNumber, preference);
     if (isNew) {
-      sendEmailVerification(email);
+      sendEmailVerification(email_);
     }
     const tenure = await upsertTenureCsv(member._id, semester, year, role, status, project, department);
     members[member._id.toString()] = await addTenure(member._id, tenure);

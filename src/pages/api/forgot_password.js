@@ -3,7 +3,8 @@ import { getUser } from "../../server/mongodb/actions/User";
 import { sendAccountRecovery } from "../../server/utils/emailFunctions";
 
 const forgotPasswordHandler = async function handler(req, res) {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email?.toLowerCase();
   const user = await getUser(email);
   if (!user) {
     return res.status(404).json({ success: false, exists: false, message: "User not found" });

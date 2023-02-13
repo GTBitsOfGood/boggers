@@ -3,7 +3,8 @@ import { sendEmailVerification } from "../../server/utils/emailFunctions";
 import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email?.toLowerCase();
   const user = await getUserVerificationStatus(email);
   // If user does not exist, let next auth handle it
   const isUnauthNewUser = user && !user.emailVerified;

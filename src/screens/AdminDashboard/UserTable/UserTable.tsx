@@ -63,7 +63,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
     }
   }, [newMembers]);
 
-  const regex = new RegExp(filter, "i");
+  const regex = useMemo(() => new RegExp(filter, "i"), [filter]);
   const users = useMemo(() => {
     return userList
       .filter((user) => {
@@ -72,7 +72,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
       .sort((a, b) => {
         return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
       });
-  }, [userList, filter]);
+  }, [userList, regex]);
 
   const rows = users.filter((user) => !!user.tenures[currentSemester]);
 
