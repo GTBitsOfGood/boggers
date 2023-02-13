@@ -6,7 +6,11 @@ import { createRootUser, createSeedUser } from "../../server/mongodb/actions/Use
 import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
-  if (process.env.NODE_ENV === "production") return res.status(404).end();
+  if (process.env.NODE_ENV === "production") {
+    if (req.query.scriptsPassword !== process.env.SCRIPTS_PASSWORD || req.query.task === "deleteAll") {
+      return res.status(404).end();
+    }
+  }
 
   switch (req.query.task) {
     case "seed": {
