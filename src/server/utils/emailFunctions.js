@@ -19,8 +19,14 @@ const sendEmailVerification = async (originalEmail, email = null) => {
     .then(({ emailVerification, transporter }) => {
       new Promise((resolve, reject) => {
         sendEmailVerificationEmail(transporter, email, emailVerification.token)
-          .then(() => resolve())
-          .catch(() => reject());
+          .then(() => {
+            console.log("Email sent");
+            resolve();
+          })
+          .catch((err) => {
+            console.log("Email not sent", err);
+            reject();
+          });
       });
     })
     .catch((err) => {
