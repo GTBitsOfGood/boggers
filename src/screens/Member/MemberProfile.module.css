@@ -111,11 +111,12 @@
 }
 
 .MemberProfileFields {
-  margin-left: 12.5%;
+  margin: 0% 12.5%;
   display: flex;
   flex-wrap: wrap;
   flex-grow: 2;
   row-gap: 2vh;
+  column-gap: 9vw;
 }
 
 .MemberProfileRadioSave {
@@ -125,7 +126,6 @@
 }
 
 .MemberProfileSave {
-  margin-right: 16.5%;
   flex-grow: 1;
   display: flex;
   justify-content: flex-end;
