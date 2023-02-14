@@ -42,12 +42,7 @@ const roles = [
 ];
 
 const projects = [
-  "Exec",
-  "Dev Bootcamp",
-  "Design Bootcamp",
-  "Committee Member",
-  "Operations Member",
-  "Alumni",
+  "Other",
   "Helping Mamas",
   "GT Scheduler",
   "Product Maintenance",
