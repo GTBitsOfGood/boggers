@@ -3,7 +3,7 @@ import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
   const { token } = req.body;
-  const emailVerificationRes = emailVerification(token);
+  const emailVerificationRes = await emailVerification(token);
   return res.status(emailVerificationRes.success ? 200 : 401).json(emailVerificationRes);
 }
 

@@ -4,6 +4,7 @@ import { createAccountRecovery } from "../mongodb/actions/AccountRecovery";
 import sendEmailVerificationEmail from "../nodemailer/actions/emailVerification";
 import sendAccountRecoveryEmail from "../nodemailer/actions/accountRecovery";
 import connectMailer from "../nodemailer/connectMailer";
+import urls from "./urls";
 
 const sendEmailVerification = async (originalEmail, email = null) => {
   email = email || originalEmail;
@@ -40,16 +41,15 @@ const emailVerification = async (token) => {
   await deleteNewEmailVerification(emailVerification.newEmail);
 
   const isNewUser = emailVerification.email === emailVerification.newEmail;
+  let url;
   if (isNewUser) {
     await setVerified(emailVerification.email);
-    const res = await sendAccountRecovery(emailVerification.email);
-    if (!res) {
-      return { success: false };
-    }
+    const accountRecovery = await createAccountRecovery(emailVerification.email);
+    url = urls.base + urls.pages.resetPassword + "/" + accountRecovery.token;
   } else {
     await changeEmail(emailVerification.email, emailVerification.newEmail);
   }
-  return { success: true, isNewUser };
+  return { success: true, isNewUser, url };
 };
 
 export { sendEmailVerification, sendAccountRecovery, emailVerification };

@@ -23,8 +23,18 @@
   max-width: 75%;
 }
 
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2%;
+  row-gap: 1rem;
+}
+
 .button {
   cursor: pointer;
+  width: max-content;
   font-size: 20px;
   padding: 7px 16px;
   border-radius: 5px;

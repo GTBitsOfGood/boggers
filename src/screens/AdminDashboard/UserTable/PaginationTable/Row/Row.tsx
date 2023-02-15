@@ -22,7 +22,7 @@ const Image = React.memo(({ src }) => (
 Image.displayName = "Image";
 
 function Row({ row, currentSemester, onClick }: RowProps) {
-  const { id, firstName, lastName, email, phoneNumber, image } = row;
+  const { id, firstName, lastName, email, phoneNumber, image, emailVerified } = row;
   const { department, role, project, status, notes } = row.tenures[currentSemester];
   const { url } = useContext(DashboardContext);
 
@@ -47,7 +47,7 @@ function Row({ row, currentSemester, onClick }: RowProps) {
         }}>
         <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
         <div>
-          <p className={styles.rowMemberName}>{`${firstName} ${lastName}`}</p>
+          <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
           <p className={styles.rowEmail}>{email}</p>
           <p className={styles.rowPhoneNumber}>{phoneNumber}</p>
         </div>

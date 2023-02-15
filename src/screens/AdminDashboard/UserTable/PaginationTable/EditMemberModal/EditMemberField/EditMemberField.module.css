@@ -6,7 +6,7 @@
 .menuItem {
   font-family: "Poppins";
   white-space: unset;
-  word-break: break-all;
+  text-overflow: break-word;
 }
 
 .menuItemText {

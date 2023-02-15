@@ -20,14 +20,22 @@ const mapping = {
   },
 };
 
-export default function EmailVerification({ display }) {
+export default function EmailVerification({ display, url }) {
+  console.log(url);
   const router = useRouter();
   return (
     <div className={styles.body}>
       <div className={styles.heading}>{mapping[display].heading}</div>
       <div className={styles.subHeading}>{mapping[display].subHeading}</div>
-      <div className={styles.button} onClick={() => router.push(urls.base + urls.pages.login)}>
-        Back to Login
+      <div className={styles.buttons}>
+        <div className={styles.button} onClick={() => router.push(urls.base + urls.pages.login)}>
+          Back to Login
+        </div>
+        {url && (
+          <div className={styles.button} onClick={() => router.push(url)}>
+            Setup password
+          </div>
+        )}
       </div>
     </div>
   );
@@ -44,7 +52,13 @@ export const getServerSideProps = async (context) => {
     };
   }
   const emailVerificationRes = await emailVerification(token);
+  console.log(emailVerificationRes);
+  console.log(emailVerificationRes?.url);
+  console.log(emailVerificationRes?.url ?? null);
   return {
-    props: { display: !emailVerificationRes?.success ? 0 : emailVerificationRes.isNewUser ? 1 : 2 },
+    props: {
+      display: !emailVerificationRes?.success ? 0 : emailVerificationRes?.isNewUser ? 1 : 2,
+      url: emailVerificationRes?.url ?? null,
+    },
   };
 };
