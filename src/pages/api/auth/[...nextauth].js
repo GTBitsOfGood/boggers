@@ -15,7 +15,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         await connectMongo();
-        const user = await getUser(credentials.email);
+        const user = await getUser(credentials.email.toLowerCase().trim());
         if (user && user.emailVerified && (await bcrypt.compare(credentials.password, user.password))) {
           return user;
         } else {

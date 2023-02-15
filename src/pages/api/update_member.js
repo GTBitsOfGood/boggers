@@ -52,8 +52,8 @@ async function handler(req, res) {
     });
   }
 
-  originalEmail = originalEmail?.toLowerCase();
-  email = email?.toLowerCase();
+  originalEmail = originalEmail?.toLowerCase().trim();
+  email = email?.toLowerCase().trim();
 
   let emailChanged = !originalEmail || originalEmail !== email;
   const emailExists = new Promise((resolve) => getUser(email).then((user) => resolve(!!user)));

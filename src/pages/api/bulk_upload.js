@@ -44,7 +44,7 @@ async function handler(req, res) {
         continue;
       }
 
-      let email_ = email?.toLowerCase();
+      let email_ = email?.toLowerCase().trim();
       const [member, isNew] = await upsertUserCsv(firstName, lastName, email_, phoneNumber, preference);
       if (isNew) {
         await sendEmailVerification(email_);
