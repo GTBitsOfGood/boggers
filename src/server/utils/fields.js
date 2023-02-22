@@ -8,7 +8,7 @@ const memberTypes = {
 
 const semesterOptions = ["Fall", "Spring", "Summer"];
 
-const departments = ["Engineering", "Product", "Operations", "Design", "Nonprofit Partnerships", "Brand", "Marketing", "Alumni"];
+const departments = ["Engineering", "Product", "Operations", "Design", "Nonprofit Partnerships", "Brand", "Marketing", "Alumni", "Exec Exec"];
 
 const roles = [
   "Developer",
