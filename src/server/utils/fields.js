@@ -49,6 +49,7 @@ const projects = [
   "Healing4Heroes",
   "Angels Among Us",
   "Southface",
+  "Heart of Passion",
   "Motherhood Beyond Bars",
   "Georgia CORE",
   "Boggers",
