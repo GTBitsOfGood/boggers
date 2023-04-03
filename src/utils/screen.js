@@ -1,4 +1,4 @@
-import { getWindowSize } from "../components/WIndowSize";
+import { GetWindowSize } from "../components/WIndowSize";
 
 /**
  * Because Next.js does SSR, it does not have access to Window and Document APIs serverside.
@@ -6,7 +6,7 @@ import { getWindowSize } from "../components/WIndowSize";
  * This will allow it to capture the client's browser data
  */
 export const displayMobileView = () => {
-  return getWindowSize().width < 600;
+  return GetWindowSize().width < 600;
 };
 
 export default displayMobileView;
