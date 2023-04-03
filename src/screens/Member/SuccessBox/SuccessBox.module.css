@@ -10,6 +10,17 @@
   padding: 10px 15px;
 }
 
+.MobileSuccessBox {
+  display: flex;
+  align-items: baseline;
+  justify-self: flex-end;
+  background-color: white;
+  margin-top: 0.5rem;
+  margin-right: 0.1rem;
+  padding: 0.3rem 0.5rem;
+  column-gap: 0.5rem;
+}
+
 .SuccessBoxCenter {
   display: flex;
   flex-direction: column;

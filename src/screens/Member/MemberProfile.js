@@ -15,6 +15,7 @@ import RadioField from "./RadioField/RadioField";
 import FooterElement from "./FooterElement/FooterElement";
 import SuccessBox from "./SuccessBox/SuccessBox";
 import { emailTester, phoneTester } from "../../server/utils/regex";
+import displayMobileView from "../../utils/screen.js";
 
 export default function MemberProfile({ session }) {
   const [displayModal, setDisplayModal] = useState(false);
@@ -68,6 +69,13 @@ export default function MemberProfile({ session }) {
 
     getInitialData();
   }, []);
+
+  const isMobile = () => {
+    const mobile = displayMobileView();
+    return mobile;
+  };
+
+  const mobileView = isMobile();
 
   const handleSave = async () => {
     setSaved(1);
@@ -196,9 +204,9 @@ export default function MemberProfile({ session }) {
           }}
           isOptional={true}
         />
-        <div className={styles.MemberProfileRadioSave}>
+        <div className={mobileView ? styles.MobileMemberProfileRadioSave : styles.MemberProfileRadioSave}>
           <RadioField preference={preference} setPreference={setPreference} />
-          <div className={styles.MemberProfileSave}>
+          <div className={mobileView ? styles.MobileMemberProfileSave : styles.MemberProfileSave}>
             <div className={styles.MemberProfileSaveButton} style={buttonTransition[saved].styles} onClick={handleSave}>
               <img src="/Save.png" alt="Save Icon" />
               {buttonTransition[saved].message}
@@ -206,7 +214,7 @@ export default function MemberProfile({ session }) {
           </div>
         </div>
       </div>
-      <div className={styles.MemberProfileFooter}>
+      <div className={mobileView ? styles.MobileMemberProfileFooter : styles.MemberProfileFooter}>
         <div className={styles.MemberProfileFooterPageContainer}>
           <div className={styles.MemberProfileFooterPage}>
             <div className={styles.MemberProfileFooterPageArrow} onClick={() => handleArrowClick(true)} style={{ cursor: "pointer" }}>
@@ -218,7 +226,7 @@ export default function MemberProfile({ session }) {
             </div>
           </div>
         </div>
-        <div className={styles.MemberProfileFooterBottom}>
+        <div className={mobileView ? styles.MobileMemberProfileFooterBottom : styles.MemberProfileFooterBottom}>
           <FooterElement title="DEPARTMENT" state={department} />
           <FooterElement title="ROLE" state={role} />
           <FooterElement title="PROJECT" state={project} />

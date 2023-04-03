@@ -9,6 +9,12 @@
   column-gap: 1%;
 }
 
+.MobileInputFieldHeader {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1%;
+}
+
 .InputFieldName {
   font-size: 24px;
   font-weight: 500;
