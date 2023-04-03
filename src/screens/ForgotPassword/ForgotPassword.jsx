@@ -4,6 +4,7 @@ import Link from "next/link";
 import urls from "../../server/utils/urls";
 import sendRequest from "../../server/utils/sendToBackend";
 import { emailTester } from "../../server/utils/regex";
+import displayMobileView from "../../utils/screen.js";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,13 @@ export function ForgotPassword() {
       }, 7000);
     }
   }, [message]);
+
+  const isMobile = () => {
+    const mobile = displayMobileView();
+    return mobile;
+  };
+
+  const mobileView = isMobile();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +81,7 @@ export function ForgotPassword() {
             <div className={classes.inputCountainer}>
               <label className={classes.textStyle}>EMAIL</label>
               <input
-                className={classes.inputBar}
+                className={mobileView ? classes.mobileinputBar : classes.inputBar}
                 value={email}
                 type="text"
                 name="email"
@@ -82,7 +90,7 @@ export function ForgotPassword() {
               />
             </div>
             <div className={classes.submission}>
-              <p className={classes.forgot}>
+              <p className={mobileView ? classes.mobileforgot : classes.forgot}>
                 <Link href="/login">
                   <a className={classes.backToLoginText}>Back to login</a>
                 </Link>
