@@ -1,7 +1,16 @@
 import styles from "./SuccessBox.module.css";
+import displayMobileView from "../../../utils/screen.js";
 
 const SuccessBox = ({ success, closeBox, message }) => {
   let header, messageText, icon, color;
+
+  const isMobile = () => {
+    const mobile = displayMobileView();
+    return mobile;
+  };
+
+  const mobileView = isMobile();
+
   if (success) {
     header = "CHANGES SAVED";
     messageText = message ? message : "Your changes were saved successfully!";
@@ -15,7 +24,7 @@ const SuccessBox = ({ success, closeBox, message }) => {
   }
 
   return (
-    <div className={styles.SuccessBox} style={{ borderColor: color }}>
+    <div className={mobileView ? styles.MobileSuccessBox : styles.SuccessBox} style={{ borderColor: color }}>
       <img className={styles.SuccessBoxIcon} src={icon} />
       <div className={styles.SuccessBoxCenter}>
         <div className={styles.SuccessBoxCenterHeader} style={{ color }}>

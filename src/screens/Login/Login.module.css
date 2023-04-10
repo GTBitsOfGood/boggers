@@ -17,6 +17,18 @@
   column-gap: 0.5rem;
 }
 
+.mobileerrorContainer {
+  display: flex;
+  align-items: baseline;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  margin-top: 0.5rem;
+  margin-right: 0.1rem;
+  padding: 0.3rem 0.5rem;
+  column-gap: 0.5rem;
+}
+
 .errorTextContainer {
   display: flex;
   flex-direction: column;
@@ -25,6 +37,16 @@
   font-size: 0.7rem;
   line-height: 1rem;
   width: 13rem;
+}
+
+.mobileErrorTextContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins";
+  font-style: normal;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  width: 4rem;
 }
 
 .errorHeader {
@@ -39,6 +61,17 @@
   margin-top: 0.5rem;
 }
 
+.mobileErrorHeader {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  color: red;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-top: 0.5rem;
+}
 .errorBody {
   font-family: "Poppins";
   font-size: 0.75rem;
@@ -73,6 +106,10 @@
   margin-left: 10rem;
 }
 
+.mobileimage {
+  margin-left: 5rem;
+}
+
 .header {
   font-family: "Poppins";
   font-style: normal;
@@ -84,9 +121,27 @@
   color: white;
 }
 
+.mobileheader {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 2.5rem;
+  line-height: 4rem;
+  margin: 0%;
+  height: 5rem;
+  margin-left: 2rem;
+  color: white;
+}
+
 .introduction {
   color: white;
   margin-top: 0px;
+}
+
+.mobileintroduction {
+  color: white;
+  margin-top: 5rem;
+  margin-left: 2rem;
 }
 
 .inputCountainer {
@@ -107,6 +162,15 @@
   padding: 0.75rem;
 }
 
+.mobileinputBar {
+  font-family: "Poppins";
+  width: 12rem;
+  height: 2rem;
+  border-radius: 4px;
+  border: none;
+  padding: 0.75rem;
+}
+
 .textStyle {
   color: white;
 }
@@ -121,6 +185,12 @@
 .forgot {
   height: 1.5rem;
   margin-right: 11.5rem;
+  cursor: pointer;
+}
+
+.mobileforgot {
+  height: 1.5rem;
+  margin-right: 4rem;
   cursor: pointer;
 }
 

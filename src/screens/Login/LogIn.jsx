@@ -6,6 +6,7 @@ import Router from "next/router";
 import Link from "next/link";
 import urls from "../../server/utils/urls";
 import sendRequest from "../../server/utils/sendToBackend";
+import displayMobileView from "../../utils/screen.js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,6 +21,13 @@ export default function LoginPage() {
       }, 7000);
     }
   }, [failed]);
+
+  const isMobile = () => {
+    const mobile = displayMobileView();
+    return mobile;
+  };
+
+  const mobileView = isMobile();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,10 +67,10 @@ export default function LoginPage() {
   return (
     <div className={classes.body}>
       {failed ? (
-        <div className={classes.errorContainer}>
+        <div className={mobileView ? classes.mobileerrorContainer : classes.errorContainer}>
           <img alt="Warning Sign" src="/warning.png" width="12px" height="12px" />
-          <div className={classes.errorTextContainer}>
-            <p className={classes.errorHeader}>{failed.header}</p>
+          <div className={mobileView ? classes.mobileErrorTextContainer : classes.errorTextContainer}>
+            <p className={mobileView ? classes.mobileErrorHeader : classes.errorHeader}>{failed.header}</p>
             <p className={classes.errorBody}>{failed.body}</p>
           </div>
           <div
@@ -79,23 +87,29 @@ export default function LoginPage() {
       <h1 style={{ display: "none" }}>Hi</h1>
       <div className={classes.bodyContainer}>
         <div className={classes.baseContainer}>
-          <div className={classes.image}>
+          <div className={mobileView ? classes.mobileimage : classes.image}>
             <Image alt="BOG logo" src="/BOG.svg" width={125} height={125} />
           </div>
 
           <div>
-            <p className={classes.header}>Welcome to Boggers</p>
+            <p className={mobileView ? classes.mobileheader : classes.header}>Welcome to Boggers</p>
           </div>
-          <p className={classes.introduction}>Your Bits of Good Membership Platform</p>
+          <p className={mobileView ? classes.mobileintroduction : classes.introduction}>Your Bits of Good Membership Platform</p>
           <form className={classes.form} onSubmit={handleSubmit}>
             <div className={classes.inputCountainer}>
               <label className={classes.textStyle}>EMAIL</label>
-              <input className={classes.inputBar} type="text" name="email" required onChange={(event) => setEmail(event.target.value)} />
+              <input
+                className={mobileView ? classes.mobileinputBar : classes.inputBar}
+                type="text"
+                name="email"
+                required
+                onChange={(event) => setEmail(event.target.value)}
+              />
             </div>
             <div className={classes.inputCountainer}>
               <label className={classes.textStyle}>PASSWORD</label>
               <input
-                className={classes.inputBar}
+                className={mobileView ? classes.mobileinputBar : classes.inputBar}
                 type="password"
                 id="pass"
                 name="password"
@@ -105,7 +119,7 @@ export default function LoginPage() {
             </div>
             <div className={classes.submission}>
               {/* <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}> */}
-              <p className={classes.forgot}>
+              <p className={mobileView ? classes.mobileforgot : classes.forgot}>
                 <Link href={`${urls.base + urls.pages.forgotPassword}`}>
                   <a className={classes.forgotPasswordText}>Forgot password?</a>
                 </Link>
