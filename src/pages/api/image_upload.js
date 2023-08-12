@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-import { s3, Bucket } from "../../server/utils/awsConfig";
+import { containerClient } from "../../server/utils/azureConfig";
 import requestWrapper from "../../server/utils/middleware";
 import { addImage } from "../../server/mongodb/actions/User";
 
@@ -15,19 +15,19 @@ async function handler(req, res) {
   const { image, type } = req.body;
 
   try {
-    const result = await s3
-      .upload({
-        Bucket,
-        Key: user.user.id,
-        Body: new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), "base64"),
-        ContentType: type,
-      })
-      .promise();
+    const imageBuffer = new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), "base64");
+    const fileName = user.user.id;
+
+    const blobClient = containerClient.getBlobClient(fileName);
+    await blobClient.getBlockBlobClient().uploadData(imageBuffer, {
+      blobHTTPHeaders: {
+        blobContentType: type,
+      },
+    });
 
     await addImage(user.user.id);
     res.status(200).json({
       success: true,
-      payload: { url: result.Location },
     });
   } catch (err) {
     console.log(err);

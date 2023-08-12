@@ -55,7 +55,6 @@ export default function MemberProfile({ session }) {
       }
       const { user, imageUrl } = result.payload;
       const tenures = user.tenures.sort(sortTenures(true));
-
       setFirstName(user.firstName ?? "");
       setLastName(user.lastName ?? "");
       setOriginalEmail(user.email ?? "");
@@ -119,7 +118,6 @@ export default function MemberProfile({ session }) {
       const convertedFile = await convertToBase64(imageBlob);
       const imageResult = await axios.put(urls.api.imageUpload, {
         image: convertedFile,
-        name: imageBlob.name,
         type: imageBlob.type,
       });
       if (imageResult.data.success) {

@@ -20,7 +20,6 @@ async function handler(req, res) {
 
   const csv = req.body;
   const parsed = csv.split(/\r?\n/);
-  console.log(parsed);
 
   const members = {};
   for (let i = 1; i < parsed.length; i++) {

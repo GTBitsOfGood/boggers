@@ -1,6 +1,6 @@
 import Admin from "../screens/AdminDashboard";
 import { getSession } from "next-auth/react";
-import { baseAwsUrl } from "../server/utils/awsConfig";
+import { baseAzureUrl } from "../server/utils/azureConfig";
 import urls from "../server/utils/urls";
 
 export async function getServerSideProps(context) {
@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { session, url: baseAwsUrl },
+    props: { session, url: baseAzureUrl },
   };
 }
 

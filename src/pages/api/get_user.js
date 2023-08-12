@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { getUserById } from "../../server/mongodb/actions/User";
-import { baseAwsUrl } from "../../server/utils/awsConfig";
+import { baseAzureUrl } from "../../server/utils/azureConfig";
 import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
@@ -19,7 +19,7 @@ async function handler(req, res) {
     if (userData) {
       res.status(200).json({
         success: true,
-        payload: { user: userData, imageUrl: userData.image ? baseAwsUrl + id : null },
+        payload: { user: userData, imageUrl: userData.image ? baseAzureUrl + id : null },
       });
     } else {
       console.error("User does not exist in the database");

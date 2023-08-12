@@ -14,7 +14,7 @@ export const getServerSideProps = async (context) => {
     };
   }
 
-  await connectMongo();
+  connectMongo();
   return { props: {} };
 };
 

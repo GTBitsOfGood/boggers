@@ -11,11 +11,9 @@ const sendEmailVerification = async (originalEmail, email = null) => {
   try {
     const emailVerification = await createEmailVerification(originalEmail, email);
     const transporter = await connectMailer();
-    const emailSent = await sendEmailVerificationEmail(transporter, email, emailVerification.token);
-    console.log("email sent", emailSent);
+    await sendEmailVerificationEmail(transporter, email, emailVerification.token);
     return true;
   } catch (err) {
-    console.error("error", err);
     return false;
   }
 };
@@ -24,11 +22,9 @@ const sendAccountRecovery = async (email) => {
   try {
     const accountRecovery = await createAccountRecovery(email);
     const transporter = await connectMailer();
-    const emailSent = await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
-    console.log("email sent", emailSent);
+    await sendAccountRecoveryEmail(transporter, accountRecovery.email, accountRecovery.token);
     return true;
   } catch (err) {
-    console.error("error", err);
     return false;
   }
 };
