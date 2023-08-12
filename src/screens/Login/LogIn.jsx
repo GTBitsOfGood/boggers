@@ -8,12 +8,11 @@ import urls from "../../server/utils/urls";
 import sendRequest from "../../server/utils/sendToBackend";
 import displayMobileView from "../../utils/screen.js";
 
-export default function LoginPage({ test }) {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [failed, setFailed] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(test);
 
   useEffect(() => {
     if (failed) {
