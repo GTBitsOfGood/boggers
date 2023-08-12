@@ -1,19 +1,5 @@
-//fetch Vercel baseurl based on current status
-function getBaseURL() {
-  // if Deployement
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
-    return `https://${process.env.NEXT_PUBLIC_URL}`;
-  }
-  // if Build Step
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" || process.env.NEXT_PUBLIC_VERCEL_ENV === "development") {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-  }
-  //if local
-  return "http://localhost:3000";
-}
-
 const urls = {
-  base: getBaseURL(),
+  base: process.env.URL,
   dbUrl: process.env.DB_URL ?? "mongodb://localhost:27017",
   dbName: process.env.DB_NAME ?? "local",
   emailId: process.env.NODEMAILER_EMAIL ?? "",

@@ -139,7 +139,7 @@ function AdminDashboardPage({ url }) {
                 width={70}
                 height={70}
                 style={{ cursor: "pointer" }}
-                onClick={() => Router.push(urls.base + urls.pages.member)}
+                onClick={() => Router.push(urls.pages.member)}
               />
               <Typography
                 variant="h2"

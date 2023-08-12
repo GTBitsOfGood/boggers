@@ -6,7 +6,7 @@ export default function Error() {
   return (
     <div className={styles.container}>
       <div className={styles.heading}>404 - Page Not Found</div>
-      <div className={styles.button} onClick={() => Router.push(urls.base + urls.pages.login)}>
+      <div className={styles.button} onClick={() => Router.push(urls.pages.login)}>
         Back to Login
       </div>
     </div>

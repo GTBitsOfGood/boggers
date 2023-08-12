@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-import { s3, Bucket } from "../../server/utils/awsConfig";
+import { containerClient } from "../../server/utils/azureConfig";
 import requestWrapper from "../../server/utils/middleware";
 import { deleteImage } from "../../server/mongodb/actions/User";
 
@@ -16,12 +16,8 @@ async function handler(req, res) {
   id = id ?? user.user.id;
 
   try {
-    await s3
-      .deleteObject({
-        Bucket,
-        Key: id,
-      })
-      .promise();
+    const blobClient = containerClient.getBlobClient(id);
+    await blobClient.getBlockBlobClient().deleteIfExists();
 
     await deleteImage(id);
     res.status(200).json({
