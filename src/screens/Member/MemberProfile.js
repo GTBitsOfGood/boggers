@@ -163,7 +163,7 @@ export default function MemberProfile({ session }) {
         setImageBlob={setImageBlob}
       />
       {session.user.access >= 1 ? (
-        <div className={styles.MemberProfileAdminButton} onClick={() => Router.push(urls.base + urls.pages.admin)}>
+        <div className={styles.MemberProfileAdminButton} onClick={() => Router.push(urls.pages.admin)}>
           Admin View
         </div>
       ) : null}

@@ -27,7 +27,7 @@ export default function EmailVerification({ display, url }) {
       <div className={styles.heading}>{mapping[display].heading}</div>
       <div className={styles.subHeading}>{mapping[display].subHeading}</div>
       <div className={styles.buttons}>
-        <div className={styles.button} onClick={() => router.push(urls.base + urls.pages.login)}>
+        <div className={styles.button} onClick={() => router.push(urls.pages.login)}>
           Back to Login
         </div>
         {url && (

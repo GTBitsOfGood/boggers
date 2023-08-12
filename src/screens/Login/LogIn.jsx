@@ -54,7 +54,7 @@ export default function LoginPage() {
       redirect: false,
     });
     if (authRes.ok) {
-      Router.replace(urls.base + urls.pages.member);
+      Router.replace(urls.pages.member);
     } else {
       setLoading(false);
       setFailed({
@@ -118,9 +118,9 @@ export default function LoginPage() {
               />
             </div>
             <div className={classes.submission}>
-              {/* <p className={classes.forgot} onClick={() => Router.push(urls.base + urls.pages.ForgotPassword)}> */}
+              {/* <p className={classes.forgot} onClick={() => Router.push(urls.pages.ForgotPassword)}> */}
               <p className={mobileView ? classes.mobileforgot : classes.forgot}>
-                <Link href={`${urls.base + urls.pages.forgotPassword}`}>
+                <Link href={`${urls.pages.forgotPassword}`}>
                   <a className={classes.forgotPasswordText}>Forgot password?</a>
                 </Link>
               </p>

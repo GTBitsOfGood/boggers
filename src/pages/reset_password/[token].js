@@ -97,7 +97,7 @@ export default function ResetPassword({ exists, token }) {
             />
           </div>
           <div className={styles.buttonGroup}>
-            <div className={styles.loginButton} onClick={() => router.push(urls.base + urls.pages.login)}>
+            <div className={styles.loginButton} onClick={() => router.push(urls.pages.login)}>
               Back to Login
             </div>
             <div className={styles.saveButton} onClick={changePassword}>
@@ -114,7 +114,7 @@ export default function ResetPassword({ exists, token }) {
         <div className={styles.subHeading}>
           Enter your email in the forgot password page and we&apos;ll send you a new verification email
         </div>
-        <div className={styles.button} onClick={() => router.push(urls.base + urls.pages.login)}>
+        <div className={styles.button} onClick={() => router.push(urls.pages.login)}>
           Back to Login
         </div>
       </div>
