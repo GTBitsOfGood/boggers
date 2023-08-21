@@ -72,6 +72,7 @@
   margin-bottom: 0px;
   margin-top: 0.5rem;
 }
+
 .errorBody {
   font-family: "Poppins";
   font-size: 0.75rem;
@@ -211,4 +212,12 @@
   text-align: center;
   line-height: 1.15rem;
   transition: 0.4s linear;
+}
+
+.netlifyLogo {
+  background: url("../../assets/images/netlify-dark.png");
+  height: 50px;
+  width: 110px;
+  margin-top: 20px;
+  align-self: center;
 }

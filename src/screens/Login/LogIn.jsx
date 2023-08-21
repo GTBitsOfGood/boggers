@@ -133,6 +133,7 @@ export default function LoginPage() {
               />
             </div>
           </form>
+          <a className={classes.netlifyLogo} href="https://www.netlify.com/" />
         </div>
       </div>
     </div>
