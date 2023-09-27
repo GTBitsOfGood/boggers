@@ -22,7 +22,7 @@ Boggers is still growing and we hope to add many new features to facilitate club
    ```
    BW_PASSWORD=<your bitwarden password>
    ```
-   This only needs to be done on your first run. After that, you should delete the file your repository
+   This only needs to be done on your first run. After that, you should delete the file from your repository
    to avoid pushing it to Github.
   3. Start the application with Docker Compose: `docker compose up`
 
