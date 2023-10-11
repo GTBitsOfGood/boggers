@@ -8,8 +8,6 @@ import Image from "next/image";
 
 function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image, emailVerified } = row;
-  //console.log(row.tenures);
-  console.log(row);
   const { department, role, project, status, notes } = !!row.tenures[currentSemester] && row.tenures[currentSemester];
   const { url } = useContext(DashboardContext);
 
