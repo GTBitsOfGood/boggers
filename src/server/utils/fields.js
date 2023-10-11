@@ -8,7 +8,10 @@ const memberTypes = {
 
 const semesterOptions = ["Fall", "Spring", "Summer"];
 
+const semesterYearOptions = ["Fall 2022", "Spring 2023"];
+
 const departments = [
+  "All",
   "Engineering",
   "Product",
   "Operations",
@@ -79,6 +82,7 @@ const fields = {
   preferences,
   memberTypes,
   semesterOptions,
+  semesterYearOptions,
   departments,
   roles,
   projects,

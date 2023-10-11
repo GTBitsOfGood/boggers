@@ -11,6 +11,7 @@ import { sortTenures } from "../../server/utils/memberFunctions";
 import DashboardContext from "../../contexts/DashboardContext";
 import Router from "next/router";
 import { signOut } from "next-auth/react";
+import fields from "../../server/utils/fields";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -89,16 +90,23 @@ const StyledSelect = styled(Select)(() => ({
 }));
 
 function AdminDashboardPage({ url }) {
-  const [semesters, setSemesters] = useState([]);
-  const [semester, setSemester] = useState("");
+  const [department, setDepartment] = useState("All");
+  const [semesterFilter, setSemesterFilter] = useState("Spring 2023");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
   const [isAddUser, setIsAddUser] = useState(false);
   const [newMembers, setNewMembers] = useState(null);
 
+  const departments = fields.departments;
+  const semesterFilters = fields.semesterYearOptions;
+
   const changeSemesterHandler = (event) => {
-    setSemester(event.target.value);
+    setSemesterFilter(event.target.value);
+  };
+
+  const changeDepartmentHandler = (event) => {
+    setDepartment(event.target.value);
   };
 
   const bulkUpload = async () => {
@@ -171,7 +179,7 @@ function AdminDashboardPage({ url }) {
                 UPLOAD CSV
               </StyledButton>
               <StyledSelect
-                value={semester}
+                value={semesterFilter}
                 onChange={changeSemesterHandler}
                 MenuProps={{
                   PaperProps: {
@@ -186,7 +194,7 @@ function AdminDashboardPage({ url }) {
                     },
                   },
                 }}>
-                {Array.from(semesters)
+                {Array.from(semesterFilters)
                   .sort(sortTenures(false))
                   .map((semester) => {
                     return (
@@ -196,20 +204,38 @@ function AdminDashboardPage({ url }) {
                     );
                   })}
               </StyledSelect>
+              <StyledSelect
+                value={department}
+                onChange={changeDepartmentHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
+                {Array.from(departments)
+                  .sort()
+                  .map((department) => {
+                    return (
+                      <MenuItem key={department} value={department} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
+                        {department.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </StyledSelect>
               <LogoutIcon style={{ width: "2rem", height: "2rem", cursor: "pointer" }} onClick={() => signOut()} />
             </Box>
           </Box>
           <div style={{ height: "78vh", width: "90vw" }}>
-            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
-              <UserTable
-                currentSemester={semester}
-                newMembers={newMembers}
-                clearNewMembers={() => setNewMembers(null)}
-                semesters={semesters}
-                setSemester={setSemester}
-                setSemesters={setSemesters}
-                filter={filter}
-              />
+            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
+              <UserTable currentSemester={semesterFilter} newMembers={newMembers} departmentFilter={department} />
             </DashboardContext.Provider>
           </div>
         </Grid>

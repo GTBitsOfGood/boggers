@@ -11,6 +11,7 @@ import DashboardContext from "../../../../../contexts/DashboardContext";
 import TableContext from "../../../../../contexts/TableContext";
 import EditMemberField from "./EditMemberField/EditMemberField";
 import { emailTester, phoneTester } from "../../../../../server/utils/regex";
+import Image from "next/image";
 
 const Label = ({ label }) => {
   return (
@@ -30,7 +31,7 @@ const Label = ({ label }) => {
 
 export default function EditMemberModal({ row, isVisible, closeModal, currentSemester }: EditMemberModalProps) {
   const { userList, setUserList } = useContext(TableContext);
-  const { isAddUser, semesters, setSemesters } = useContext(DashboardContext);
+  const { isAddUser } = useContext(DashboardContext);
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
@@ -197,11 +198,11 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
       }
       setUserList(users);
 
-      if (!semesters.has(semesterYear)) {
+      /*if (!semesters.has(semesterYear)) {
         const newSemesters = new Set(semesters);
         newSemesters.add(semesterYear);
         setSemesters(newSemesters);
-      }
+      }*/
     }
   };
 
@@ -387,7 +388,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             </Button>
           )}
           <div className={style.saveButton} onClick={updateHandler}>
-            <img src="/Save.png" height={20} width={20} alt="Save Icon" />
+            <Image src="/Save.png" height={20} width={20} alt="Save Icon" />
             SAVE
           </div>
         </div>
