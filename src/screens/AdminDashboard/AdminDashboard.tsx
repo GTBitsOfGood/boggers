@@ -158,7 +158,7 @@ function AdminDashboardPage({ url }) {
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  placeholder="Search…"
+                  placeholder="Search by name/email/phone number"
                   value={filter}
                   inputProps={{ "aria-label": "search" }}
                   onChange={(e) => setFilter(e.target.value)}

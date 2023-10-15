@@ -11,7 +11,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
 
   useEffect(() => {
     (async () => {
-      const response = await sendRequest("/api/get_users", "GET");
+      const response = await sendRequest(`/api/get_users?query=${filter}`, "GET");
       const { users } = response;
 
       const semesters = new Set();
@@ -32,7 +32,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
         setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
       }
     })();
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
     if (newMembers) {
@@ -63,18 +63,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
     }
   }, [newMembers]);
 
-  const regex = useMemo(() => new RegExp(filter, "i"), [filter]);
-  const users = useMemo(() => {
-    return userList
-      .filter((user) => {
-        return regex.test(`${user.firstName} ${user.lastName}`);
-      })
-      .sort((a, b) => {
-        return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
-      });
-  }, [userList, regex]);
-
-  const rows = users.filter((user) => !!user.tenures[currentSemester]);
+  const rows = userList.filter((user) => !!user.tenures[currentSemester]);
 
   if (!userList) {
     return (
