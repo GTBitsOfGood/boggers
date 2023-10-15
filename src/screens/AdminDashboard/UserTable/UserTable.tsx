@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable/PaginationTable";
 import TableContext from "../../../contexts/TableContext";
