@@ -23,7 +23,7 @@ Image.displayName = "Image";
 
 function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image, emailVerified } = row;
-  const { department, role, project, status, notes } = row.tenures[currentSemester];
+  const { department, role, project, status, notes } = !!row.tenures[currentSemester] && row.tenures[currentSemester];
   const { url } = useContext(DashboardContext);
 
   const cellStyle = {
@@ -35,47 +35,51 @@ function Row({ row, currentSemester, onClick }: RowProps) {
   };
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} key={`${id}${currentSemester}TR`} onClick={onClick}>
-      <TableCell
-        key={`member_${id}${currentSemester}`}
-        align="left"
-        style={{
-          ...cellStyle,
-          display: "flex",
-          alignItems: "center",
-          columnGap: "1.5rem",
-        }}>
-        <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
-        <div>
-          <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
-          <p className={styles.rowEmail}>{email}</p>
-          <p className={styles.rowPhoneNumber}>{phoneNumber}</p>
-        </div>
-      </TableCell>
-      <TableCell key={`department_${id}`} align="center" style={cellStyle}>
-        <div className={styles.orangeHighlight}>
-          <p>{department}</p>
-        </div>
-      </TableCell>
-      <TableCell key={`role_${id}`} align="center" style={cellStyle}>
-        <div className={styles.orangeHighlight}>
-          <p>{role}</p>
-        </div>
-      </TableCell>
-      <TableCell key={`project_${id}`} align="center" style={cellStyle}>
-        <div className={styles.orangeHighlight}>
-          <p>{project}</p>
-        </div>
-      </TableCell>
-      <TableCell key={`status_${id}`} align="center" style={cellStyle}>
-        <div className={status === "Active" ? styles.greenHighlight : styles.redHighlight}>
-          <p>{status}</p>
-        </div>
-      </TableCell>
-      <TableCell key={`notes_${id}`} align="center" style={{ ...cellStyle, borderRight: "none" }}>
-        {notes ? <ChatBubbleOutlineRoundedIcon style={{ color: "#657788" }} /> : null}
-      </TableCell>
-    </TableRow>
+    <>
+      {!!row.tenures[currentSemester] && (
+        <TableRow hover role="checkbox" tabIndex={-1} key={`${id}${currentSemester}TR`} onClick={onClick}>
+          <TableCell
+            key={`member_${id}${currentSemester}`}
+            align="left"
+            style={{
+              ...cellStyle,
+              display: "flex",
+              alignItems: "center",
+              columnGap: "1.5rem",
+            }}>
+            <image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
+            <div>
+              <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
+              <p className={styles.rowEmail}>{email}</p>
+              <p className={styles.rowPhoneNumber}>{phoneNumber}</p>
+            </div>
+          </TableCell>
+          <TableCell key={`department_${id}`} align="center" style={cellStyle}>
+            <div className={styles.orangeHighlight}>
+              <p>{department}</p>
+            </div>
+          </TableCell>
+          <TableCell key={`role_${id}`} align="center" style={cellStyle}>
+            <div className={styles.orangeHighlight}>
+              <p>{role}</p>
+            </div>
+          </TableCell>
+          <TableCell key={`project_${id}`} align="center" style={cellStyle}>
+            <div className={styles.orangeHighlight}>
+              <p>{project}</p>
+            </div>
+          </TableCell>
+          <TableCell key={`status_${id}`} align="center" style={cellStyle}>
+            <div className={status === "Active" ? styles.greenHighlight : styles.redHighlight}>
+              <p>{status}</p>
+            </div>
+          </TableCell>
+          <TableCell key={`notes_${id}`} align="center" style={{ ...cellStyle, borderRight: "none" }}>
+            {notes ? <ChatBubbleOutlineRoundedIcon style={{ color: "#657788" }} /> : null}
+          </TableCell>
+        </TableRow>
+      )}
+    </>
   );
 }
 

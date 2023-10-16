@@ -11,6 +11,7 @@ import { sortTenures } from "../../server/utils/memberFunctions";
 import DashboardContext from "../../contexts/DashboardContext";
 import Router from "next/router";
 import { signOut } from "next-auth/react";
+import fields from "../../server/utils/fields";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -89,16 +90,23 @@ const StyledSelect = styled(Select)(() => ({
 }));
 
 function AdminDashboardPage({ url }) {
-  const [semesters, setSemesters] = useState([]);
-  const [semester, setSemester] = useState("");
+  const [semester, setSemester] = useState("Fall 2023");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
   const [isAddUser, setIsAddUser] = useState(false);
   const [newMembers, setNewMembers] = useState(null);
+  const [role, setRole] = useState("All");
+
+  const semesters = fields.semesterOptions;
+  const roles = fields.roles;
 
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
+  };
+
+  const changeDepartmentHandler = (event) => {
+    setRole(event.target.value);
   };
 
   const bulkUpload = async () => {
@@ -196,20 +204,38 @@ function AdminDashboardPage({ url }) {
                     );
                   })}
               </StyledSelect>
+              <StyledSelect
+                value={role}
+                onChange={changeDepartmentHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
+                {Array.from(roles)
+                  .sort()
+                  .map((role) => {
+                    return (
+                      <MenuItem key={role} value={role} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
+                        {role.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </StyledSelect>
               <LogoutIcon style={{ width: "2rem", height: "2rem", cursor: "pointer" }} onClick={() => signOut()} />
             </Box>
           </Box>
           <div style={{ height: "78vh", width: "90vw" }}>
-            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser, setSemester, semesters, setSemesters }}>
-              <UserTable
-                currentSemester={semester}
-                newMembers={newMembers}
-                clearNewMembers={() => setNewMembers(null)}
-                semesters={semesters}
-                setSemester={setSemester}
-                setSemesters={setSemesters}
-                filter={filter}
-              />
+            <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
+              <UserTable currentSemester={semester} newMembers={newMembers} roleFilter={role} />
             </DashboardContext.Provider>
           </div>
         </Grid>

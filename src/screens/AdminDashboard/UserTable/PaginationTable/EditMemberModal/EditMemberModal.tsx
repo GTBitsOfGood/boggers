@@ -30,7 +30,7 @@ const Label = ({ label }) => {
 
 export default function EditMemberModal({ row, isVisible, closeModal, currentSemester }: EditMemberModalProps) {
   const { userList, setUserList } = useContext(TableContext);
-  const { isAddUser, semesters, setSemesters } = useContext(DashboardContext);
+  const { isAddUser } = useContext(DashboardContext);
   const scrollRef = useRef(null);
   const [confirmModal, setConfirmModal] = useState(0);
   const [isNewTenure, setIsNewTenure] = useState(false);
@@ -196,12 +196,6 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         });
       }
       setUserList(users);
-
-      if (!semesters.has(semesterYear)) {
-        const newSemesters = new Set(semesters);
-        newSemesters.add(semesterYear);
-        setSemesters(newSemesters);
-      }
     }
   };
 
