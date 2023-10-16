@@ -47,7 +47,7 @@ function Row({ row, currentSemester, onClick }: RowProps) {
               alignItems: "center",
               columnGap: "1.5rem",
             }}>
-            <image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
+            <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
             <div>
               <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
               <p className={styles.rowEmail}>{email}</p>
