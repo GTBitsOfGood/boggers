@@ -6,7 +6,7 @@ const memberTypes = {
   2: "Root Admin",
 };
 
-const semesterOptions = ["Fall 2020", "Spring 2020", "Fall 2021", "Spring 2021", "Fall 2022", "Spring 2023", "Fall 2023"];
+const semesterOptions = ["Spring 2020", "Fall 2020", "Spring 2021", "Fall 2021", "Spring 2022", "Fall 2022", "Spring 2023", "Fall 2023"];
 
 const departments = [
   "Engineering",
