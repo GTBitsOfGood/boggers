@@ -41,9 +41,13 @@ async function createRootUser() {
     return user;
   } catch(error) {
     if (error.code === 11000) {
-      throw new Error("Duplicate email")
+      return {
+        error: "Duplicate email"
+      }
     } else {
-      throw new Error("Error is" + error.message)
+      return {
+        error: "Error is" + error.message
+      }
     }
   }
   
