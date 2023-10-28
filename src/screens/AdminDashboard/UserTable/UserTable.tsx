@@ -2,68 +2,23 @@ import React, { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PaginationTable from "./PaginationTable/PaginationTable";
 import TableContext from "../../../contexts/TableContext";
-import { getCurrSemesterYear, sortTenures } from "../../../server/utils/memberFunctions";
-import { DBUser, User } from "../types";
+import { User } from "../types";
 import sendRequest from "../../../server/utils/sendToBackend";
 
-function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, semesters, setSemesters, filter }) {
+function UserTable({ currentSemester, newMembers, roleFilter, departmentFilter, filter }) {
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
     (async () => {
-      const response = await sendRequest(`/api/get_users?query=${filter}`, "GET");
+      const response = await sendRequest(
+        `/api/get_users?query=${filter}&department=${departmentFilter}&role=${roleFilter}` +
+          `&semester=${currentSemester.split(" ")[0]}&year=${currentSemester.split(" ")[1]}`,
+        "GET",
+      );
       const { users } = response;
-
-      const semesters = new Set();
-      users.forEach((user: DBUser) => {
-        user.tenures = user.tenures.reduce((tenures, tenure) => {
-          const semesterYear = `${tenure.semester} ${tenure.year}`;
-          semesters.add(semesterYear);
-          tenures[semesterYear] = tenure;
-          return tenures;
-        }, {});
-      });
       setUserList(users);
-      setSemesters(semesters);
-
-      if (semesters.size !== 0) {
-        let curr = getCurrSemesterYear();
-        curr = `${curr.semester} ${curr.year}`;
-        setSemester(semesters.has(curr) ? curr : Array.from(semesters).sort(sortTenures(false))[0]);
-      }
     })();
-  }, [filter]);
-
-  useEffect(() => {
-    if (newMembers) {
-      const newUserList: User[] = JSON.parse(JSON.stringify(userList));
-
-      const newSemesters = new Set(semesters);
-      newMembers.forEach((user: DBUser) => {
-        user.tenures = user.tenures.reduce((tenures, tenure) => {
-          const semesterYear = `${tenure.semester} ${tenure.year}`;
-          tenures[semesterYear] = tenure;
-          newSemesters.add(semesterYear);
-          return tenures;
-        }, {});
-
-        const index = newUserList.findIndex((u) => user.id === u.id);
-        if (index === -1) {
-          newUserList.push(user);
-        } else {
-          newUserList[index] = user;
-        }
-      });
-      clearNewMembers();
-      setUserList(newUserList);
-      setSemesters(newSemesters);
-      if (!currentSemester) {
-        setSemester(Array.from(newSemesters).sort(sortTenures(false))[0]);
-      }
-    }
-  }, [newMembers]);
-
-  const rows = userList.filter((user) => !!user.tenures[currentSemester]);
+  }, [roleFilter, currentSemester, newMembers, departmentFilter, filter]);
 
   if (!userList) {
     return (
@@ -75,7 +30,7 @@ function UserTable({ currentSemester, newMembers, clearNewMembers, setSemester, 
 
   return (
     <TableContext.Provider value={{ userList, setUserList }}>
-      <PaginationTable rows={rows} currentSemester={currentSemester} />
+      <PaginationTable rows={userList} currentSemester={currentSemester} />
     </TableContext.Provider>
   );
 }
