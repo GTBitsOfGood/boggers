@@ -49,7 +49,6 @@ export interface RowProps {
   row: User;
   currentSemester: string;
   onClick: Function;
-  currentSemester: string;
 }
 
 export interface EditMemberModalProps {
