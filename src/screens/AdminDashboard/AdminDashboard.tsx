@@ -90,23 +90,30 @@ const StyledSelect = styled(Select)(() => ({
 }));
 
 function AdminDashboardPage({ url }) {
+  const [semester, setSemester] = useState("Fall 2023");
   const [department, setDepartment] = useState("All");
-  const [semesterFilter, setSemesterFilter] = useState("Spring 2023");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
   const [isAddUser, setIsAddUser] = useState(false);
   const [newMembers, setNewMembers] = useState(null);
+  const [role, setRole] = useState("All");
+
+  const semesters = fields.semesterOptions;
+  const roles = fields.roles;
 
   const departments = fields.departments;
-  const semesterFilters = fields.semesterYearOptions;
 
   const changeSemesterHandler = (event) => {
-    setSemesterFilter(event.target.value);
+    setSemester(event.target.value);
   };
 
   const changeDepartmentHandler = (event) => {
     setDepartment(event.target.value);
+  };
+
+  const changeRoleHandler = (event) => {
+    setRole(event.target.value);
   };
 
   const bulkUpload = async () => {
@@ -179,7 +186,7 @@ function AdminDashboardPage({ url }) {
                 UPLOAD CSV
               </StyledButton>
               <StyledSelect
-                value={semesterFilter}
+                value={semester}
                 onChange={changeSemesterHandler}
                 MenuProps={{
                   PaperProps: {
@@ -194,7 +201,7 @@ function AdminDashboardPage({ url }) {
                     },
                   },
                 }}>
-                {Array.from(semesterFilters)
+                {Array.from(semesters)
                   .sort(sortTenures(false))
                   .map((semester) => {
                     return (
@@ -230,12 +237,38 @@ function AdminDashboardPage({ url }) {
                     );
                   })}
               </StyledSelect>
+              <StyledSelect
+                value={role}
+                onChange={changeRoleHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
+                {Array.from(roles)
+                  .sort()
+                  .map((role) => {
+                    return (
+                      <MenuItem key={role} value={role} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
+                        {role.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </StyledSelect>
               <LogoutIcon style={{ width: "2rem", height: "2rem", cursor: "pointer" }} onClick={() => signOut()} />
             </Box>
           </Box>
           <div style={{ height: "78vh", width: "90vw" }}>
             <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
-              <UserTable currentSemester={semesterFilter} newMembers={newMembers} departmentFilter={department} />
+              <UserTable currentSemester={semester} newMembers={newMembers} roleFilter={role} departmentFilter={department} />
             </DashboardContext.Provider>
           </div>
         </Grid>

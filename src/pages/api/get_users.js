@@ -17,6 +17,7 @@ async function handler(req, res) {
           { "tenures.semester": { $in: [req.query.semester] } },
           { "tenures.year": { $in: [Number(req.query.year)] } },
 
+          req.query.role == "All" ? {} : { "tenures.role": { $in: [req.query.role] } },
           req.query.department == "All" ? {} : { "tenures.department": { $in: [req.query.department] } },
         ],
       },
@@ -42,7 +43,6 @@ async function handler(req, res) {
       },
     },
   ]);
-
   res.status(200).json({ users });
 }
 

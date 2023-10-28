@@ -197,12 +197,6 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
         });
       }
       setUserList(users);
-
-      /*if (!semesters.has(semesterYear)) {
-        const newSemesters = new Set(semesters);
-        newSemesters.add(semesterYear);
-        setSemesters(newSemesters);
-      }*/
     }
   };
 

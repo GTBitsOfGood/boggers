@@ -6,9 +6,7 @@ const memberTypes = {
   2: "Root Admin",
 };
 
-const semesterOptions = ["Fall", "Spring", "Summer"];
-
-const semesterYearOptions = ["Fall 2022", "Spring 2023"];
+const semesterOptions = ["Spring 2020", "Fall 2020", "Spring 2021", "Fall 2021", "Spring 2022", "Fall 2022", "Spring 2023", "Fall 2023"];
 
 const departments = [
   "All",
@@ -24,6 +22,7 @@ const departments = [
 ];
 
 const roles = [
+  "All",
   "Developer",
   "Senior Developer",
   "Product Designer",
@@ -52,6 +51,7 @@ const roles = [
   "Associate Executive Director",
   "Executive Director",
   "Alumni",
+  "Senior Dev",
 ];
 
 const projects = [
@@ -82,7 +82,6 @@ const fields = {
   preferences,
   memberTypes,
   semesterOptions,
-  semesterYearOptions,
   departments,
   roles,
   projects,
