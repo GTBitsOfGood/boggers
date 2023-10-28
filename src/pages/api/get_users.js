@@ -2,6 +2,7 @@ import User from "../../server/mongodb/models/User";
 import requestWrapper from "../../server/utils/middleware";
 
 async function handler(req, res) {
+  const { query } = req.query;
   const users = await User.aggregate([
     {
       $lookup: {
@@ -16,6 +17,13 @@ async function handler(req, res) {
         $and: [
           { "tenures.semester": { $in: [req.query.semester] } },
           { "tenures.year": { $in: [Number(req.query.year)] } },
+          {
+            $or: [
+              { email: { $regex: new RegExp(query, "i") } },
+              { firstName: { $regex: new RegExp(query, "i") } },
+              { phoneNumber: { $regex: new RegExp(query, "i") } },
+            ],
+          },
 
           req.query.role == "All" ? {} : { "tenures.role": { $in: [req.query.role] } },
           req.query.department == "All" ? {} : { "tenures.department": { $in: [req.query.department] } },

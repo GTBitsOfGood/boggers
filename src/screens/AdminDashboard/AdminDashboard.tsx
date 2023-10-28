@@ -173,7 +173,7 @@ function AdminDashboardPage({ url }) {
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  placeholder="Search…"
+                  placeholder="Search by name/email/phone number"
                   value={filter}
                   inputProps={{ "aria-label": "search" }}
                   onChange={(e) => setFilter(e.target.value)}
@@ -268,7 +268,13 @@ function AdminDashboardPage({ url }) {
           </Box>
           <div style={{ height: "78vh", width: "90vw" }}>
             <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
-              <UserTable currentSemester={semester} newMembers={newMembers} roleFilter={role} departmentFilter={department} />
+              <UserTable
+                filter={filter}
+                currentSemester={semester}
+                newMembers={newMembers}
+                roleFilter={role}
+                departmentFilter={department}
+              />
             </DashboardContext.Provider>
           </div>
         </Grid>
