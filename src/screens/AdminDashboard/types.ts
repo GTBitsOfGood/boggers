@@ -47,6 +47,7 @@ export interface TableProps {
 
 export interface RowProps {
   row: User;
+  currentSemester: string;
   onClick: Function;
 }
 
