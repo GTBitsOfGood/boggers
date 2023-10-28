@@ -5,19 +5,20 @@ import TableContext from "../../../contexts/TableContext";
 import { User } from "../types";
 import sendRequest from "../../../server/utils/sendToBackend";
 
-function UserTable({ currentSemester, newMembers, roleFilter }) {
+function UserTable({ currentSemester, newMembers, roleFilter, departmentFilter }) {
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
     (async () => {
       const response = await sendRequest(
-        `/api/get_users?role=${roleFilter}&semester=${currentSemester.split(" ")[0]}&year=${currentSemester.split(" ")[1]}`,
+        `/api/get_users?department=${departmentFilter}&role=${roleFilter}` +
+          `&semester=${currentSemester.split(" ")[0]}&year=${currentSemester.split(" ")[1]}`,
         "GET",
       );
       const { users } = response;
       setUserList(users);
     })();
-  }, [roleFilter, currentSemester, newMembers]);
+  }, [roleFilter, currentSemester, newMembers, departmentFilter]);
 
   if (!userList) {
     return (

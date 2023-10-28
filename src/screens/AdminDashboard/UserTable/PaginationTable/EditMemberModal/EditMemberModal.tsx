@@ -11,6 +11,7 @@ import DashboardContext from "../../../../../contexts/DashboardContext";
 import TableContext from "../../../../../contexts/TableContext";
 import EditMemberField from "./EditMemberField/EditMemberField";
 import { emailTester, phoneTester } from "../../../../../server/utils/regex";
+import Image from "next/image";
 
 const Label = ({ label }) => {
   return (
@@ -381,7 +382,7 @@ export default function EditMemberModal({ row, isVisible, closeModal, currentSem
             </Button>
           )}
           <div className={style.saveButton} onClick={updateHandler}>
-            <img src="/Save.png" height={20} width={20} alt="Save Icon" />
+            <Image src="/Save.png" height={20} width={20} alt="Save Icon" />
             SAVE
           </div>
         </div>

@@ -5,22 +5,6 @@ import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import DashboardContext from "../../../../../contexts/DashboardContext";
 
-const Image = React.memo(({ src }) => (
-  <img
-    src={src}
-    alt="User Picture"
-    style={{
-      pointerEvents: "auto",
-      width: "6rem",
-      height: "6rem",
-      objectFit: "cover",
-      borderRadius: "50%",
-    }}
-  />
-));
-
-Image.displayName = "Image";
-
 function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image, emailVerified } = row;
   const { department, role, project, status, notes } = !!row.tenures[currentSemester] && row.tenures[currentSemester];
@@ -47,7 +31,10 @@ function Row({ row, currentSemester, onClick }: RowProps) {
               alignItems: "center",
               columnGap: "1.5rem",
             }}>
-            <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
+            {
+              // eslint-disable-next-line @next/next/no-img-element
+            }
+            <img key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} height={50} width={50} />
             <div>
               <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
               <p className={styles.rowEmail}>{email}</p>

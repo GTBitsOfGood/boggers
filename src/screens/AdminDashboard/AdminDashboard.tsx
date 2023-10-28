@@ -91,6 +91,7 @@ const StyledSelect = styled(Select)(() => ({
 
 function AdminDashboardPage({ url }) {
   const [semester, setSemester] = useState("Fall 2023");
+  const [department, setDepartment] = useState("All");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
   const [filter, setFilter] = useState("");
@@ -101,11 +102,17 @@ function AdminDashboardPage({ url }) {
   const semesters = fields.semesterOptions;
   const roles = fields.roles;
 
+  const departments = fields.departments;
+
   const changeSemesterHandler = (event) => {
     setSemester(event.target.value);
   };
 
   const changeDepartmentHandler = (event) => {
+    setDepartment(event.target.value);
+  };
+
+  const changeRoleHandler = (event) => {
     setRole(event.target.value);
   };
 
@@ -205,8 +212,34 @@ function AdminDashboardPage({ url }) {
                   })}
               </StyledSelect>
               <StyledSelect
-                value={role}
+                value={department}
                 onChange={changeDepartmentHandler}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      "& .MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#0069ca1a",
+                        color: "#78adff",
+                      },
+                      "& .MuiMenuItem-root.Mui-selected:hover": {
+                        backgroundColor: "#0069ca23",
+                      },
+                    },
+                  },
+                }}>
+                {Array.from(departments)
+                  .sort()
+                  .map((department) => {
+                    return (
+                      <MenuItem key={department} value={department} style={{ justifyContent: "center", fontFamily: "Poppins" }}>
+                        {department.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </StyledSelect>
+              <StyledSelect
+                value={role}
+                onChange={changeRoleHandler}
                 MenuProps={{
                   PaperProps: {
                     sx: {
@@ -235,7 +268,7 @@ function AdminDashboardPage({ url }) {
           </Box>
           <div style={{ height: "78vh", width: "90vw" }}>
             <DashboardContext.Provider value={{ url, isAddUser, setIsAddUser }}>
-              <UserTable currentSemester={semester} newMembers={newMembers} roleFilter={role} />
+              <UserTable currentSemester={semester} newMembers={newMembers} roleFilter={role} departmentFilter={department} />
             </DashboardContext.Provider>
           </div>
         </Grid>

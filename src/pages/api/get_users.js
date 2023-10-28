@@ -18,6 +18,7 @@ async function handler(req, res) {
           { "tenures.year": { $in: [Number(req.query.year)] } },
 
           req.query.role == "All" ? {} : { "tenures.role": { $in: [req.query.role] } },
+          req.query.department == "All" ? {} : { "tenures.department": { $in: [req.query.department] } },
         ],
       },
     },
