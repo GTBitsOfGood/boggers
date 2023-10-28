@@ -4,7 +4,6 @@ import { RowProps } from "../../../types";
 import { TableRow, TableCell } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import DashboardContext from "../../../../../contexts/DashboardContext";
-import Image from "next/image";
 
 function Row({ row, currentSemester, onClick }: RowProps) {
   const { id, firstName, lastName, email, phoneNumber, image, emailVerified } = row;
@@ -32,7 +31,10 @@ function Row({ row, currentSemester, onClick }: RowProps) {
               alignItems: "center",
               columnGap: "1.5rem",
             }}>
-            <Image key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} />
+            {
+              // eslint-disable-next-line @next/next/no-img-element
+            }
+            <img key={`image_${id}${currentSemester}`} src={image ? url + id : "/Avatar.png"} height={50} width={50} />
             <div>
               <p className={styles.rowMemberName}>{`${firstName} ${lastName}${emailVerified ? "" : "*"}`}</p>
               <p className={styles.rowEmail}>{email}</p>
