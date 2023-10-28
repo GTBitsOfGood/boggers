@@ -39,18 +39,17 @@ async function createRootUser() {
     });
 
     return user;
-  } catch(error) {
+  } catch (error) {
     if (error.code === 11000) {
       return {
-        error: "Duplicate email"
-      }
+        error: "Duplicate email",
+      };
     } else {
       return {
-        error: "Error is" + error.message
-      }
+        error: "Error is" + error.message,
+      };
     }
   }
-  
 }
 
 async function createSeedUser(email, password, access) {
