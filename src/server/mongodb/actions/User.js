@@ -28,13 +28,28 @@ async function deleteUser(id) {
   return res;
 }
 async function createRootUser() {
-  return await User.create({
-    email: "root@boggers.com",
-    password: await bcrypt.hash("root", 10),
-    firstName: "boggers",
-    lastName: "boggers",
-    access: 2,
-  });
+  try {
+    const user = await User.create({
+      email: "root@boggers.com",
+      password: await bcrypt.hash("root", 10),
+      firstName: "boggers",
+      lastName: "boggers",
+      access: 2,
+      emailVerified: true,
+    });
+
+    return user;
+  } catch (error) {
+    if (error.code === 11000) {
+      return {
+        error: "Duplicate email",
+      };
+    } else {
+      return {
+        error: "Error is" + error.message,
+      };
+    }
+  }
 }
 
 async function createSeedUser(email, password, access) {
