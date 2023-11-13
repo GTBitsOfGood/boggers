@@ -90,7 +90,7 @@ const StyledSelect = styled(Select)(() => ({
 }));
 
 function AdminDashboardPage({ url }) {
-  const [semester, setSemester] = useState("Fall 2023");
+  const [semester, setSemester] = useState("All");
   const [department, setDepartment] = useState("All");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [fileBlob, setFileBlob] = useState(null);
