@@ -18,23 +18,11 @@ function UserTable({ currentSemester, newMembers, roleFilter, departmentFilter, 
           `&semester=${currentSemester.split(" ")[0]}&year=${currentSemester.split(" ")[1]}&rowsPerPage=${rowsPerPage}&page=${page}`,
         "GET",
       );
-      const { users } = response;
+      const { users, total } = response;
       setUserList(users);
+      setUserListLength(total);
     })();
   }, [roleFilter, currentSemester, newMembers, departmentFilter, filter, rowsPerPage, page]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await sendRequest(
-        `/api/get_users?query=${filter}&department=${departmentFilter}&role=${roleFilter}` +
-          `&semester=${currentSemester.split(" ")[0]}&year=${currentSemester.split(" ")[1]}&rowsPerPage=${1000}&page=${0}`,
-        "GET",
-      );
-      const { users } = response;
-
-      setUserListLength(users.length);
-    })();
-  }, [roleFilter, currentSemester, newMembers, departmentFilter, filter]);
 
   if (!userList) {
     return (
