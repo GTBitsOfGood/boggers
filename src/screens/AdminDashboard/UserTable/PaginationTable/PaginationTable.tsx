@@ -15,9 +15,7 @@ const columns: TColumn[] = [
   { id: "notes", label: "Notes", width: "8%" },
 ];
 
-function PaginationTable({ rows, currentSemester }: TableProps) {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+function PaginationTable({ rows, currentSemester, setRowsPerPage, rowsPerPage, setPage, page, userListLength }: TableProps) {
   const [selectedRow, setSelectedRow] = useState(null);
   const { isAddUser, setIsAddUser } = useContext(DashboardContext);
   const tableRef = useRef(null);
@@ -25,7 +23,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
   useEffect(() => {
     setPage(0);
     tableRef.current.scrollTop = 0;
-  }, [currentSemester]);
+  }, [currentSemester, setPage]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -89,7 +87,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {rows.map((row) => {
                 return (
                   <Row currentSemester={currentSemester} row={row} key={row.id} columns={columns} onClick={() => showModalHandler(row)} />
                 );
@@ -100,7 +98,7 @@ function PaginationTable({ rows, currentSemester }: TableProps) {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={userListLength}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

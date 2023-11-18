@@ -43,6 +43,11 @@ export interface TColumn {
 export interface TableProps {
   rows: User[];
   currentSemester: string;
+  setRowsPerPage: Function;
+  rowsPerPage: Number;
+  setPage: Function;
+  page: Number;
+  userListLength: Number;
 }
 
 export interface RowProps {
