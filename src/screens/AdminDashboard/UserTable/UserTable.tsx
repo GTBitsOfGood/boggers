@@ -6,6 +6,9 @@ import { User } from "../types";
 import sendRequest from "../../../server/utils/sendToBackend";
 
 function UserTable({ currentSemester, newMembers, roleFilter, departmentFilter, filter }) {
+  if (currentSemester == "All") {
+    currentSemester = "All All";
+  }
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
