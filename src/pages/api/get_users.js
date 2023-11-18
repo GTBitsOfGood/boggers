@@ -15,7 +15,7 @@ async function handler(req, res) {
     {
       $match: {
         $and: [
-          req.query.semester == "All" ? {} : { "tenures.semester": { $in: [req.query.semester] } },
+          req.query.semester == "All" ? { tenures: { $not: { $size: 0 } } } : { "tenures.semester": { $in: [req.query.semester] } },
           req.query.semester == "All" ? {} : { "tenures.year": { $in: [Number(req.query.year)] } },
           {
             $or: [
