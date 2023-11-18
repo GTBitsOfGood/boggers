@@ -50,7 +50,9 @@ async function handler(req, res) {
         },
       },
     },
-  ]);
+  ])
+    .skip(Number(req.query.page) * Number(req.query.rowsPerPage))
+    .limit(Number(req.query.rowsPerPage));
   res.status(200).json({ users });
 }
 
